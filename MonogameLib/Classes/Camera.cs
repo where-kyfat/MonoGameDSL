@@ -6,25 +6,25 @@ namespace MonogameLib.Classes
     {
         public Matrix Transform { get; private set; }
 
-        public void Follow(Vector2 target, Vector2 middlePoint, Vector2 backgroundSize)
+        public void Follow(int targetPosX, int targetPosY, int middlePointX, int middlePointY, int backgroundSizeX, int backgroundSizeY)
         {
-            float cameraX = target.X;
-            float cameraY = target.Y;
-            if (/*target.X >= 0 && */target.X <= middlePoint.X)
+            float cameraX = targetPosX;
+            float cameraY = targetPosY;
+            if (/*target.X >= 0 && */targetPosX <= middlePointX)
             {
-                cameraX = middlePoint.X;
+                cameraX = middlePointX;
             }
-            if (/*target.Y >= 0 && */target.Y <= middlePoint.Y)
+            if (/*target.Y >= 0 && */targetPosY <= middlePointY)
             {
-                cameraY = middlePoint.Y;
+                cameraY = middlePointY;
             }
-            if (backgroundSize.X - middlePoint.X <= target.X /*&& backgroundSize.X >= target.X*/)
+            if (backgroundSizeX - middlePointX <= targetPosX /*&& backgroundSize.X >= target.X*/)
             {
-                cameraX = backgroundSize.X - middlePoint.X;
+                cameraX = backgroundSizeX - middlePointX;
             }
-            if (backgroundSize.Y - middlePoint.Y <= target.Y /*&& backgroundSize.Y >= target.Y*/)
+            if (backgroundSizeY - middlePointY <= targetPosY /*&& backgroundSize.Y >= target.Y*/)
             {
-                cameraY = backgroundSize.Y - middlePoint.Y;
+                cameraY = backgroundSizeY - middlePointY;
             }
 
             var position = Matrix.CreateTranslation(
@@ -32,7 +32,7 @@ namespace MonogameLib.Classes
               -cameraY,
               0);
 
-            var offset = Matrix.CreateTranslation(middlePoint.X, middlePoint.Y, 0);
+            var offset = Matrix.CreateTranslation(middlePointX, middlePointY, 0);
 
             Transform = position * offset;
         }

@@ -13,13 +13,15 @@ namespace MonogameLib.Classes
         public string text;
         public Color color;
         public Matrix transformMatrix;
-        public Vector2 position;
+        public int positionX;
+        public int positionY;
         SpriteFont font;
 
-        public TextBox(string text, Vector2 position, SpriteFont font, Color color )
+        public TextBox(string text, int positionX, int positionY, SpriteFont font, Color color )
         {
             this.text = text;
-            this.position = position;
+            this.positionX = positionX;
+            this.positionY = positionY;
             this.color = color;
 
             this.font = font;
@@ -29,9 +31,9 @@ namespace MonogameLib.Classes
         {
             get
             {
-                var res = position;
-                res.X = position.X - transformMatrix.M41;
-                res.Y = position.Y - transformMatrix.M42;
+                var res = new Vector2(positionX, positionY);
+                res.X = positionX - transformMatrix.M41;
+                res.Y = positionY - transformMatrix.M42;
 
                 return res;
             }

@@ -14,24 +14,28 @@ namespace MonogameLib.Classes
         private Rectangle DestinationRectangle;
         public Color Color = new Color(255, 255, 255, 255);
         public float Rotation;
-        public Vector2 Origin;
+        public int OriginX;
+        public int OriginY;
         public float Scale = 1;
         public SpriteEffects SpriteEffects;
         public float LayerDepth;
         public Matrix transformMatrix;
-        public Vector2 Position;
+        public int PositionX;
+        public int PositionY;
         public float _forwardAngle = 0f;
         public bool IsRemove = false;
 
         public List<Behaviour> Behaviours;
 
 
-        public Sprite(Texture2D Texture, Vector2 Position)
+        public Sprite(Texture2D Texture, int PositionX, int PositionY)
         {
             this.Texture = Texture;
-            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-            this.Position = Position;
-            DestinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
+            this.OriginX = Texture.Width / 2;
+            this.OriginY = Texture.Height / 2;
+            this.PositionX = PositionX;
+            this.PositionY = PositionY;
+            DestinationRectangle = new Rectangle(PositionX, PositionY, Texture.Width, Texture.Height);
 
             Behaviours = new List<Behaviour>();
         }
@@ -42,12 +46,14 @@ namespace MonogameLib.Classes
             this.DestinationRectangle = copy.DestinationRectangle;
             this.Color = copy.Color;
             this.Rotation = copy.Rotation;
-            this.Origin = copy.Origin;
+            this.OriginX = copy.OriginX;
+            this.OriginY = copy.OriginY;
             this.Scale = copy.Scale;
             this.SpriteEffects = copy.SpriteEffects;
             this.LayerDepth = copy.LayerDepth;
             this.transformMatrix = copy.transformMatrix;
-            this.Position = copy.Position;
+            this.PositionX = copy.PositionX;
+            this.PositionY = copy.PositionY;
             this._forwardAngle = copy._forwardAngle;
             this.Behaviours = copy.Behaviours;
         }
@@ -56,9 +62,9 @@ namespace MonogameLib.Classes
         {
             get
             {
-                var res = Position;
-                res.X = transformMatrix.M41 + Position.X;
-                res.Y = transformMatrix.M42 + Position.Y;
+                var res = new Vector2();
+                res.X = transformMatrix.M41 + PositionX;
+                res.Y = transformMatrix.M42 + PositionY;
 
                 return res;
             }
@@ -72,7 +78,7 @@ namespace MonogameLib.Classes
                 int height = (int)((Texture.Width * -Math.Sin(Rotation) + Texture.Height * Math.Cos(Rotation)) * Scale);
                 width = Math.Abs(width) - 2;
                 height = Math.Abs(height) - 2;
-                return new Rectangle((int)(Position.X - width / 2f), (int)(Position.Y - height / 2f), width, height);
+                return new Rectangle((int)(PositionX - width / 2f), (int)(PositionY - height / 2f), width, height);
             }
         }
 
@@ -86,26 +92,31 @@ namespace MonogameLib.Classes
 
         private void UpdateDestinationRectangle()
         {
-            DestinationRectangle.X = (int)Position.X;
-            DestinationRectangle.Y = (int)Position.Y;
+            DestinationRectangle.X = PositionX;
+            DestinationRectangle.Y = PositionY;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Scale != 1)
             {
+                var Position = new Vector2(PositionX, PositionY);
+                var Origin = new Vector2(OriginX, OriginY);
                 spriteBatch.Draw(Texture, Position, null, Color, Rotation, Origin, Scale, SpriteEffects, LayerDepth);
             }
             else
             {
+                var Origin = new Vector2(OriginX, OriginY);
                 UpdateDestinationRectangle();
                 spriteBatch.Draw(Texture, DestinationRectangle, null, Color, Rotation, Origin, SpriteEffects, LayerDepth);
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public virtual void Draw(SpriteBatch spriteBatch, int positionX, int positionY)
         {
-            spriteBatch.Draw(Texture, position, null, Color, Rotation, Origin, Scale, SpriteEffects, LayerDepth);
+            var Origin = new Vector2(OriginX, OriginY);
+            var Position = new Vector2(PositionX, PositionY);
+            spriteBatch.Draw(Texture, Position, null, Color, Rotation, Origin, Scale, SpriteEffects, LayerDepth);
         }
     }
 }

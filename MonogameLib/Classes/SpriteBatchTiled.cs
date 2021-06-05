@@ -7,20 +7,20 @@ namespace MonogameLib
     {
         public SpriteBatchTiled(GraphicsDevice graphicsDevice) : base(graphicsDevice) { }
 
-        public void DrawTiledBackground(Texture2D texture, Vector2 position, Vector2 sizeOrigin, Color color)
+        public void DrawTiledBackground(Texture2D texture, int positionX, int positionY, int sizeOriginX, int sizeOriginY, Color color)
         {
-            Rectangle nextTexture = new Rectangle(0, 0, (int)sizeOrigin.X, (int)sizeOrigin.Y);
-            int countXTexture = (int)position.X % (int)sizeOrigin.X == 0 ? (int)position.X / (int)sizeOrigin.X
-                : (int)position.X / (int)sizeOrigin.X + 1;
-            int countYTexture = (int)position.Y % (int)sizeOrigin.Y == 0 ? (int)position.Y / (int)sizeOrigin.Y
-                : (int)position.Y / (int)sizeOrigin.Y + 1;
+            Rectangle nextTexture = new Rectangle(0, 0, sizeOriginX, sizeOriginY);
+            int countXTexture = positionX % sizeOriginX == 0 ? positionX / sizeOriginX
+                : positionX / sizeOriginX + 1;
+            int countYTexture = positionY % sizeOriginY == 0 ? positionY / sizeOriginY
+                : positionY / sizeOriginY + 1;
 
             for (int x = 0; x < countXTexture; x++)
             {
                 for (int y = 0; y < countYTexture; y++)
                 {
-                    nextTexture.X = (int)sizeOrigin.X * x;
-                    nextTexture.Y = (int)sizeOrigin.Y * y;
+                    nextTexture.X = sizeOriginX * x;
+                    nextTexture.Y = sizeOriginY * y;
                     base.Draw(texture, nextTexture, color);
                 }
 

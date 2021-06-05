@@ -12,20 +12,24 @@ namespace MonogameLib.Behaviours
     public class ScrollTo : Behaviour
     {
         Camera camera;
-        Vector2 middlePoint;
-        Vector2 layoutSize;
+        int middlePointX;
+        int middlePointY;
+        int layoutSizeX;
+        int layoutSizeY;
 
-        public ScrollTo(Camera camera, Vector2 middlePoint, Vector2 layoutSize)
+        public ScrollTo(Camera camera, int middlePointX, int middlePointY, int layoutSizeX, int layoutSizeY)
         {
             this.camera = camera;
-            this.middlePoint = middlePoint;
-            this.layoutSize = layoutSize;
+            this.middlePointX = middlePointX;
+            this.middlePointY = middlePointY;
+            this.layoutSizeX = layoutSizeX;
+            this.layoutSizeY = layoutSizeY;
         }
 
         public override void Execute(GameTime gameTime, Sprite target)
         {
             //var middlePoint = new Vector2(windowSize.X / 2, windowSize.Y / 2);
-            camera.Follow(target.Position, middlePoint, layoutSize);
+            camera.Follow(target.PositionX, target.PositionY, middlePointX, middlePointY, layoutSizeX, layoutSizeY);
             target.transformMatrix = camera.Transform;
         }
     }

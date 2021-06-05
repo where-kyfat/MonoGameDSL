@@ -12,14 +12,14 @@ namespace MonogameLib.Behaviours
     {
         Vector2 layoutSize;
 
-        public DestroyOutSideLayout(Vector2 layoutSize) 
+        public DestroyOutSideLayout(int layoutSizeX, int layoutSizeY) 
         {
-            this.layoutSize = layoutSize;
+            this.layoutSize = new Vector2(layoutSizeX, layoutSizeY);
         }
 
         public override void Execute(GameTime gameTime, Sprite target)
         {
-            if (Conditions.IsOutsideLayout(target, layoutSize))
+            if (Conditions.IsOutsideLayout(target, (int)layoutSize.X, (int)layoutSize.Y))
             {
                 target.IsRemove = true;
             }

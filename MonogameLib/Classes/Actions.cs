@@ -9,10 +9,11 @@ namespace MonogameLib.Classes
 {
     public static class Actions
     {
-        public static void ScrollToObject(Sprite target, Camera camera, Vector2 windowSize, Vector2 layoutSize)
+        public static void ScrollToObject(Sprite target, Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY)
         {
-            var middlePoint = new Vector2(windowSize.X / 2, windowSize.Y / 2);
-            camera.Follow(target.transformPosition, middlePoint, layoutSize);
+            var middlePointX = windowSizeX / 2;
+            var middlePointY = windowSizeY / 2;
+            camera.Follow((int)target.transformPosition.X, (int)target.transformPosition.Y, middlePointX, middlePointY, layoutSizeX, layoutSizeY);
         }
 
         public static void SetAngleForward(Sprite target, float pointX, float pointY, bool IsGlobal)
@@ -20,7 +21,7 @@ namespace MonogameLib.Classes
             Vector2 position;
             if (IsGlobal)
             {
-                position = target.Position;
+                position = new Vector2(target.PositionX, target.PositionY);
             }
             else
             {
@@ -43,7 +44,8 @@ namespace MonogameLib.Classes
 
         public static void SpawnAnotherObject(Sprite parent, Sprite child)
         {
-            child.Position = parent.Position;
+            child.PositionX = parent.PositionX;
+            child.PositionY = parent.PositionY;
             child.Rotation = parent.Rotation;
         }
 

@@ -40,6 +40,10 @@ namespace ExecutableProject
                 if (!emitResult.Success)
                 {
                     // some errors
+                    foreach (var error in emitResult.Diagnostics)
+                    {
+                        throw new DSL_Error(error.ToString());
+                    }
                     
                 }
                 else
@@ -54,5 +58,11 @@ namespace ExecutableProject
             }
             return null;
         }
+    }
+
+    class DSL_Error: Exception
+    {
+        public DSL_Error(string message) : base(message)
+        { }
     }
 }

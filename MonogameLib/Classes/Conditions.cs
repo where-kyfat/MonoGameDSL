@@ -30,13 +30,13 @@ namespace MonogameLib.Classes
 
         //public static bool ForEach(List<Sprite> sprites, )
 
-        public static bool IsOutsideLayout(Sprite target, Vector2 layoutSize)
+        public static bool IsOutsideLayout(Sprite target, int layoutSizeX, int layoutSizeY)
         {
             var Left = target.Rectangle.Left;
             var Right = target.Rectangle.Right;
             var Bottom = target.Rectangle.Bottom;
             var Top = target.Rectangle.Top;
-            if (layoutSize.X <= Right || layoutSize.Y <=  Bottom ||
+            if (layoutSizeX <= Right || layoutSizeY <=  Bottom ||
                 Left <= 0 || Top < 0)
             {
                 return true;

@@ -14,10 +14,14 @@ namespace MonogameLib.Classes
 
         // Camera values initialize
         protected Camera _camera;
-        protected Vector2 _windowSize = new Vector2(1920, 1080);
-        protected Vector2 _middleScreen;
+        protected int windowSizeX = 1920;
+        protected int windowSizeY = 1080;
+        protected int middleScreenX;
+        protected int middleScreenY;
 
-        protected Vector2 _backgroundSize = new Vector2(3840, 2160);
+        protected int backgroundSizeX = 3840;
+        protected int backgroundSizeY = 2160;
+
         protected Texture2D _layout;
         public List<GraphObject> sprites;
         protected float timer;
@@ -39,12 +43,13 @@ namespace MonogameLib.Classes
         protected override void Initialize()
         {
             // Changing window size
-            _graphics.PreferredBackBufferWidth = (int)_windowSize.X;
-            _graphics.PreferredBackBufferHeight = (int)_windowSize.Y;
+            _graphics.PreferredBackBufferWidth = windowSizeX;
+            _graphics.PreferredBackBufferHeight = windowSizeY;
             _graphics.ApplyChanges();
 
-            // Calc _middleScreen
-            _middleScreen = new Vector2(_windowSize.X / 2, _windowSize.Y / 2);
+            // Calc middleScreenX
+            middleScreenX = windowSizeX / 2;
+            middleScreenY = windowSizeY / 2;
 
             base.Initialize();
         }
@@ -112,8 +117,8 @@ namespace MonogameLib.Classes
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
 
             //Drawing layout
-            _spriteBatch.DrawTiledBackground(_layout, new Vector2(_backgroundSize.X, _backgroundSize.Y),
-                new Vector2(_layout.Width, _layout.Height), Color.White);
+            _spriteBatch.DrawTiledBackground(_layout, backgroundSizeX, backgroundSizeY,
+                _layout.Width, _layout.Height, Color.White);
 
             //Drawing sprites
             foreach (var sprite in sprites)
