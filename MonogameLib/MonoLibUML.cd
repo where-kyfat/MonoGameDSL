@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="MonogameLib.Behaviours._8Directions">
+    <Position X="1" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\_8Directions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.Behaviour">
+    <Position X="6.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\Behaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.BoundToLayout">
+    <Position X="8" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAAAAAAQAAAAAAEAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\BoundToLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.BulletMovement">
+    <Position X="12" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQQAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\BulletMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.DestroyOutSideLayout">
+    <Position X="3.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\DestroyOutSideLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.Fade">
+    <Position X="5.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAACQAAAAAQAAAACAAAAAEAAAAIAAAAAA=</HashCode>
+      <FileName>Behaviours\Fade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Behaviours.ScrollTo">
+    <Position X="10" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAgAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Behaviours\ScrollTo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.Actions">
+    <Position X="17.75" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAQAAAAAAAAAIAAAAAAAABAAAAACAAAAAAgAAA=</HashCode>
+      <FileName>Classes\Actions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.Camera">
+    <Position X="17.75" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Classes\Camera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.Conditions">
+    <Position X="17.75" Y="4.75" Width="2.5" />
+    <NestedTypes>
+      <Enum Name="MonogameLib.Classes.Conditions.MouseButton" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Classes\Conditions.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAgBAAAAADRAAEAAAAQEAAAAAAICAAA=</HashCode>
+      <FileName>Classes\Conditions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.GraphObject">
+    <Position X="2.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GraphObjects\GraphObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.Sprite">
+    <Position X="3.5" Y="8.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAAEAAAqAgAAKAAAAAAIggAAAEEAIggAgAAAA=</HashCode>
+      <FileName>GraphObjects\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.TextBox">
+    <Position X="0.5" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAiAAAAAAIAAAAAgAAACIAAAAAAAAAAA=</HashCode>
+      <FileName>GraphObjects\TextBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.Classes.ConstructorGame">
+    <Position X="14.75" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="MonogameLib.Classes.ConstructorGame.SomeAction">
+        <TypeIdentifier>
+          <NewMemberFileName>ConstructorGame.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAYACAAAgAAAAwAkAACAAAAAAAGAACACAIQAACCAAAw=</HashCode>
+      <FileName>ConstructorGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonogameLib.SpriteBatchTiled">
+    <Position X="14.75" Y="7.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\SpriteBatchTiled.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

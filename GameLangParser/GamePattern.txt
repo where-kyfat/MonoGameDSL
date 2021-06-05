@@ -1,0 +1,41 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonogameLib.Behaviours;
+using MonogameLib.Classes;
+using System;
+
+namespace TestProject
+{
+	[SPRITES LOGIC SECTION]
+	
+    class GameTest : ConstructorGame
+    {
+	
+		[VARIBLES SECTION]
+		
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+			[INITIALIZE SECTION]
+
+            //base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            // TODO: use this.Content to load your game content here
+			[LOAD CONTENT SECTION]
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            // TODO: Add your update logic here
+			[UPDATE SECTION]
+
+            base.Update(gameTime);
+        }
+    }
+}
