@@ -15,6 +15,19 @@ namespace ExecutableProject
         {
             //Parse code from pathGameCode
             string codeToCompile = GameLangParser.GameLangParser.ParseGameProgram(pathGameCode);
+            try
+            {
+                var pathToGenericFile = "../../../Generic.txt";
+                using (StreamWriter sw = new StreamWriter(pathToGenericFile, false, System.Text.Encoding.Default))
+                {
+                    sw.WriteLine(codeToCompile);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
             codeToCompile = codeToCompile.Replace("\r", "");
             
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(codeToCompile);

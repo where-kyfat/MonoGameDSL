@@ -1,57 +1,19 @@
 [SPRITES LOGIC SECTION]
 %%
-    class Player: Sprite
-    {
-        public Player(Texture2D texture, int positionX, int positionY, Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY) : base(texture, positionX, positionY) 
-        {
-            Behaviours.Add(new _8Directions());
-            Behaviours.Add(new ScrollTo(camera, windowSizeX, windowSizeY, layoutSizeX, layoutSizeY));
-            Behaviours.Add(new BoundToLayout(layoutSizeX, layoutSizeY));
-        }  
-    }
-
-    class Bullet : Sprite
-    {
-        public Bullet(Texture2D texture, int positionX, int positionY, int layoutSizeX, int layoutSizeY) : base(texture, positionX, positionY)
-        {
-            Behaviours.Add(new BulletMovement(10));
-            Behaviours.Add(new DestroyOutSideLayout(layoutSizeX, layoutSizeY));
-        }
-    }
-
-    class Monster : Sprite
-    {
-        public int health = 5;
-
-        public Monster(Texture2D texture, int positionX, int positionY) : base(texture, positionX, positionY)
-        {
-            Behaviours.Add(new BulletMovement(3));
-        }
-    }
-
-    class Explode : Sprite
-    {
-        public Explode(Texture2D texture, int positionX, int positionY) : base(texture, positionX, positionY)
-        {
-            Behaviours.Add(new Fade(true, 2f, true));
-        }
-    }
+    Player : { 
+            _8Directions,
+            ScrollTo,
+            BoundToLayout
+		    }
 ^^
+
 [VARIBLES SECTION]
 %%
  //Textures
         private Texture2D playerTexture;
-        private Texture2D bulletTexture;
-        private Texture2D monsterTexture;
-        private Texture2D explodeTexture;
 
         // Player values initialize
         private Sprite _player;
-
-        // Global variable
-        private int score = 0;
-
-        private TextBox textBox;
 ^^
 [INITIALIZE SECTION]
 %%
@@ -62,17 +24,12 @@
 
             base.Initialize();
 
-            _player = AddSprite(new Player(playerTexture, 10, 10, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY));
-            textBox = AddTextBox(new TextBox("Score: " + score, 25, 25, font, Color.Yellow));
+            _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
 ^^
 [LOAD CONTENT SECTION]
 %%
             _layout = LoadTextrure("Sprites/TiledBackground");
-            font = LoadFont("Sprites/font");
-            bulletTexture = LoadTextrure("Sprites/bullet");
-            monsterTexture = LoadTextrure("Sprites/monster");
             playerTexture = LoadTextrure("Sprites/player");
-            explodeTexture = LoadTextrure("Sprites/explode");
 ^^
 [UPDATE SECTION]
 %%
@@ -82,57 +39,5 @@
             {
                 // Player rotates to Mouse
                 Actions.SetAngleForward(_player, Mouse.GetState().X, Mouse.GetState().Y, false);
-
-                // Score changing
-                Actions.SetText(textBox, "Score: " + score);
             }
-
-            // Create new Bullet when Mouse.LeftButton clicked
-            if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
-            {
-                AddSprite(new Bullet(bulletTexture, _player.PositionX, _player.PositionY, backgroundSizeX, backgroundSizeY) { Rotation = _player.Rotation });
-            }
-
-            // Every 3 seconds create new Monster 
-            if (Conditions.EveryXSeconds(gameTime, 3f))
-            {
-                AddSprite(new Monster(monsterTexture, 1400, random.Next(1024)) { Rotation = (float)Math.PI });
-            }
-
-
-            ForEach<Bullet>(bullet =>
-            {
-                ForEach<Monster>(monster =>
-                {
-                    // If any Bullet collides with any Monster -> remove this Bullet and this Monster
-                    if (Conditions.InCollisionWith(bullet, monster))
-                    {
-                        Bullet curBullet = (Bullet)bullet;
-                        Monster curMonster = (Monster)monster;
-
-                        AddSprite(new Explode(explodeTexture, curBullet.PositionX, curBullet.PositionY) { Color = new Color(255, 255, 255, 0) } );
-                        Actions.Destroy(curBullet);
-                        curMonster.health--;
-                        if (curMonster.health == 0)
-                        {
-                            Actions.Destroy(curMonster);
-                            score++;
-                        }
-                    }
-                });
-            });
-
-            // If Monster is outside layout -> rotate to Players position
-            // If Monster collides with Player -> remove Player
-            ForEach<Monster>(monster =>
-            {
-                if (Conditions.IsOutsideLayout(monster, backgroundSizeX, backgroundSizeY))
-                {
-                    Actions.SetAngleForward(monster, _player.PositionX, _player.PositionY, IsGlobal: true);
-                }
-                if (Conditions.InCollisionWith(monster, _player))
-                {
-                    Actions.Destroy(_player);
-                }
-            });
 ^^

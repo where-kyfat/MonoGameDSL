@@ -1,6 +1,10 @@
 ﻿[SPRITES LOGIC SECTION]
 %%
-	Player : { _8Directions, ScrollTo, BoundToLayout }
+	Player : { 
+		_8Directions,
+		ScrollTo,
+		BoundToLayout
+		}
 ^^
 
 
