@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using MonogameLib;
 
 namespace ExecutableProject
 {
@@ -12,6 +11,7 @@ namespace ExecutableProject
             var exePath = AppDomain.CurrentDomain.BaseDirectory;//path to exe file
             var path = Path.Combine(exePath, "GameProgram.txt");
             var game = CodeGenerator.CompileFromFile(path);
+
             game.Run();
         }
 
