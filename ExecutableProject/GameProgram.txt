@@ -2,10 +2,10 @@
 %%
     class Player: Sprite
     {
-        public Player(Texture2D texture, int positionX, int positionY, Camera camera, int middlePointX, int middlePointY, int layoutSizeX, int layoutSizeY) : base(texture, positionX, positionY) 
+        public Player(Texture2D texture, int positionX, int positionY, Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY) : base(texture, positionX, positionY) 
         {
             Behaviours.Add(new _8Directions());
-            Behaviours.Add(new ScrollTo(camera, middlePointX, middlePointY, layoutSizeX, layoutSizeY));
+            Behaviours.Add(new ScrollTo(camera, windowSizeX, windowSizeY, layoutSizeX, layoutSizeY));
             Behaviours.Add(new BoundToLayout(layoutSizeX, layoutSizeY));
         }  
     }
@@ -62,7 +62,7 @@
 
             base.Initialize();
 
-            _player = AddSprite(new Player(playerTexture, 10, 10, _camera, middleScreenX, middleScreenY, backgroundSizeX, backgroundSizeY));
+            _player = AddSprite(new Player(playerTexture, 10, 10, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY));
             textBox = AddTextBox(new TextBox("Score: " + score, 25, 25, font, Color.Yellow));
 ^^
 [LOAD CONTENT SECTION]

@@ -10,12 +10,14 @@ namespace MonogameLib.Behaviours
 {
     public class BoundToLayout : Behaviour
     {
-        Vector2 layoutSize;
+        int layoutSizeX;
+        int layoutSizeY;
         bool IsEdge;
 
         public BoundToLayout(int layoutSizeX, int layoutSizeY, bool IsEdge = true)
         {
-            this.layoutSize = new Vector2(layoutSizeX, layoutSizeY);
+            this.layoutSizeX = layoutSizeX;
+            this.layoutSizeY = layoutSizeY;
             this.IsEdge = IsEdge;
         }
 
@@ -40,16 +42,16 @@ namespace MonogameLib.Behaviours
             if (Right < 0) target.PositionX -= Right;
             if (Bottom < 0) target.PositionY -= Bottom;
 
-            if (Bottom > layoutSize.Y) target.PositionY = (int)layoutSize.Y - height;
-            if (Right > layoutSize.X) target.PositionX = (int)layoutSize.X - width;
+            if (Bottom > layoutSizeY) target.PositionY = layoutSizeY - height;
+            if (Right > layoutSizeX) target.PositionX = layoutSizeX - width;
         }
 
         private void BoundOrigin(Sprite target)
         {
             if (target.PositionX < 0) target.PositionX = 0;
             if (target.PositionY < 0) target.PositionY = 0;
-            if (target.PositionX > layoutSize.X) target.PositionX = (int)layoutSize.X;
-            if (target.PositionY > layoutSize.Y) target.PositionY = (int)layoutSize.Y;
+            if (target.PositionX > layoutSizeX) target.PositionX = layoutSizeX;
+            if (target.PositionY > layoutSizeY) target.PositionY = layoutSizeY;
         }
     }
 }

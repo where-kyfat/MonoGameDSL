@@ -17,11 +17,11 @@ namespace MonogameLib.Behaviours
         int layoutSizeX;
         int layoutSizeY;
 
-        public ScrollTo(Camera camera, int middlePointX, int middlePointY, int layoutSizeX, int layoutSizeY)
+        public ScrollTo(Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY)
         {
             this.camera = camera;
-            this.middlePointX = middlePointX;
-            this.middlePointY = middlePointY;
+            this.middlePointX = windowSizeX / 2;
+            this.middlePointY = windowSizeY / 2;
             this.layoutSizeX = layoutSizeX;
             this.layoutSizeY = layoutSizeY;
         }

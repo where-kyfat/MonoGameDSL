@@ -25,6 +25,7 @@ namespace MonogameLib.Classes
         public float _forwardAngle = 0f;
         public bool IsRemove = false;
 
+
         public List<Behaviour> Behaviours;
 
 
@@ -40,23 +41,23 @@ namespace MonogameLib.Classes
             Behaviours = new List<Behaviour>();
         }
 
-        public Sprite(Sprite copy)
-        {
-            this.Texture = copy.Texture;
-            this.DestinationRectangle = copy.DestinationRectangle;
-            this.Color = copy.Color;
-            this.Rotation = copy.Rotation;
-            this.OriginX = copy.OriginX;
-            this.OriginY = copy.OriginY;
-            this.Scale = copy.Scale;
-            this.SpriteEffects = copy.SpriteEffects;
-            this.LayerDepth = copy.LayerDepth;
-            this.transformMatrix = copy.transformMatrix;
-            this.PositionX = copy.PositionX;
-            this.PositionY = copy.PositionY;
-            this._forwardAngle = copy._forwardAngle;
-            this.Behaviours = copy.Behaviours;
-        }
+        //public Sprite(Sprite copy)
+        //{
+        //    this.Texture = copy.Texture;
+        //    this.DestinationRectangle = copy.DestinationRectangle;
+        //    this.Color = copy.Color;
+        //    this.Rotation = copy.Rotation;
+        //    this.OriginX = copy.OriginX;
+        //    this.OriginY = copy.OriginY;
+        //    this.Scale = copy.Scale;
+        //    this.SpriteEffects = copy.SpriteEffects;
+        //    this.LayerDepth = copy.LayerDepth;
+        //    this.transformMatrix = copy.transformMatrix;
+        //    this.PositionX = copy.PositionX;
+        //    this.PositionY = copy.PositionY;
+        //    this._forwardAngle = copy._forwardAngle;
+        //    this.Behaviours = copy.Behaviours;
+        //}
 
         public Vector2 transformPosition
         {

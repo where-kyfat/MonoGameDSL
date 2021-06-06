@@ -13,8 +13,10 @@
 
 [INITIALIZE SECTION]
 %%
-	_windowSize = new Vector2(1920, 1080);
-	_backgroundSize = new Vector2(3840, 2160);
+	_windowSizeX = 1920;
+	_windowSizeY = 1080;
+	_backgroundSizeX = 3840;
+	_backgroundSizeY = 2160;
 	_player = AddSprite(_player, playerTexture, 10, 10));
 ^^
 
