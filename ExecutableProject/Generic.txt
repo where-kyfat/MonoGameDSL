@@ -1,0 +1,101 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonogameLib.Behaviours;
+using MonogameLib.Classes;
+using System;
+
+namespace TestProject
+{
+	
+    public class Player : Sprite 
+    {
+        public Player (Texture2D texture, int positionX, int positionY ,Int32 speed ,Camera camera ,Int32 windowSizeX ,Int32 windowSizeY ,Int32 layoutSizeX ,Int32 layoutSizeY ,Boolean IsEdge ) : base(texture, positionX, positionY)
+        {
+            
+        Behaviours.Add(new _8Directions(speed ));
+
+        Behaviours.Add(new ScrollTo(camera ,windowSizeX ,windowSizeY ,layoutSizeX ,layoutSizeY ));
+
+        Behaviours.Add(new BoundToLayout(layoutSizeX ,layoutSizeY ,IsEdge ));
+
+        }
+    }
+
+    public class Bullet : Sprite 
+    {
+        public Bullet (Texture2D texture, int positionX, int positionY ,Single speed ,Int32 layoutSizeX ,Int32 layoutSizeY ) : base(texture, positionX, positionY)
+        {
+            
+        Behaviours.Add(new BulletMovement(speed ));
+
+        Behaviours.Add(new DestroyOutSideLayout(layoutSizeX ,layoutSizeY ));
+
+        }
+    }
+
+	
+    class GameTest : ConstructorGame
+    {
+	
+		
+        //Textures
+        Texture2D playerTexture;
+        Texture2D bulletTexture;
+
+        // Player values initialize
+        Sprite _player;
+
+		
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+			
+        windowSizeX = 1920;
+        windowSizeY = 1080;
+        backgroundSizeX = 3840;
+        backgroundSizeY = 2160;
+
+        base.Initialize();
+
+        _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
+
+
+            //base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            // TODO: use this.Content to load your game content here
+			
+        _layout = LoadTextrure("Sprites/TiledBackground");
+        playerTexture = LoadTextrure("Sprites/player");
+        bulletTexture = LoadTextrure("Sprites/bullet");
+
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            // TODO: Add your update logic here
+			
+        // Every tick
+        if (Conditions.EveryTick())
+        {
+            // Player rotates to Mouse
+            Actions.SetAngleForward(_player, Mouse.GetState().X, Mouse.GetState().Y, false);
+        }
+
+        // Create new Bullet when Mouse.LeftButton clicked
+        if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
+        {
+            AddSprite(new Bullet(bulletTexture, _player.PositionX, _player.PositionY, 10, backgroundSizeX, backgroundSizeY) { Rotation = _player.Rotation });
+        }
+
+
+            base.Update(gameTime);
+        }
+    }
+}
+

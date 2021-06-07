@@ -1,43 +1,61 @@
 [SPRITES LOGIC SECTION]
 %%
-    Player : { 
-            _8Directions,
-            ScrollTo,
-            BoundToLayout
-		    }
+    Player : 
+    { 
+        _8Directions,
+        ScrollTo,
+        BoundToLayout
+    }
+
+    Bullet : 
+    {
+        
+        BulletMovement,
+        DestroyOutSideLayout
+    }
 ^^
 
 [VARIBLES SECTION]
 %%
- //Textures
-        private Texture2D playerTexture;
+        //Textures
+        Texture2D playerTexture;
+        Texture2D bulletTexture;
 
         // Player values initialize
-        private Sprite _player;
+        Sprite _player;
 ^^
+
 [INITIALIZE SECTION]
 %%
-            windowSizeX = 1920;
-            windowSizeY = 1080;
-            backgroundSizeX = 3840;
-            backgroundSizeY = 2160;
+        windowSizeX = 1920;
+        windowSizeY = 1080;
+        backgroundSizeX = 3840;
+        backgroundSizeY = 2160;
 
-            base.Initialize();
+        base.Initialize();
 
-            _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
+        _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
 ^^
+
 [LOAD CONTENT SECTION]
 %%
-            _layout = LoadTextrure("Sprites/TiledBackground");
-            playerTexture = LoadTextrure("Sprites/player");
+        _layout = LoadTextrure("Sprites/TiledBackground");
+        playerTexture = LoadTextrure("Sprites/player");
+        bulletTexture = LoadTextrure("Sprites/bullet");
 ^^
+
 [UPDATE SECTION]
 %%
+        // Every tick
+        if (Conditions.EveryTick())
+        {
+            // Player rotates to Mouse
+            Actions.SetAngleForward(_player, Mouse.GetState().X, Mouse.GetState().Y, false);
+        }
 
-            // Every tick
-            if (Conditions.EveryTick())
-            {
-                // Player rotates to Mouse
-                Actions.SetAngleForward(_player, Mouse.GetState().X, Mouse.GetState().Y, false);
-            }
+        // Create new Bullet when Mouse.LeftButton clicked
+        if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
+        {
+            AddSprite(new Bullet(bulletTexture, _player.PositionX, _player.PositionY, 10, backgroundSizeX, backgroundSizeY) { Rotation = _player.Rotation });
+        }
 ^^

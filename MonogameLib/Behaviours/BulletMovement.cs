@@ -11,12 +11,12 @@ namespace MonogameLib.Behaviours
     public class BulletMovement : Behaviour
     {
         float speed;
-        int angleDegrees;
+        //int angleDegrees;
 
-        public BulletMovement(float speed = 5f, int angleDegrees = 0)
+        public BulletMovement(float speed = 5f/*, int angleDegrees = 0*/)
         {
             this.speed = speed;
-            this.angleDegrees = angleDegrees;
+            //this.angleDegrees = angleDegrees;
         }
 
         public override void Execute(GameTime gameTime, Sprite target)
