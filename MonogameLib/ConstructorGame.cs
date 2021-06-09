@@ -64,14 +64,14 @@ namespace MonogameLib.Classes
             base.LoadContent();
         }
 
-        protected Texture2D LoadTextrure(string path)
+        protected Texture2D LoadTextrure(string name)
         {
-            return Content.Load<Texture2D>(path);
+            return Content.Load<Texture2D>("Sprites/" + name);
         }
 
-        protected SpriteFont LoadFont(string path)
+        protected SpriteFont LoadFont(string name)
         {
-            return Content.Load<SpriteFont>(path);
+            return Content.Load<SpriteFont>("Sprites/" + name);
         }
 
         protected delegate void SomeAction(Sprite target);

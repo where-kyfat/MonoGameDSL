@@ -3,9 +3,9 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.3.6
-// Machine:  DESKTOP-KDBR5P2
-// DateTime: 07.06.2021 1:41:38
-// UserName: User
+// Machine:  AVILOV-PC
+// DateTime: 09.06.2021 12:12:01
+// UserName: a.avilov
 // Input file <../../YaccLex/SimpleYacc.y>
 
 // options: no-lines gplex

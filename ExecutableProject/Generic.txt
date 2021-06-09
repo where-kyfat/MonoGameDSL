@@ -10,27 +10,62 @@ namespace TestProject
 	
     public class Player : Sprite 
     {
-        public Player (Texture2D texture, int positionX, int positionY ,Int32 speed ,Camera camera ,Int32 windowSizeX ,Int32 windowSizeY ,Int32 layoutSizeX ,Int32 layoutSizeY ,Boolean IsEdge ) : base(texture, positionX, positionY)
+        public Int32 speed; public Camera camera; public Int32 windowSizeX; public Int32 windowSizeY; public Int32 layoutSizeX; public Int32 layoutSizeY; public Boolean IsEdge; 
+        public Player (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
             
-        Behaviours.Add(new _8Directions(speed ));
+            Behaviours.Add(new _8Directions( speed));
 
-        Behaviours.Add(new ScrollTo(camera ,windowSizeX ,windowSizeY ,layoutSizeX ,layoutSizeY ));
+            Behaviours.Add(new ScrollTo( camera, windowSizeX, windowSizeY, layoutSizeX, layoutSizeY));
 
-        Behaviours.Add(new BoundToLayout(layoutSizeX ,layoutSizeY ,IsEdge ));
+            Behaviours.Add(new BoundToLayout( layoutSizeX, layoutSizeY, IsEdge));
 
+        }
+
+        public override void Update(GameTime gameTime) 
+        {
+            for (int i = 0; i < Behaviours.Count; i++) 
+            {
+                
+            if (Behaviours[i] is _8Directions)
+                Behaviours[i] = new _8Directions( speed);
+
+            if (Behaviours[i] is ScrollTo)
+                Behaviours[i] = new ScrollTo( camera, windowSizeX, windowSizeY, layoutSizeX, layoutSizeY);
+
+            if (Behaviours[i] is BoundToLayout)
+                Behaviours[i] = new BoundToLayout( layoutSizeX, layoutSizeY, IsEdge);
+
+            }
+            base.Update(gameTime);
         }
     }
 
     public class Bullet : Sprite 
     {
-        public Bullet (Texture2D texture, int positionX, int positionY ,Single speed ,Int32 layoutSizeX ,Int32 layoutSizeY ) : base(texture, positionX, positionY)
+        public Int32 speed; public Int32 layoutSizeX; public Int32 layoutSizeY; 
+        public Bullet (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
             
-        Behaviours.Add(new BulletMovement(speed ));
+            Behaviours.Add(new BulletMovement( speed));
 
-        Behaviours.Add(new DestroyOutSideLayout(layoutSizeX ,layoutSizeY ));
+            Behaviours.Add(new DestroyOutSideLayout( layoutSizeX, layoutSizeY));
 
+        }
+
+        public override void Update(GameTime gameTime) 
+        {
+            for (int i = 0; i < Behaviours.Count; i++) 
+            {
+                
+            if (Behaviours[i] is BulletMovement)
+                Behaviours[i] = new BulletMovement( speed);
+
+            if (Behaviours[i] is DestroyOutSideLayout)
+                Behaviours[i] = new DestroyOutSideLayout( layoutSizeX, layoutSizeY);
+
+            }
+            base.Update(gameTime);
         }
     }
 
@@ -44,7 +79,7 @@ namespace TestProject
         Texture2D bulletTexture;
 
         // Player values initialize
-        Sprite _player;
+        Player _player;
 
 		
         protected override void Initialize()
@@ -58,7 +93,15 @@ namespace TestProject
 
         base.Initialize();
 
-        _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
+        _player = new Player(playerTexture, 10, 10);
+        _player.speed = 4;
+        _player.camera = _camera;
+        _player.windowSizeX = windowSizeX;
+        _player.windowSizeY = windowSizeY;
+        _player.layoutSizeX = backgroundSizeX;
+        _player.layoutSizeY = backgroundSizeY;
+        _player.IsEdge = true;
+        AddSprite(_player);
 
 
             //base.Initialize();
@@ -70,9 +113,9 @@ namespace TestProject
 
             // TODO: use this.Content to load your game content here
 			
-        _layout = LoadTextrure("Sprites/TiledBackground");
-        playerTexture = LoadTextrure("Sprites/player");
-        bulletTexture = LoadTextrure("Sprites/bullet");
+        _layout = LoadTextrure("TiledBackground");
+        playerTexture = LoadTextrure("player");
+        bulletTexture = LoadTextrure("bullet");
 
         }
 
@@ -90,7 +133,12 @@ namespace TestProject
         // Create new Bullet when Mouse.LeftButton clicked
         if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
         {
-            AddSprite(new Bullet(bulletTexture, _player.PositionX, _player.PositionY, 10, backgroundSizeX, backgroundSizeY) { Rotation = _player.Rotation });
+            Bullet bullet = new Bullet(bulletTexture, _player.PositionX, _player.PositionY);
+            bullet.speed = 10;
+            bullet.layoutSizeX = backgroundSizeX;
+            bullet.layoutSizeY = backgroundSizeY;
+            bullet.Rotation = _player.Rotation;
+            AddSprite(bullet);
         }
 
 

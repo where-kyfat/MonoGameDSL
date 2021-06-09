@@ -30,7 +30,7 @@ namespace GameLangParser
             return GetParams(type, "", OnlyNames);
         }
 
-        public string GetParams(Type type, string existingParams, bool OnlyNames = false)
+        public string GetParams(Type type, string existingParams, bool OnlyNames = false, char separator = ',', string availability = "")
         {
             string result = "";
             //var type = typeof(T);
@@ -49,25 +49,28 @@ namespace GameLangParser
                 {
                     if (!existingParams.Contains(item.Name))
                     {
-                        result += item.ParameterType.Name + " " + item.Name + " ,";
+                        result += availability + " " + item.ParameterType.Name + " " + item.Name + separator + " ";
                     }
                 }
                 else
                 {
                     if (!existingParams.Contains(item.Name))
                     {
-                        result += item.Name + " ,";
+                        result += availability + " " + item.Name + separator;
                     }
                 }
 
             }
 
-            // removing last ','
-            result = result.Remove(result.Length - 1);
+            if (separator != ';')
+            {
+                result = result.Remove(result.Length - 1);
+            }
+            
             return result;
         }
 
-        public string GetBehaviour(Type type)
+        public string GetAddBehaviour(Type type)
         {
             string result = "";
 
@@ -78,10 +81,30 @@ namespace GameLangParser
             }
 
             result = @"
-        Behaviours.Add(new [NameBehaviour]([Params]));
+            Behaviours.Add(new [NameBehaviour]([Params]));
 ";
             result = result.Replace("[NameBehaviour]", type.Name);
-            string _params = GetParams(type, true);
+            string _params = GetParams(type, OnlyNames : true);
+            result = result.Replace("[Params]", _params);
+            return result;
+        }
+
+        public string GetUpdateBehaviour(Type type)
+        {
+            string result = "";
+
+            //If it isn't an Behaviour
+            if (!type.IsSubclassOf(typeof(Behaviour)))
+            {
+                throw new WrongBehaviourExeception("Class must be one of the Behaviour children");
+            }
+
+            result = @"
+            if (Behaviours[i] is [NameBehaviour])
+                Behaviours[i] = new [NameBehaviour]([Params]);
+";
+            result = result.Replace("[NameBehaviour]", type.Name);
+            string _params = GetParams(type, OnlyNames: true);
             result = result.Replace("[Params]", _params);
             return result;
         }
@@ -91,28 +114,44 @@ namespace GameLangParser
             string ClassPrefix = @"
     public class [ClassName] : Sprite 
     {
-        public [ClassName] (Texture2D texture, int positionX, int positionY [Params]) : base(texture, positionX, positionY)
+        [Params]
+        public [ClassName] (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
             [Behaviours]
         }
+
+        public override void Update(GameTime gameTime) 
+        {
+            for (int i = 0; i < Behaviours.Count; i++) 
+            {
+                [BehavioursUpdate]
+            }
+            base.Update(gameTime);
+        }
     }
 ";
-            string Params = ",";
+            string Params = "";
             foreach (var behaviour in behaviours)
             {
-                Params += GetParams(behaviour, Params) + ",";
+                Params += GetParams(behaviour, Params, separator: ';', availability: "public");
             }
-            Params = Params.Remove(Params.Length - 1);
 
             string Behaviours = "";
             foreach (var behaviour in behaviours)
             {
-                Behaviours += GetBehaviour(behaviour);
+                Behaviours += GetAddBehaviour(behaviour);
+            }
+
+            string UpdateBehaviours = "";
+            foreach (var behaviour in behaviours)
+            {
+                UpdateBehaviours += GetUpdateBehaviour(behaviour);
             }
 
             ClassPrefix = ClassPrefix.Replace("[ClassName]", className);
             ClassPrefix = ClassPrefix.Replace("[Params]", Params);
             ClassPrefix = ClassPrefix.Replace("[Behaviours]", Behaviours);
+            ClassPrefix = ClassPrefix.Replace("[BehavioursUpdate]", UpdateBehaviours);
 
             return ClassPrefix;
         }

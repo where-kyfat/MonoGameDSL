@@ -22,7 +22,7 @@
         Texture2D bulletTexture;
 
         // Player values initialize
-        Sprite _player;
+        Player _player;
 ^^
 
 [INITIALIZE SECTION]
@@ -34,14 +34,22 @@
 
         base.Initialize();
 
-        _player = AddSprite(new Player(playerTexture, 10, 10, 4, _camera, windowSizeX, windowSizeY, backgroundSizeX, backgroundSizeY, true));
+        _player = new Player(playerTexture, 10, 10);
+        _player.speed = 4;
+        _player.camera = _camera;
+        _player.windowSizeX = windowSizeX;
+        _player.windowSizeY = windowSizeY;
+        _player.layoutSizeX = backgroundSizeX;
+        _player.layoutSizeY = backgroundSizeY;
+        _player.IsEdge = true;
+        AddSprite(_player);
 ^^
 
 [LOAD CONTENT SECTION]
 %%
-        _layout = LoadTextrure("Sprites/TiledBackground");
-        playerTexture = LoadTextrure("Sprites/player");
-        bulletTexture = LoadTextrure("Sprites/bullet");
+        _layout = LoadTextrure("TiledBackground");
+        playerTexture = LoadTextrure("player");
+        bulletTexture = LoadTextrure("bullet");
 ^^
 
 [UPDATE SECTION]
@@ -56,6 +64,11 @@
         // Create new Bullet when Mouse.LeftButton clicked
         if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
         {
-            AddSprite(new Bullet(bulletTexture, _player.PositionX, _player.PositionY, 10, backgroundSizeX, backgroundSizeY) { Rotation = _player.Rotation });
+            Bullet bullet = new Bullet(bulletTexture, _player.PositionX, _player.PositionY);
+            bullet.speed = 10;
+            bullet.layoutSizeX = backgroundSizeX;
+            bullet.layoutSizeY = backgroundSizeY;
+            bullet.Rotation = _player.Rotation;
+            AddSprite(bullet);
         }
 ^^
