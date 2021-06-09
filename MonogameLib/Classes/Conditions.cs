@@ -100,7 +100,7 @@ namespace MonogameLib.Classes
 
             if (timerMil > 250f)
             {
-                var mouseState = Mouse.GetState();
+                var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
                 if (NameButton == MouseButton.Left)
                 {
                     if (mouseState.LeftButton == ButtonState.Pressed)

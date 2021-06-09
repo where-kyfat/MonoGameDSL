@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonogameLib.Classes
 {
+    public struct Mouse
+    {
+        public int X;
+        public int Y;
+    }
+
     public class ConstructorGame : Game
     {
         private protected GraphicsDeviceManager _graphics;
@@ -21,6 +27,8 @@ namespace MonogameLib.Classes
 
         protected int backgroundSizeX = 3840;
         protected int backgroundSizeY = 2160;
+
+        protected Mouse Mouse;
 
         protected Texture2D _layout;
         public List<GraphObject> sprites;
@@ -91,6 +99,9 @@ namespace MonogameLib.Classes
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            Mouse.X = Microsoft.Xna.Framework.Input.Mouse.GetState().X;
+            Mouse.Y = Microsoft.Xna.Framework.Input.Mouse.GetState().Y;
 
             for (int i = 0; i < sprites.Count; i++)
             {

@@ -127,7 +127,7 @@ namespace TestProject
         if (Conditions.EveryTick())
         {
             // Player rotates to Mouse
-            Actions.SetAngleForward(_player, Mouse.GetState().X, Mouse.GetState().Y, false);
+            Actions.SetAngleForward(_player, Mouse.X, Mouse.Y, false);
         }
 
         // Create new Bullet when Mouse.LeftButton clicked
