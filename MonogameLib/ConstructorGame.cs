@@ -25,8 +25,8 @@ namespace MonogameLib.Classes
         protected int middleScreenX;
         protected int middleScreenY;
 
-        protected int backgroundSizeX = 3840;
-        protected int backgroundSizeY = 2160;
+        protected int layoutSizeX = 3840;
+        protected int layoutSizeY = 2160;
 
         protected Mouse Mouse;
 
@@ -128,7 +128,7 @@ namespace MonogameLib.Classes
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
 
             //Drawing layout
-            _spriteBatch.DrawTiledBackground(_layout, backgroundSizeX, backgroundSizeY,
+            _spriteBatch.DrawTiledBackground(_layout, layoutSizeX, layoutSizeY,
                 _layout.Width, _layout.Height, Color.White);
 
             //Drawing sprites

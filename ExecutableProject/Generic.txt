@@ -88,8 +88,8 @@ namespace TestProject
 			
         windowSizeX = 1920;
         windowSizeY = 1080;
-        backgroundSizeX = 3840;
-        backgroundSizeY = 2160;
+        layoutSizeX = 3840;
+        layoutSizeY = 2160;
 
         base.Initialize();
 
@@ -98,8 +98,8 @@ namespace TestProject
         _player.camera = _camera;
         _player.windowSizeX = windowSizeX;
         _player.windowSizeY = windowSizeY;
-        _player.layoutSizeX = backgroundSizeX;
-        _player.layoutSizeY = backgroundSizeY;
+        _player.layoutSizeX = layoutSizeX;
+        _player.layoutSizeY = layoutSizeY;
         _player.IsEdge = true;
         AddSprite(_player);
 
@@ -135,8 +135,8 @@ namespace TestProject
         {
             Bullet bullet = new Bullet(bulletTexture, _player.PositionX, _player.PositionY);
             bullet.speed = 10;
-            bullet.layoutSizeX = backgroundSizeX;
-            bullet.layoutSizeY = backgroundSizeY;
+            bullet.layoutSizeX = layoutSizeX;
+            bullet.layoutSizeY = layoutSizeY;
             bullet.Rotation = _player.Rotation;
             AddSprite(bullet);
         }
