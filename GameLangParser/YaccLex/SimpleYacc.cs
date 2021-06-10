@@ -3,9 +3,9 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.3.6
-// Machine:  AVILOV-PC
-// DateTime: 09.06.2021 12:12:01
-// UserName: a.avilov
+// Machine:  DESKTOP-KDBR5P2
+// DateTime: 10.06.2021 18:41:45
+// UserName: User
 // Input file <../../YaccLex/SimpleYacc.y>
 
 // options: no-lines gplex
@@ -21,7 +21,7 @@ namespace GameLangParser
 {
 public enum Tokens {
     error=1,EOF=2,BLOCKBEGIN=3,BLOCKEND=4,SEMICOLON=5,OPBRACKET=6,
-    CLBRACKET=7,VAR=8,DOUBLEDOT=9,COMMA=10,OPPARENTHESES=11,CLPARENTHESES=12,
+    CLBRACKET=7,VAR=8,COMMA=9,OPPARENTHESES=10,CLPARENTHESES=11,ASSIGN=12,
     CODEBLOCK=13,BLOCKSPRITESINIT=14,BLOCKVARIBLESINIT=15,BLOCKLOADCONTENT=16,BLOCKINITIALIZE=17,BLOCKUPDATE=18,
     ID=19,BEHAVIOUR=20};
 
@@ -99,10 +99,10 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[27] = new State(new int[]{4,28,19,30},new int[]{-2,29});
     states[28] = new State(-3);
     states[29] = new State(-5);
-    states[30] = new State(new int[]{9,31});
-    states[31] = new State(new int[]{11,32});
+    states[30] = new State(new int[]{12,31});
+    states[31] = new State(new int[]{10,32});
     states[32] = new State(new int[]{20,37},new int[]{-4,33});
-    states[33] = new State(new int[]{12,34,10,35});
+    states[33] = new State(new int[]{11,34,9,35});
     states[34] = new State(-6);
     states[35] = new State(new int[]{20,36});
     states[36] = new State(-8);
@@ -114,9 +114,9 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[3] = new Rule(-1, new int[]{14,3,-3,4});
     rules[4] = new Rule(-3, new int[]{-2});
     rules[5] = new Rule(-3, new int[]{-3,-2});
-    rules[6] = new Rule(-2, new int[]{19,9,11,-4,12});
+    rules[6] = new Rule(-2, new int[]{19,12,10,-4,11});
     rules[7] = new Rule(-4, new int[]{20});
-    rules[8] = new Rule(-4, new int[]{-4,10,20});
+    rules[8] = new Rule(-4, new int[]{-4,9,20});
     rules[9] = new Rule(-5, new int[]{15,3,-9,4});
     rules[10] = new Rule(-6, new int[]{16,3,-9,4});
     rules[11] = new Rule(-7, new int[]{17,3,-9,4});
@@ -157,7 +157,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 				CurrentSemanticValue.lstSIVal = ValueStack[ValueStack.Depth-2].lstSIVal;
 			}
         break;
-      case 6: // spriteInit -> ID, DOUBLEDOT, OPPARENTHESES, behaviours, CLPARENTHESES
+      case 6: // spriteInit -> ID, ASSIGN, OPPARENTHESES, behaviours, CLPARENTHESES
 {
 				CurrentSemanticValue.spIVal = new SpriteInitNode(ValueStack[ValueStack.Depth-5].sVal);
 				CurrentSemanticValue.spIVal.behaviours = ValueStack[ValueStack.Depth-2].lstBVal;

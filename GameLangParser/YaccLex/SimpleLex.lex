@@ -54,7 +54,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
   return res;
 }
 
-<SPRITESINIT> ":" { return (int)Tokens.DOUBLEDOT; }
+<SPRITESINIT> ":=" { return (int)Tokens.ASSIGN; }
 <SPRITESINIT> "," { return (int)Tokens.COMMA;	}
 <SPRITESINIT> "{" { return (int)Tokens.OPPARENTHESES; }
 <SPRITESINIT> "}" { return (int)Tokens.CLPARENTHESES; }
