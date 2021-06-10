@@ -17,10 +17,6 @@
 
 [VARIBLES SECTION]
 %%
-        //Textures
-        Texture2D playerTexture;
-        Texture2D bulletTexture;
-
         // Player values initialize
         Player _player;
 ^^
@@ -43,6 +39,7 @@
         _player.layoutSizeY = layoutSizeY;
         _player.IsEdge = true;
         AddSprite(_player);
+
 ^^
 
 [LOAD CONTENT SECTION]

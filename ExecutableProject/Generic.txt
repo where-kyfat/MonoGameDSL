@@ -73,11 +73,7 @@ namespace TestProject
     class GameTest : ConstructorGame
     {
 	
-		
-        //Textures
-        Texture2D playerTexture;
-        Texture2D bulletTexture;
-
+		Texture2D playerTexture;  Texture2D bulletTexture;  
         // Player values initialize
         Player _player;
 
@@ -102,6 +98,7 @@ namespace TestProject
         _player.layoutSizeY = layoutSizeY;
         _player.IsEdge = true;
         AddSprite(_player);
+
 
 
             //base.Initialize();

@@ -19,6 +19,18 @@ namespace GameLangParser.Nodes
             inits.Add(InitNode);
         }
 
+        public List<string> GetNameSprites()
+        {
+            List<string> result = new List<string>();
+
+            foreach (var spriteInit in inits)
+            {
+                result.Add(spriteInit.className);
+            }
+
+            return result;
+        }
+
         public override string ToString(string gameCode)
         {
             string result = "";

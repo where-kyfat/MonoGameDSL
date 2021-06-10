@@ -12,7 +12,7 @@ namespace GameLangParser
     public class SpriteInitNode
     {
         public List<Type> behaviours;
-        string className;
+        public string className;
 
         public SpriteInitNode(string ClassName)
         {
