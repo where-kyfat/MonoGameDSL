@@ -77,7 +77,7 @@ namespace TestProject
 		Texture2D bulletTexture;
 
         // Player values initialize
-        Player _player;
+        Player player;
 
 		
         protected override void Initialize()
@@ -90,14 +90,14 @@ namespace TestProject
 			layoutSizeY = 2160;
 			
 			
-			_player = new Player(playerTexture,10,10);  sprites.Add(_player);
-			_player.speed = 4;
-			_player.camera = _camera;
-			_player.windowSizeX = windowSizeX;
-			_player.windowSizeY = windowSizeY;
-			_player.layoutSizeX = layoutSizeX;
-			_player.layoutSizeY = layoutSizeY;
-			_player.IsEdge = true;
+			player = new Player(playerTexture,10,10);  sprites.Add(player);
+			player.speed = 4;
+			player.camera = _camera;
+			player.windowSizeX = windowSizeX;
+			player.windowSizeY = windowSizeY;
+			player.layoutSizeX = layoutSizeX;
+			player.layoutSizeY = layoutSizeY;
+			player.IsEdge = true;
  
 
             ApplyWindowChanges();
@@ -120,17 +120,17 @@ namespace TestProject
         if (Conditions.EveryTick())
         {
             // Player rotates to Mouse
-            Actions.SetAngleForward(_player, Mouse.X, Mouse.Y, false);
+            Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
         }
 
         // Create new Bullet when Mouse.LeftButton clicked
         if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
         {
-            Bullet bullet = new Bullet(bulletTexture, _player.PositionX, _player.PositionY);
+            Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
             bullet.speed = 10;
             bullet.layoutSizeX = layoutSizeX;
             bullet.layoutSizeY = layoutSizeY;
-            bullet.Rotation = _player.Rotation;
+            bullet.Rotation = player.Rotation;
             AddSprite(bullet);
         }
 
