@@ -17,12 +17,22 @@ namespace MonogameLib.Classes
         public int positionY;
         SpriteFont font;
 
-        public TextBox(string text, int positionX, int positionY, SpriteFont font, Color color )
+        public TextBox(SpriteFont font, int positionX, int positionY, string text, Color color)
         {
             this.text = text;
             this.positionX = positionX;
             this.positionY = positionY;
             this.color = color;
+
+            this.font = font;
+        }
+
+        public TextBox(SpriteFont font, int positionX, int positionY, string text)
+        {
+            this.text = text;
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.color = Color.Yellow;
 
             this.font = font;
         }

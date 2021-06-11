@@ -73,6 +73,7 @@ namespace MonogameLib.Classes
 
             // Load camera
             _camera = new Camera();
+            font = LoadFont("font");
 
             base.LoadContent();
         }

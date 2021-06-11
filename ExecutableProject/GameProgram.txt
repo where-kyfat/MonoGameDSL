@@ -17,7 +17,8 @@
 [VARIBLES SECTION]
 %%
         Player player;
-        int score = 0;
+        TextBox textBox;
+        int bullets = 10;
 ^^
 
 [INITIALIZE SECTION]
@@ -37,6 +38,9 @@
         player.layoutSizeX = layoutSizeX;
         player.layoutSizeY = layoutSizeY;
         player.IsEdge = true;
+
+        textBox = new  TextBox(25, 25, "Count bullets: ");
+        textBox.text = textBox.text + bullets;
 ^^
 
 [UPDATE SECTION]
@@ -44,9 +48,11 @@
         if (Conditions.EveryTick())
         {
             Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
+
+            textBox.text = "Count bullets: " + bullets;
         }
 
-        if (Conditions.OnMouseLeftClicked(gameTime))
+        if (Conditions.OnMouseLeftClicked(gameTime) && bullets > 0)
         {
             Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
             bullet.speed = 10;
@@ -54,5 +60,6 @@
             bullet.layoutSizeY = layoutSizeY;
             bullet.Rotation = player.Rotation;
             AddSprite(bullet);
+            bullets -= 1;
         }
 ^^

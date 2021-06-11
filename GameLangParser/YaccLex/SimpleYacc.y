@@ -32,7 +32,7 @@
 
 %token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW 
 %token SEMICOLON DOT
-%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE
+%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
 %token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE
 %token <typeVal> BEHAVIOUR
 
@@ -151,6 +151,10 @@ assign		: id ASSIGN expression
 			{
 				$$ = new AssignNode($1, $4, $6, $7);
 			}
+			| id ASSIGN NEW TEXTBOX OPBRACKET newParams CLBRACKET
+			{
+				$$ = new AssignNode($1, $4, $6);
+			}
 			| id ASSIGN STRING
 			{
 				$$ = new AssignNode($1, $3);
@@ -160,6 +164,10 @@ assign		: id ASSIGN expression
 newParams	: COMMA INTNUM COMMA INTNUM
 			{
 				$$ = ',' + $2 + ',' + $4;
+			}
+			| INTNUM COMMA INTNUM COMMA STRING
+			{
+				$$ = ',' + $1 + ',' + $3 + ',' + $5;
 			}
 			;
 
@@ -177,6 +185,7 @@ T    		: F {$$ = $1;}
 F			: ID { $$ = $1; }
 			| FIELD { $$ = $1; }
 			| INTNUM { $$ = $1; }
+			| STRING { $$ = $1; }
 			;
 
 id			: ID

@@ -27,14 +27,14 @@ namespace GameLangParser.Nodes
         public override string ToString()
         {
             var result = "";
-            var load = "\t\t\t[name] = LoadTextrure([pathTexture]);\n";
+            var loadTexture = "\t\t\t[name] = LoadTextrure([pathTexture]);\n";
 
             foreach (var texture in spitesTexturePath)
             {
                 if (texture.Value != "-1")
                 {
                     string curRes;
-                    curRes = load.Replace("[name]", texture.Key);
+                    curRes = loadTexture.Replace("[name]", texture.Key);
                     curRes = curRes.Replace("[pathTexture]", texture.Value);
                     result += curRes;
                 }

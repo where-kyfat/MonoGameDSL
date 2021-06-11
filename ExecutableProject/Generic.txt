@@ -76,7 +76,8 @@ namespace TestProject
 		Texture2D playerTexture;
 		Texture2D bulletTexture;
 		Player player;
-		int score = 0;
+		TextBox textBox;
+		int bullets = 10;
 
 		
         protected override void Initialize()
@@ -97,7 +98,8 @@ namespace TestProject
 			player.layoutSizeX = layoutSizeX;
 			player.layoutSizeY = layoutSizeY;
 			player.IsEdge = true;
-			score = player.Rotation;
+			textBox = new TextBox(font ,25,25,"Count bullets: ");  sprites.Add(textBox);
+			textBox.text = textBox.text + bullets;
  
 
             ApplyWindowChanges();
@@ -119,9 +121,11 @@ namespace TestProject
         if (Conditions.EveryTick())
         {
             Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
+
+            textBox.text = "Count bullets: " + bullets;
         }
 
-        if (Conditions.OnMouseLeftClicked(gameTime))
+        if (Conditions.OnMouseLeftClicked(gameTime) && bullets > 0)
         {
             Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
             bullet.speed = 10;
@@ -129,6 +133,7 @@ namespace TestProject
             bullet.layoutSizeY = layoutSizeY;
             bullet.Rotation = player.Rotation;
             AddSprite(bullet);
+            bullets -= 1;
         }
 
 

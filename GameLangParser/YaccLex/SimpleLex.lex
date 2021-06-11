@@ -21,7 +21,7 @@ INTNUM  {Digit}+
 REALNUM {INTNUM}\.{INTNUM}
 ID {Alpha}{AlphaDigit}* 
 FIELD {ID}.{ID}
-STRING \"{ID}\"
+STRING \".*\"
 
 BLOCKSPRITESINIT "[SPRITES LOGIC SECTION]"
 BLOCKVARIBLESINIT "[VARIBLES SECTION]"
@@ -71,9 +71,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 
 <INITIALIZE> {ID}  { 
   res = ScannerHelper.GetIDToken(yytext);
-  if (res == (int)Tokens.ID) {
-	yylval.sVal = yytext;
-  }
+  yylval.sVal = yytext;
   return res;
 }
 
@@ -108,7 +106,10 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <VARIBLES> {ID}  { 
   res = ScannerHelper.GetIDToken(yytext);
   yylval.sVal = yytext;
-  return res;
+  if (res == (int)Tokens.TEXTBOX)
+    return (int)Tokens.ID;
+  else
+    return res;
 }
 
 <VARIBLES> {STRING} {
@@ -166,6 +167,7 @@ class ScannerHelper
     //Varibles
     keywords.Add("int",(int)Tokens.INTTYPE);
     keywords.Add("string", (int)Tokens.STRINGTYPE);
+    keywords.Add("TextBox", (int)Tokens.TEXTBOX);
   }
   public static int GetIDToken(string s)
   {

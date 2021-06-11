@@ -31,9 +31,16 @@ namespace GameLangParser.Nodes
             this.path = path;
         }
 
+        public AssignNode(string idName, string typeName,  string value)
+        {
+            this.idName = idName;
+            this.value = value;
+            this.typeName = typeName;
+        }
+
         public Tuple<string, string> GetPathTexture()
         {
-            if (typeName != "")
+            if (typeName != "" && typeName != "TextBox")
             {
                 texture = typeName.ToLower() + "Texture";
                 var result = new Tuple<string, string>(texture, path);
@@ -63,7 +70,19 @@ namespace GameLangParser.Nodes
                 result = result.Replace("[idName]", idName);
                 result = result.Replace("[assign]", value);
             }
-            
+            else if (typeName == "TextBox")
+            {
+                var strNew = "new [TypeName](font [value])";
+                result = result.Replace("[assign]", strNew);
+                result = result.Replace("[idName]", idName);
+                result = result.Replace("[TypeName]", typeName);
+                result = result.Replace("[value]", value);
+
+                var strAdd = "sprites.Add([idName]);";
+                strAdd = strAdd.Replace("[idName]", idName);
+
+                result = result + "  " + strAdd;
+            }
             else
             {
                 if (texture == "-1")
