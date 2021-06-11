@@ -87,14 +87,14 @@ namespace MonogameLib.Classes
         }
 
 
-        public enum MouseButton
+        enum MouseButton
         {
             Left,
             Right,
             Middle
         }
 
-        public static bool OnMouseXButtonClicked(MouseButton NameButton, GameTime gameTime)
+        static bool OnMouseXButtonClicked(MouseButton NameButton, GameTime gameTime)
         {
             timerMil += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -127,6 +127,21 @@ namespace MonogameLib.Classes
                 }
             }
             return false;
+        }
+
+        public static bool OnMouseLeftClicked(GameTime gameTime)
+        {
+            return OnMouseXButtonClicked(MouseButton.Left, gameTime);
+        }
+
+        public static bool OnMouseRightClicked(GameTime gameTime)
+        {
+            return OnMouseXButtonClicked(MouseButton.Right, gameTime);
+        }
+
+        public static bool OnMouseMiddleClicked(GameTime gameTime)
+        {
+            return OnMouseXButtonClicked(MouseButton.Middle, gameTime);
         }
 
         public static bool OnXButtonClicked(Keys key)

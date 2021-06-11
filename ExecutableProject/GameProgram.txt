@@ -41,15 +41,12 @@
 
 [UPDATE SECTION]
 %%
-        // Every tick
         if (Conditions.EveryTick())
         {
-            // Player rotates to Mouse
             Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
         }
 
-        // Create new Bullet when Mouse.LeftButton clicked
-        if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
+        if (Conditions.OnMouseLeftClicked(gameTime))
         {
             Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
             bullet.speed = 10;
