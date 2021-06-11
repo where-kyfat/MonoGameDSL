@@ -75,8 +75,8 @@ namespace TestProject
 	
 		Texture2D playerTexture;
 		Texture2D bulletTexture;
-		Player31 player;
-		int count = 4;
+		Player player;
+		int score = 0;
 
 		
         protected override void Initialize()
@@ -85,8 +85,8 @@ namespace TestProject
 
 			windowSizeX = 1920;
 			windowSizeY = 1080;
-			layoutSizeX = 3840;
-			layoutSizeY = 2160;
+			layoutSizeX = windowSizeX * 2;
+			layoutSizeY = windowSizeY * 2;
 			
 			
 			player = new Player(playerTexture,10,10);  sprites.Add(player);
@@ -97,6 +97,7 @@ namespace TestProject
 			player.layoutSizeX = layoutSizeX;
 			player.layoutSizeY = layoutSizeY;
 			player.IsEdge = true;
+			score = player.Rotation;
  
 
             ApplyWindowChanges();
@@ -115,15 +116,12 @@ namespace TestProject
         protected override void Update(GameTime gameTime)
         {
 
-        // Every tick
         if (Conditions.EveryTick())
         {
-            // Player rotates to Mouse
             Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
         }
 
-        // Create new Bullet when Mouse.LeftButton clicked
-        if (Conditions.OnMouseXButtonClicked(Conditions.MouseButton.Left, gameTime))
+        if (Conditions.OnMouseLeftClicked(gameTime))
         {
             Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
             bullet.speed = 10;

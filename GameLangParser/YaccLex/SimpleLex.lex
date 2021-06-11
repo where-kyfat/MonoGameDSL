@@ -95,6 +95,10 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <INITIALIZE> ";" { return (int)Tokens.SEMICOLON; }
 <INITIALIZE> "." { return (int)Tokens.DOT; }
 <INITIALIZE> "," { return (int)Tokens.COMMA; }
+<INITIALIZE> "+" { yylval.sVal = yytext; return (int)Tokens.ADD; }
+<INITIALIZE> "-" { yylval.sVal = yytext; return (int)Tokens.SUBSTRACT; }
+<INITIALIZE> "*" { yylval.sVal = yytext; return (int)Tokens.DIVIDE; }
+<INITIALIZE> "/" { yylval.sVal = yytext; return (int)Tokens.MULTIPLY; }
 
 //----------------------------------------------VARIBLESINIT
 

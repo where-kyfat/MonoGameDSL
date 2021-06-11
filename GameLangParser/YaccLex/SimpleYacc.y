@@ -33,6 +33,7 @@
 %token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW 
 %token SEMICOLON DOT
 %token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE
+%token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE
 %token <typeVal> BEHAVIOUR
 
 %type <spsIVal> blockSpritesInit
@@ -49,7 +50,7 @@
 %type <lstvarVal> variablesList
 
 %type <upVal> blockUpdate
-%type <sVal> funtionality operAssign newParams id
+%type <sVal> funtionality id newParams expression T F
 
 %%
 
@@ -142,13 +143,17 @@ initList	: assign
 			}
 			;
 
-assign		: id ASSIGN operAssign
+assign		: id ASSIGN expression
 			{
 				$$ = new AssignNode($1, $3);
 			}
 			| id ASSIGN NEW id OPBRACKET STRING newParams CLBRACKET
 			{
 				$$ = new AssignNode($1, $4, $6, $7);
+			}
+			| id ASSIGN STRING
+			{
+				$$ = new AssignNode($1, $3);
 			}
 			;
 
@@ -158,18 +163,20 @@ newParams	: COMMA INTNUM COMMA INTNUM
 			}
 			;
 
-operAssign	: INTNUM
-			{
-				$$ = $1;
-			}
-			| STRING
-			{
-				$$ = $1;
-			}
-			| id
-			{
-				$$ = $1;
-			}
+
+expression	: T {$$ = $1;}
+			| expression ADD T 		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
+			| expression SUBSTRACT T	{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
+			;
+
+T    		: F {$$ = $1;}
+			| T MULTIPLY F		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
+			| T DIVIDE F		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
+			;
+
+F			: ID { $$ = $1; }
+			| FIELD { $$ = $1; }
+			| INTNUM { $$ = $1; }
 			;
 
 id			: ID
@@ -181,6 +188,7 @@ id			: ID
 				$$ = $1;
 			}
 			;
+
 
 blockUpdate		 : BLOCKUPDATE BLOCKBEGIN funtionality BLOCKEND 
 		{ $$ = new UpdateNode($3, $1);}

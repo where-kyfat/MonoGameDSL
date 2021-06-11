@@ -24,8 +24,8 @@
 %%
         windowSizeX = 1920;
         windowSizeY = 1080;
-        layoutSizeX = 3840;
-        layoutSizeY = 2160;
+        layoutSizeX = windowSizeX * 2;
+        layoutSizeY = windowSizeY * 2;
         layoutTexture = "TiledBackground";
         bulletTexture = "bullet";
 
