@@ -10,6 +10,7 @@
  
 %x CODEBLOCK
 %x SPRITESINIT
+%x INITIALIZE
 
 BOOLVal	true|false
 Alpha 	[a-zA-Z_]
@@ -18,6 +19,8 @@ AlphaDigit {Alpha}|{Digit}
 INTNUM  {Digit}+
 REALNUM {INTNUM}\.{INTNUM}
 ID {Alpha}{AlphaDigit}* 
+FIELD {ID}.{ID}
+STRING \"{ID}\"
 
 BLOCKSPRITESINIT "[SPRITES LOGIC SECTION]"
 BLOCKVARIBLESINIT "[VARIBLES SECTION]"
@@ -30,7 +33,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 {BLOCKSPRITESINIT} { BEGIN(SPRITESINIT); yylval.sVal = yytext; return (int)Tokens.BLOCKSPRITESINIT; }
 {BLOCKVARIBLESINIT} { yylval.sVal = yytext; return (int)Tokens.BLOCKVARIBLESINIT; }
 {BLOCKLOADCONTENT} { yylval.sVal = yytext; return (int)Tokens.BLOCKLOADCONTENT; }
-{BLOCKINITIALIZE} { yylval.sVal = yytext; return (int)Tokens.BLOCKINITIALIZE; }
+{BLOCKINITIALIZE} { BEGIN(INITIALIZE); yylval.sVal = yytext; return (int)Tokens.BLOCKINITIALIZE; }
 {BLOCKUPDATE} { yylval.sVal = yytext; return (int)Tokens.BLOCKUPDATE; }
 
 
@@ -41,11 +44,12 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <SPRITESINIT> "%%" { return (int)Tokens.BLOCKBEGIN; }
 <SPRITESINIT> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
 
+
 <SPRITESINIT> {ID}  { 
   int res = ScannerHelper.GetIDToken(yytext);
   if (res == (int)Tokens.ID)
 	yylval.sVal = yytext;
-  else
+  else if (res == (int)Tokens.BEHAVIOUR)
   {
     string name_space = "MonogameLib.Behaviours.";
     string dll = "MonogameLib";
@@ -58,6 +62,37 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <SPRITESINIT> "," { return (int)Tokens.COMMA;	}
 <SPRITESINIT> "{" { return (int)Tokens.OPPARENTHESES; }
 <SPRITESINIT> "}" { return (int)Tokens.CLPARENTHESES; }
+
+//----------------------------------------------
+
+<INITIALIZE> "%%" { return (int)Tokens.BLOCKBEGIN; }
+<INITIALIZE> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
+
+<INITIALIZE> {ID}  { 
+  res = ScannerHelper.GetIDToken(yytext);
+  if (res == (int)Tokens.ID) {
+	yylval.sVal = yytext;
+  }
+  return res;
+}
+
+<INITIALIZE> {STRING} {
+  yylval.sVal = yytext;
+  return (int)Tokens.STRING;
+}
+
+<INITIALIZE> {FIELD} {
+  yylval.sVal = yytext;
+  return (int)Tokens.FIELD;
+}
+
+<INITIALIZE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
+<INITIALIZE> "=" { return (int)Tokens.ASSIGN; }
+<INITIALIZE> "(" { return (int)Tokens.OPBRACKET; }
+<INITIALIZE> ")" { return (int)Tokens.CLBRACKET; }
+<INITIALIZE> ";" { return (int)Tokens.SEMICOLON; }
+<INITIALIZE> "." { return (int)Tokens.DOT; }
+<INITIALIZE> "," { return (int)Tokens.COMMA; }
 
 [^ \r\n] {
 	LexError();
@@ -95,6 +130,8 @@ class ScannerHelper
     keywords.Add("DestroyOutSideLayout",(int)Tokens.BEHAVIOUR);
     keywords.Add("Fade",(int)Tokens.BEHAVIOUR);
     keywords.Add("ScrollTo",(int)Tokens.BEHAVIOUR);
+
+    keywords.Add("new",(int)Tokens.NEW);
   }
   public static int GetIDToken(string s)
   {

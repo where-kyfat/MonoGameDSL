@@ -8,22 +8,26 @@ namespace GameLangParser.Nodes
 {
     public class VariablesInitNode : Node
     {
-        List<string> spritesNames;
+        List<string> spritesTexturs;
         public VariablesInitNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) { }
 
-        public void SpritesNameInit(List<string> spritesNames)
+        public void SpritesTextureInit(List<string> spritesTexturs)
         {
-            this.spritesNames = spritesNames;
+            this.spritesTexturs = spritesTexturs;
         }
 
         public override string ToString(string gameCode)
         {
             string SpritesTextures = "";
-            string prefix = "Texture2D [name]Texture;  ";
+            string prefix = "\t\tTexture2D [name];\n";
 
-            foreach (var sprite in spritesNames)
+            foreach (var sprite in spritesTexturs)
             {
-                SpritesTextures += prefix.Replace("[name]", sprite.ToLower());
+                if (sprite != "layoutTexture")
+                {
+                    SpritesTextures += prefix.Replace("[name]", sprite);
+                }
+                
             }
 
             BlockCode = SpritesTextures + BlockCode;

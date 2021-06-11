@@ -17,22 +17,37 @@ namespace GameLangParser.Nodes
             nodes.Add(node);
         }
 
-        public override string ToString()
+        public void ChangeFromPathToTextures()
         {
-            var spritesNames = ((SpritesInitNode)nodes[0]).GetNameSprites();
+            var spritesTextures = ((SpritesInitNode)nodes[0]).GetNameTextures();
+            spritesTextures.Add("layoutTexture");
+
+            var LoadNode = new LoadContentNode(null, "[LOAD CONTENT SECTION]");
+            var TexturePath = LoadNode.spitesTexturePathInit(spritesTextures);
 
             foreach (var node in nodes)
             {
                 if (node is VariablesInitNode)
                 {
-                    ((VariablesInitNode)node).SpritesNameInit(spritesNames);
+                    ((VariablesInitNode)node).SpritesTextureInit(spritesTextures);
                 }
 
-                if (node is LoadContentNode)
+                if (node is InitializeNode)
                 {
-                    ((LoadContentNode)node).SpritesNameInit(spritesNames);
+                    TexturePath = ((InitializeNode)node).GetPathTextures(TexturePath);
                 }
+            }
 
+            LoadNode.spitesTexturePath = TexturePath;
+            nodes.Add(LoadNode);
+        }
+
+        public override string ToString()
+        {
+            ChangeFromPathToTextures();
+
+            foreach (var node in nodes)
+            {
                 patternGame = node.ToString(patternGame);
             }
             return patternGame;

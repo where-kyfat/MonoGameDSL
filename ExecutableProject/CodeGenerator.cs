@@ -17,7 +17,7 @@ namespace ExecutableProject
             string codeToCompile = GameLangParser.GameLangParser.ParseGameProgram(pathGameCode);
             try
             {
-                var pathToGenericFile = "../../../Generic.txt";
+                var pathToGenericFile = "../../../Generic.cs";
                 using (StreamWriter sw = new StreamWriter(pathToGenericFile, false, System.Text.Encoding.Default))
                 {
                     sw.WriteLine(codeToCompile);

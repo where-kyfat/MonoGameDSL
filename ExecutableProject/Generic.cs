@@ -7,7 +7,7 @@ using System;
 
 namespace TestProject
 {
-	
+
     public class Player : Sprite 
     {
         public Int32 speed; public Camera camera; public Int32 windowSizeX; public Int32 windowSizeY; public Int32 layoutSizeX; public Int32 layoutSizeY; public Boolean IsEdge; 
@@ -73,53 +73,49 @@ namespace TestProject
     class GameTest : ConstructorGame
     {
 	
-		Texture2D playerTexture;  Texture2D bulletTexture;  
+		Texture2D playerTexture;
+		Texture2D bulletTexture;
+
         // Player values initialize
         Player _player;
 
 		
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            base.Initialize();
+
+			windowSizeX = 1920;
+			windowSizeY = 1080;
+			layoutSizeX = 3840;
+			layoutSizeY = 2160;
 			
-        windowSizeX = 1920;
-        windowSizeY = 1080;
-        layoutSizeX = 3840;
-        layoutSizeY = 2160;
+			
+			_player = new Player(playerTexture,10,10);  sprites.Add(_player);
+			_player.speed = 4;
+			_player.camera = _camera;
+			_player.windowSizeX = windowSizeX;
+			_player.windowSizeY = windowSizeY;
+			_player.layoutSizeX = layoutSizeX;
+			_player.layoutSizeY = layoutSizeY;
+			_player.IsEdge = true;
+ 
 
-        base.Initialize();
-
-        _player = new Player(playerTexture, 10, 10);
-        _player.speed = 4;
-        _player.camera = _camera;
-        _player.windowSizeX = windowSizeX;
-        _player.windowSizeY = windowSizeY;
-        _player.layoutSizeX = layoutSizeX;
-        _player.layoutSizeY = layoutSizeY;
-        _player.IsEdge = true;
-        AddSprite(_player);
-
-
-
-            //base.Initialize();
+            ApplyWindowChanges();
         }
 
         protected override void LoadContent()
         {
+			playerTexture = LoadTextrure("player");
+			bulletTexture = LoadTextrure("bullet");
+			layoutTexture = LoadTextrure("TiledBackground");
+
+
             base.LoadContent();
-
-            // TODO: use this.Content to load your game content here
-			
-        _layout = LoadTextrure("TiledBackground");
-        playerTexture = LoadTextrure("player");
-        bulletTexture = LoadTextrure("bullet");
-
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
-			
+
         // Every tick
         if (Conditions.EveryTick())
         {

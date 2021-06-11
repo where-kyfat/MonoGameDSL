@@ -9,6 +9,7 @@ namespace MonogameLib.Classes
 {
     public abstract class GraphObject
     {
+        protected Texture2D Texture;
         public virtual void Update(GameTime gameTime) { }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }

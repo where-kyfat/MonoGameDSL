@@ -15,20 +15,22 @@
 			public SpritesInitNode spsIVal;
 			public SpriteInitNode spIVal;
 			public List<SpriteInitNode> lstSIVal;
+			public AssignNode singVal;
+			public List<AssignNode> lstSingVal;
 			public List<Type> lstBVal;
 			public Type typeVal;
 
 			public VariablesInitNode vInitVal;
 			public InitializeNode initVal;
 			public UpdateNode upVal;
-			public LoadContentNode lConVal;
        }
 
 %using GameLangParser.Nodes;
 %namespace GameLangParser
 
-%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN
-%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID 
+%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW 
+%token SEMICOLON DOT
+%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM
 %token <typeVal> BEHAVIOUR
 
 %type <spsIVal> blockSpritesInit
@@ -36,17 +38,18 @@
 %type <lstSIVal> spritesInit
 %type <lstBVal> behaviours
 
+%type <lstSingVal> initList
+%type <singVal> assign
+
 %type <vInitVal> blockVariablesInit
-%type <lConVal> blockLoadContent
 %type <initVal> blockInitialize
 %type <upVal> blockUpdate
-%type <sVal> funtionality
-
+%type <sVal> funtionality operAssign newParams id
 
 %%
 
-progr   :  blockSpritesInit blockVariablesInit blockInitialize blockLoadContent blockUpdate 
-		{ root.AddNode($1); root.AddNode($2); root.AddNode($3); root.AddNode($4); root.AddNode($5);}
+progr   :  blockSpritesInit blockVariablesInit blockInitialize blockUpdate 
+		{ root.AddNode($1); root.AddNode($2); root.AddNode($3); root.AddNode($4);}
 		;
 		
 blockSpritesInit	: BLOCKSPRITESINIT BLOCKBEGIN spritesInit BLOCKEND
@@ -92,13 +95,61 @@ blockVariablesInit: BLOCKVARIBLESINIT BLOCKBEGIN funtionality BLOCKEND
 		{ $$ = new VariablesInitNode($3, $1); }
 		;
 
-blockLoadContent: BLOCKLOADCONTENT BLOCKBEGIN funtionality BLOCKEND 
-		{ $$ = new LoadContentNode($3, $1); }
-		;
+blockInitialize	: BLOCKINITIALIZE BLOCKBEGIN initList SEMICOLON BLOCKEND 
+				{ $$ = new InitializeNode(null, $1); $$.assings = $3;}
+				;
 
-blockInitialize	 : BLOCKINITIALIZE BLOCKBEGIN funtionality BLOCKEND 
-		{ $$ = new InitializeNode($3, $1); }
-		;
+initList	: assign 
+			{
+				$$ = new List<AssignNode>();
+				$$.Add($1);
+			}
+			| initList SEMICOLON assign 
+			{
+				$1.Add($3);
+				$$ = $1;
+			}
+			;
+
+assign		: id ASSIGN operAssign
+			{
+				$$ = new AssignNode($1, $3);
+			}
+			| id ASSIGN NEW id OPBRACKET STRING newParams CLBRACKET
+			{
+				$$ = new AssignNode($1, $4, $6, $7);
+			}
+			;
+
+newParams	: COMMA INTNUM COMMA INTNUM
+			{
+				$$ = ',' + $2 + ',' + $4;
+			}
+			;
+
+operAssign	: INTNUM
+			{
+				$$ = $1;
+			}
+			| STRING
+			{
+				$$ = $1;
+			}
+			| id
+			{
+				$$ = $1;
+			}
+			;
+
+id			: ID
+			{
+				$$ = $1;
+			}
+			| FIELD
+			{
+				$$ = $1;
+			}
+			;
 
 blockUpdate		 : BLOCKUPDATE BLOCKBEGIN funtionality BLOCKEND 
 		{ $$ = new UpdateNode($3, $1);}

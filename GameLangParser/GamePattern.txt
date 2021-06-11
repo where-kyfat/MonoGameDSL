@@ -7,33 +7,32 @@ using System;
 
 namespace TestProject
 {
-	[SPRITES LOGIC SECTION]
+[SPRITES LOGIC SECTION]
 	
     class GameTest : ConstructorGame
     {
 	
-		[VARIBLES SECTION]
+[VARIBLES SECTION]
 		
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-			[INITIALIZE SECTION]
+            base.Initialize();
 
-            //base.Initialize();
+[INITIALIZE SECTION] 
+
+            ApplyWindowChanges();
         }
 
         protected override void LoadContent()
         {
-            base.LoadContent();
+[LOAD CONTENT SECTION]
 
-            // TODO: use this.Content to load your game content here
-			[LOAD CONTENT SECTION]
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
-			[UPDATE SECTION]
+[UPDATE SECTION]
 
             base.Update(gameTime);
         }

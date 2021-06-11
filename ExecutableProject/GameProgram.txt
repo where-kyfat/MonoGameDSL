@@ -26,10 +26,10 @@
         windowSizeY = 1080;
         layoutSizeX = 3840;
         layoutSizeY = 2160;
+        layoutTexture = "TiledBackground";
+        bulletTexture = "bullet";
 
-        base.Initialize();
-
-        _player = new Player(playerTexture, 10, 10);
+        _player = new  Player("player", 10, 10);
         _player.speed = 4;
         _player.camera = _camera;
         _player.windowSizeX = windowSizeX;
@@ -37,15 +37,6 @@
         _player.layoutSizeX = layoutSizeX;
         _player.layoutSizeY = layoutSizeY;
         _player.IsEdge = true;
-        AddSprite(_player);
-
-^^
-
-[LOAD CONTENT SECTION]
-%%
-        _layout = LoadTextrure("TiledBackground");
-        playerTexture = LoadTextrure("player");
-        bulletTexture = LoadTextrure("bullet");
 ^^
 
 [UPDATE SECTION]

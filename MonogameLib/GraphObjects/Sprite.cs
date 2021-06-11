@@ -10,7 +10,6 @@ namespace MonogameLib.Classes
 {
     public class Sprite : GraphObject
     {
-        public Texture2D Texture;
         private Rectangle DestinationRectangle;
         public Color Color = new Color(255, 255, 255, 255);
         public float Rotation;
@@ -40,24 +39,6 @@ namespace MonogameLib.Classes
 
             Behaviours = new List<Behaviour>();
         }
-
-        //public Sprite(Sprite copy)
-        //{
-        //    this.Texture = copy.Texture;
-        //    this.DestinationRectangle = copy.DestinationRectangle;
-        //    this.Color = copy.Color;
-        //    this.Rotation = copy.Rotation;
-        //    this.OriginX = copy.OriginX;
-        //    this.OriginY = copy.OriginY;
-        //    this.Scale = copy.Scale;
-        //    this.SpriteEffects = copy.SpriteEffects;
-        //    this.LayerDepth = copy.LayerDepth;
-        //    this.transformMatrix = copy.transformMatrix;
-        //    this.PositionX = copy.PositionX;
-        //    this.PositionY = copy.PositionY;
-        //    this._forwardAngle = copy._forwardAngle;
-        //    this.Behaviours = copy.Behaviours;
-        //}
 
         public Vector2 transformPosition
         {

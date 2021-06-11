@@ -19,13 +19,19 @@ namespace GameLangParser.Nodes
             inits.Add(InitNode);
         }
 
-        public List<string> GetNameSprites()
+        public List<string> GetNameTextures()
         {
             List<string> result = new List<string>();
 
             foreach (var spriteInit in inits)
             {
-                result.Add(spriteInit.className);
+                result.Add(spriteInit.className.ToLower());
+            }
+
+            var postfix = "Texture";
+            for (int i = 0; i < result.Count; i++)
+            {
+                result[i] += postfix;
             }
 
             return result;

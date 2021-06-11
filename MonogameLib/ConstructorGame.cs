@@ -30,7 +30,7 @@ namespace MonogameLib.Classes
 
         protected Mouse Mouse;
 
-        protected Texture2D _layout;
+        protected Texture2D layoutTexture;
         public List<GraphObject> sprites;
         protected float timer;
         protected Random random;
@@ -50,6 +50,13 @@ namespace MonogameLib.Classes
 
         protected override void Initialize()
         {
+            ApplyWindowChanges();
+
+            base.Initialize();
+        }
+
+        protected void ApplyWindowChanges()
+        {
             // Changing window size
             _graphics.PreferredBackBufferWidth = windowSizeX;
             _graphics.PreferredBackBufferHeight = windowSizeY;
@@ -58,8 +65,6 @@ namespace MonogameLib.Classes
             // Calc middleScreenX
             middleScreenX = windowSizeX / 2;
             middleScreenY = windowSizeY / 2;
-
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -128,8 +133,8 @@ namespace MonogameLib.Classes
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
 
             //Drawing layout
-            _spriteBatch.DrawTiledBackground(_layout, layoutSizeX, layoutSizeY,
-                _layout.Width, _layout.Height, Color.White);
+            _spriteBatch.DrawTiledBackground(layoutTexture, layoutSizeX, layoutSizeY,
+                layoutTexture.Width, layoutTexture.Height, Color.White);
 
             //Drawing sprites
             foreach (var sprite in sprites)
