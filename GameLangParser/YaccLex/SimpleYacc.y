@@ -17,6 +17,8 @@
 			public List<SpriteInitNode> lstSIVal;
 			public AssignNode singVal;
 			public List<AssignNode> lstSingVal;
+			public VarNode varVal;
+			public List<VarNode> lstvarVal;
 			public List<Type> lstBVal;
 			public Type typeVal;
 
@@ -30,7 +32,7 @@
 
 %token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW 
 %token SEMICOLON DOT
-%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM
+%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE
 %token <typeVal> BEHAVIOUR
 
 %type <spsIVal> blockSpritesInit
@@ -38,11 +40,14 @@
 %type <lstSIVal> spritesInit
 %type <lstBVal> behaviours
 
+%type <initVal> blockInitialize
 %type <lstSingVal> initList
 %type <singVal> assign
 
 %type <vInitVal> blockVariablesInit
-%type <initVal> blockInitialize
+%type <varVal> assignOrVar assignVariable variable
+%type <lstvarVal> variablesList
+
 %type <upVal> blockUpdate
 %type <sVal> funtionality operAssign newParams id
 
@@ -91,9 +96,35 @@ behaviours	: BEHAVIOUR
 			;
 
 
-blockVariablesInit: BLOCKVARIBLESINIT BLOCKBEGIN funtionality BLOCKEND 
-		{ $$ = new VariablesInitNode($3, $1); }
-		;
+blockVariablesInit	: BLOCKVARIBLESINIT BLOCKBEGIN variablesList SEMICOLON BLOCKEND 
+					{ $$ = new VariablesInitNode(null, $1);  $$.varNodes = $3;}
+					;
+
+variablesList	: assignOrVar
+				{
+					$$ = new List<VarNode>();
+					$$.Add($1);
+				}
+				| variablesList SEMICOLON assignOrVar
+				{
+					$1.Add($3);
+					$$ = $1;
+				}
+				;
+
+assignOrVar		: assignVariable { $$ = $1; }
+				| variable { $$ = $1; }
+				;
+
+assignVariable	: INTTYPE ID ASSIGN INTNUM { $$ = new VarNode($1, $2, $4); }
+				| STRINGTYPE ID ASSIGN STRING { $$ = new VarNode($1, $2, $4); }
+				;
+
+variable		: INTTYPE ID { $$ = new VarNode($1, $2); }
+				| STRINGTYPE ID { $$ = new VarNode($1, $2); }
+				| ID ID { $$ = new VarNode($1, $2); }
+				;
+
 
 blockInitialize	: BLOCKINITIALIZE BLOCKBEGIN initList SEMICOLON BLOCKEND 
 				{ $$ = new InitializeNode(null, $1); $$.assings = $3;}

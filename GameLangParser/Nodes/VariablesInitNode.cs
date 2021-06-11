@@ -9,6 +9,8 @@ namespace GameLangParser.Nodes
     public class VariablesInitNode : Node
     {
         List<string> spritesTexturs;
+
+        public List<VarNode> varNodes;
         public VariablesInitNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) { }
 
         public void SpritesTextureInit(List<string> spritesTexturs)
@@ -19,6 +21,8 @@ namespace GameLangParser.Nodes
         public override string ToString(string gameCode)
         {
             string SpritesTextures = "";
+
+            //Autocreating all Texture variables
             string prefix = "\t\tTexture2D [name];\n";
 
             foreach (var sprite in spritesTexturs)
@@ -29,8 +33,13 @@ namespace GameLangParser.Nodes
                 }
                 
             }
-
             BlockCode = SpritesTextures + BlockCode;
+            //---------------------------------------
+
+            foreach (var init in varNodes)
+            {
+                BlockCode += init.ToString();
+            }
 
             return base.ToString(gameCode);
         }

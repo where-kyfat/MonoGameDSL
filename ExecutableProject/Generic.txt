@@ -75,9 +75,8 @@ namespace TestProject
 	
 		Texture2D playerTexture;
 		Texture2D bulletTexture;
-
-        // Player values initialize
-        Player player;
+		Player31 player;
+		int count = 4;
 
 		
         protected override void Initialize()

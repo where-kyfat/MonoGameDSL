@@ -58,6 +58,7 @@
     <Compile Include="Nodes\AssignNode.cs" />
     <Compile Include="Nodes\GameNode.cs" />
     <Compile Include="Nodes\LoadContentNode.cs" />
+    <Compile Include="Nodes\VarNode.cs" />
     <Compile Include="ParseGameProgram.cs" />
     <Compile Include="Exceptions\ExecEvalException.cs" />
     <Compile Include="Exceptions\LexException.cs" />

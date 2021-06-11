@@ -16,8 +16,8 @@
 
 [VARIBLES SECTION]
 %%
-        // Player values initialize
         Player player;
+        int score = 0;
 ^^
 
 [INITIALIZE SECTION]

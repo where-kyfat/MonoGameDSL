@@ -11,6 +11,7 @@
 %x CODEBLOCK
 %x SPRITESINIT
 %x INITIALIZE
+%x VARIBLES
 
 BOOLVal	true|false
 Alpha 	[a-zA-Z_]
@@ -24,15 +25,13 @@ STRING \"{ID}\"
 
 BLOCKSPRITESINIT "[SPRITES LOGIC SECTION]"
 BLOCKVARIBLESINIT "[VARIBLES SECTION]"
-BLOCKLOADCONTENT "[LOAD CONTENT SECTION]"
 BLOCKINITIALIZE "[INITIALIZE SECTION]"
 BLOCKUPDATE "[UPDATE SECTION]"
 
 %%
 
 {BLOCKSPRITESINIT} { BEGIN(SPRITESINIT); yylval.sVal = yytext; return (int)Tokens.BLOCKSPRITESINIT; }
-{BLOCKVARIBLESINIT} { yylval.sVal = yytext; return (int)Tokens.BLOCKVARIBLESINIT; }
-{BLOCKLOADCONTENT} { yylval.sVal = yytext; return (int)Tokens.BLOCKLOADCONTENT; }
+{BLOCKVARIBLESINIT} { BEGIN(VARIBLES); yylval.sVal = yytext; return (int)Tokens.BLOCKVARIBLESINIT; }
 {BLOCKINITIALIZE} { BEGIN(INITIALIZE); yylval.sVal = yytext; return (int)Tokens.BLOCKINITIALIZE; }
 {BLOCKUPDATE} { yylval.sVal = yytext; return (int)Tokens.BLOCKUPDATE; }
 
@@ -40,6 +39,8 @@ BLOCKUPDATE "[UPDATE SECTION]"
 "%%" { BEGIN(CODEBLOCK); return (int)Tokens.BLOCKBEGIN; }
 <CODEBLOCK>[^\^^]* { yylval.sVal = yytext; return (int)Tokens.CODEBLOCK; }
 <CODEBLOCK>"^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
+
+//----------------------------------------------SPRITESINIT
 
 <SPRITESINIT> "%%" { return (int)Tokens.BLOCKBEGIN; }
 <SPRITESINIT> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
@@ -63,7 +64,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <SPRITESINIT> "{" { return (int)Tokens.OPPARENTHESES; }
 <SPRITESINIT> "}" { return (int)Tokens.CLPARENTHESES; }
 
-//----------------------------------------------
+//----------------------------------------------INITIALIZE
 
 <INITIALIZE> "%%" { return (int)Tokens.BLOCKBEGIN; }
 <INITIALIZE> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
@@ -87,12 +88,36 @@ BLOCKUPDATE "[UPDATE SECTION]"
 }
 
 <INITIALIZE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
+
 <INITIALIZE> "=" { return (int)Tokens.ASSIGN; }
 <INITIALIZE> "(" { return (int)Tokens.OPBRACKET; }
 <INITIALIZE> ")" { return (int)Tokens.CLBRACKET; }
 <INITIALIZE> ";" { return (int)Tokens.SEMICOLON; }
 <INITIALIZE> "." { return (int)Tokens.DOT; }
 <INITIALIZE> "," { return (int)Tokens.COMMA; }
+
+//----------------------------------------------VARIBLESINIT
+
+<VARIBLES> "%%" { return (int)Tokens.BLOCKBEGIN; }
+<VARIBLES> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
+
+<VARIBLES> {ID}  { 
+  res = ScannerHelper.GetIDToken(yytext);
+  yylval.sVal = yytext;
+  return res;
+}
+
+<VARIBLES> {STRING} {
+  yylval.sVal = yytext;
+  return (int)Tokens.STRING;
+}
+
+<VARIBLES> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
+
+<VARIBLES> "=" { return (int)Tokens.ASSIGN; }
+<VARIBLES> ";" { return (int)Tokens.SEMICOLON; }
+
+//----------------------------------------------
 
 [^ \r\n] {
 	LexError();
@@ -131,7 +156,12 @@ class ScannerHelper
     keywords.Add("Fade",(int)Tokens.BEHAVIOUR);
     keywords.Add("ScrollTo",(int)Tokens.BEHAVIOUR);
 
+    //Initilize
     keywords.Add("new",(int)Tokens.NEW);
+
+    //Varibles
+    keywords.Add("int",(int)Tokens.INTTYPE);
+    keywords.Add("string", (int)Tokens.STRINGTYPE);
   }
   public static int GetIDToken(string s)
   {
