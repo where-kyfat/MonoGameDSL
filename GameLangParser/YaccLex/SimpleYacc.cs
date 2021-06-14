@@ -4,7 +4,7 @@
 
 // GPPG version 1.3.6
 // Machine:  DESKTOP-KDBR5P2
-// DateTime: 14.06.2021 14:54:43
+// DateTime: 14.06.2021 16:21:42
 // UserName: User
 // Input file <../../YaccLex/SimpleYacc.y>
 
@@ -157,28 +157,28 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     states[79] = new State(new int[]{4,80,22,82},new int[]{-2,81});
     states[80] = new State(-3);
     states[81] = new State(-5);
-    states[82] = new State(new int[]{12,83,6,90});
-    states[83] = new State(new int[]{10,84});
-    states[84] = new State(new int[]{33,89},new int[]{-4,85});
-    states[85] = new State(new int[]{11,86,9,87});
-    states[86] = new State(-6);
-    states[87] = new State(new int[]{33,88});
-    states[88] = new State(-11);
-    states[89] = new State(-10);
-    states[90] = new State(new int[]{26,99,27,101},new int[]{-13,91,-10,103});
-    states[91] = new State(new int[]{5,92});
-    states[92] = new State(new int[]{7,93,26,99,27,101},new int[]{-10,98});
-    states[93] = new State(new int[]{12,94});
-    states[94] = new State(new int[]{10,95});
-    states[95] = new State(new int[]{33,89},new int[]{-4,96});
-    states[96] = new State(new int[]{11,97,9,87});
-    states[97] = new State(-7);
-    states[98] = new State(-9);
-    states[99] = new State(new int[]{22,100});
-    states[100] = new State(new int[]{14,67});
-    states[101] = new State(new int[]{22,102});
-    states[102] = new State(new int[]{14,71});
-    states[103] = new State(-8);
+    states[82] = new State(new int[]{6,83,12,100});
+    states[83] = new State(new int[]{26,95,27,97},new int[]{-13,84,-10,99});
+    states[84] = new State(new int[]{7,85,9,93});
+    states[85] = new State(new int[]{12,86});
+    states[86] = new State(new int[]{10,87});
+    states[87] = new State(new int[]{33,92},new int[]{-4,88});
+    states[88] = new State(new int[]{11,89,9,90});
+    states[89] = new State(-6);
+    states[90] = new State(new int[]{33,91});
+    states[91] = new State(-11);
+    states[92] = new State(-10);
+    states[93] = new State(new int[]{26,95,27,97},new int[]{-10,94});
+    states[94] = new State(-9);
+    states[95] = new State(new int[]{22,96});
+    states[96] = new State(new int[]{14,67});
+    states[97] = new State(new int[]{22,98});
+    states[98] = new State(new int[]{14,71});
+    states[99] = new State(-8);
+    states[100] = new State(new int[]{10,101});
+    states[101] = new State(new int[]{33,92},new int[]{-4,102});
+    states[102] = new State(new int[]{11,103,9,90});
+    states[103] = new State(-7);
     states[104] = new State(-4);
 
     rules[1] = new Rule(-22, new int[]{-21,2});
@@ -186,10 +186,10 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     rules[3] = new Rule(-1, new int[]{17,3,-3,4});
     rules[4] = new Rule(-3, new int[]{-2});
     rules[5] = new Rule(-3, new int[]{-3,-2});
-    rules[6] = new Rule(-2, new int[]{22,12,10,-4,11});
-    rules[7] = new Rule(-2, new int[]{22,6,-13,5,7,12,10,-4,11});
+    rules[6] = new Rule(-2, new int[]{22,6,-13,7,12,10,-4,11});
+    rules[7] = new Rule(-2, new int[]{22,12,10,-4,11});
     rules[8] = new Rule(-13, new int[]{-10});
-    rules[9] = new Rule(-13, new int[]{-13,5,-10});
+    rules[9] = new Rule(-13, new int[]{-13,9,-10});
     rules[10] = new Rule(-4, new int[]{33});
     rules[11] = new Rule(-4, new int[]{-4,9,33});
     rules[12] = new Rule(-8, new int[]{18,3,-12,5,4});
@@ -259,18 +259,18 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 				CurrentSemanticValue.lstSIVal = ValueStack[ValueStack.Depth-2].lstSIVal;
 			}
         break;
-      case 6: // spriteInit -> ID, ASSIGN, OPPARENTHESES, behaviours, CLPARENTHESES
+      case 6: // spriteInit -> ID, OPBRACKET, variablesSprite, CLBRACKET, ASSIGN, OPPARENTHESES, 
+              //               behaviours, CLPARENTHESES
+{
+				CurrentSemanticValue.spIVal = new SpriteInitNode(ValueStack[ValueStack.Depth-8].sVal);
+				CurrentSemanticValue.spIVal.behaviours = ValueStack[ValueStack.Depth-2].lstBVal;
+				CurrentSemanticValue.spIVal.variables = ValueStack[ValueStack.Depth-6].lstvarVal;
+			}
+        break;
+      case 7: // spriteInit -> ID, ASSIGN, OPPARENTHESES, behaviours, CLPARENTHESES
 {
 				CurrentSemanticValue.spIVal = new SpriteInitNode(ValueStack[ValueStack.Depth-5].sVal);
 				CurrentSemanticValue.spIVal.behaviours = ValueStack[ValueStack.Depth-2].lstBVal;
-			}
-        break;
-      case 7: // spriteInit -> ID, OPBRACKET, variablesSprite, SEMICOLON, CLBRACKET, ASSIGN, 
-              //               OPPARENTHESES, behaviours, CLPARENTHESES
-{
-				CurrentSemanticValue.spIVal = new SpriteInitNode(ValueStack[ValueStack.Depth-9].sVal);
-				CurrentSemanticValue.spIVal.behaviours = ValueStack[ValueStack.Depth-2].lstBVal;
-				CurrentSemanticValue.spIVal.variables = ValueStack[ValueStack.Depth-7].lstvarVal;
 			}
         break;
       case 8: // variablesSprite -> assignVariable
@@ -279,7 +279,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 					CurrentSemanticValue.lstvarVal.Add(ValueStack[ValueStack.Depth-1].varVal);
 				}
         break;
-      case 9: // variablesSprite -> variablesSprite, SEMICOLON, assignVariable
+      case 9: // variablesSprite -> variablesSprite, COMMA, assignVariable
 {
 					ValueStack[ValueStack.Depth-3].lstvarVal.Add(ValueStack[ValueStack.Depth-1].varVal);
 					CurrentSemanticValue.lstvarVal = ValueStack[ValueStack.Depth-3].lstvarVal;

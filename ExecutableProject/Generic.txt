@@ -96,6 +96,30 @@ namespace TestProject
         }
     }
 
+    public class Explode : Sprite 
+    {
+        
+        public Boolean active; public Int32 fadeOutTime; public Boolean destroyAfter; 
+        public Explode (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
+        {
+            
+            Behaviours.Add(new Fade( active, fadeOutTime, destroyAfter));
+
+        }
+
+        public override void Update(GameTime gameTime) 
+        {
+            for (int i = 0; i < Behaviours.Count; i++) 
+            {
+                
+            if (Behaviours[i] is Fade)
+                Behaviours[i] = new Fade( active, fadeOutTime, destroyAfter);
+
+            }
+            base.Update(gameTime);
+        }
+    }
+
 	
     class GameTest : ConstructorGame
     {
@@ -103,10 +127,11 @@ namespace TestProject
 		Texture2D playerTexture;
 		Texture2D bulletTexture;
 		Texture2D monsterTexture;
+		Texture2D explodeTexture;
 		Player player;
 		TextBox textBoxScore;
 		TextBox textBoxBullets;
-		int bullets = 10;
+		int bullets = 100;
 		int score = 0;
 
 		
@@ -118,6 +143,7 @@ namespace TestProject
 			windowSizeY = 1080;
 			layoutSizeX = windowSizeX * 2;
 			layoutSizeY = windowSizeY * 2;
+			
 			
 			
 			
@@ -143,6 +169,7 @@ namespace TestProject
 			playerTexture = LoadTextrure("player");
 			bulletTexture = LoadTextrure("bullet");
 			monsterTexture = LoadTextrure("monster");
+			explodeTexture = LoadTextrure("explode");
 			layoutTexture = LoadTextrure("TiledBackground");
 
 
@@ -162,14 +189,58 @@ namespace TestProject
 
         if (Conditions.OnMouseLeftClicked(gameTime) && bullets > 0)
         {
-            Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY);
+            Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY); AddSprite(bullet);
             bullet.speed = 10;
             bullet.layoutSizeX = layoutSizeX;
             bullet.layoutSizeY = layoutSizeY;
             bullet.Rotation = player.Rotation;
-            AddSprite(bullet);
-            bullets -= 1;
+            bullets = bullets - 1;
         }
+
+        
+        if (Conditions.EveryXSeconds(gameTime, 3f))
+        {
+            Monster monster = new Monster(monsterTexture, 1400, random.Next(1024)); AddSprite(monster);
+            monster.Rotation = (float)Math.PI;
+            monster.speed = 4;
+        }
+
+
+        ForEach<Bullet>(bullet =>
+        {
+            ForEach<Monster>(monster =>
+            {
+                if (Conditions.InCollisionWith(bullet, monster))
+                {
+                    Bullet curBullet = (Bullet)bullet;
+                    Monster curMonster = (Monster)monster;
+
+                    Explode explode = new Explode(explodeTexture, curBullet.PositionX, curBullet.PositionY); AddSprite(explode);
+                    explode.active = true;
+                    explode.fadeOutTime = 2;
+                    explode.destroyAfter = true;
+                    Actions.Destroy(curBullet);
+                    curMonster.health = curMonster.health - 1;
+                    if (curMonster.health == 0)
+                    {
+                        Actions.Destroy(curMonster);
+                        score = score + 1;
+                    }
+                }
+            });
+        });
+
+        ForEach<Monster>(monster =>
+        {
+            if (Conditions.IsOutsideLayout(monster, layoutSizeX, layoutSizeY))
+            {
+                Actions.SetAngleForward(monster, player.PositionX, player.PositionY, true);
+            }
+            if (Conditions.InCollisionWith(monster, player))
+            {
+                Actions.Destroy(player);
+            }
+        });
 
 
             base.Update(gameTime);

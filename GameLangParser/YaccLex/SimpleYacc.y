@@ -77,16 +77,16 @@ spritesInit : spriteInit
 			}
 			;
 
-spriteInit	: ID ASSIGN OPPARENTHESES behaviours CLPARENTHESES
+spriteInit	: ID OPBRACKET variablesSprite CLBRACKET ASSIGN OPPARENTHESES behaviours CLPARENTHESES
+			{
+				$$ = new SpriteInitNode($1);
+				$$.behaviours = $7;
+				$$.variables = $3;
+			}
+			| ID ASSIGN OPPARENTHESES behaviours CLPARENTHESES
 			{
 				$$ = new SpriteInitNode($1);
 				$$.behaviours = $4;
-			}
-			| ID OPBRACKET variablesSprite SEMICOLON CLBRACKET ASSIGN OPPARENTHESES behaviours CLPARENTHESES
-			{
-				$$ = new SpriteInitNode($1);
-				$$.behaviours = $8;
-				$$.variables = $3;
 			}
 			;
 
@@ -95,7 +95,7 @@ variablesSprite : assignVariable
 					$$ = new List<VarNode>();
 					$$.Add($1);
 				}
-				| variablesSprite SEMICOLON assignVariable
+				| variablesSprite COMMA assignVariable
 				{
 					$1.Add($3);
 					$$ = $1;

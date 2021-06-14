@@ -11,14 +11,14 @@ namespace MonogameLib.Behaviours
     public class Fade : Behaviour
     {
         public bool active;
-        private float fadeOutTime;
+        private int fadeOutTime;
         private bool destroyAfter;
 
         int mAlphaValue = 1;
         int mFadeIncrement = 5;
         double mFadeDelay = .035;
 
-        public Fade(bool active, float fadeOutTime, bool destroyAfter)
+        public Fade(bool active, int fadeOutTime, bool destroyAfter)
         {
             this.active = active;
             this.fadeOutTime = fadeOutTime;
@@ -29,6 +29,7 @@ namespace MonogameLib.Behaviours
         {
             if (active)
             {
+                target.Color = new Color(255,255,255, 0);
                 //Decrement the delay by the number of seconds that have elapsed since
                 //the last time that the Update method was called
                 mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
