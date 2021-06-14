@@ -36,6 +36,11 @@ namespace GameLangParser.Nodes
                 {
                     TexturePath = ((InitializeNode)node).GetPathTextures(TexturePath);
                 }
+
+                if (node is UpdateNode)
+                {
+                    TexturePath = ((UpdateNode)node).GetPathTextures(TexturePath);
+                }
             }
 
             LoadNode.spitesTexturePath = TexturePath;

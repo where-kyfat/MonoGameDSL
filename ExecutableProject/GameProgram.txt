@@ -28,6 +28,8 @@
         Player player;
         TextBox textBoxScore;
         TextBox textBoxBullets;
+        Bullet bullet;
+        Monster monster;
         int bullets = 100;
         int score = 0;
 ^^
@@ -39,9 +41,8 @@
         layoutSizeX = windowSizeX * 2;
         layoutSizeY = windowSizeY * 2;
         layoutTexture = "TiledBackground";
-        bulletTexture = "bullet";
-        monsterTexture = "monster";
         explodeTexture = "explode";
+
 
         player = new  Player("player", 10, 10);
         player.speed = 4;
@@ -52,7 +53,7 @@
         player.layoutSizeY = layoutSizeY;
         player.IsEdge = true;
 
-        textBoxScore = new  TextBox(25, 25, "Count bullets: ");
+        textBoxScore = new  TextBox(25, 25, "Score: ");
         textBoxScore.text = textBoxScore.text + bullets;
 
         textBoxBullets = new  TextBox(25, 50, "Count bullets: ");
@@ -69,9 +70,9 @@
             textBoxScore.text = "Score: " + score;
         }
 
-        if (Conditions.OnMouseLeftClicked(gameTime) && bullets > 0)
+        if (Conditions.OnMouseLeftClicked(gameTime))
         {
-            Bullet bullet = new Bullet(bulletTexture, player.PositionX, player.PositionY); AddSprite(bullet);
+            bullet = new Bullet("bullet", player.PositionX, player.PositionY);
             bullet.speed = 10;
             bullet.layoutSizeX = layoutSizeX;
             bullet.layoutSizeY = layoutSizeY;
@@ -80,47 +81,11 @@
         }
 
         
-        if (Conditions.EveryXSeconds(gameTime, 3f))
+        if (Conditions.EveryXSeconds(gameTime, 3))
         {
-            Monster monster = new Monster(monsterTexture, 1400, random.Next(1024)); AddSprite(monster);
-            monster.Rotation = (float)Math.PI;
+            int rand = getRandom(1024);
+            monster = new Monster("monster", 1400, rand);
+            monster.Rotation = 180;
             monster.speed = 4;
         }
-
-
-        ForEach<Bullet>(bullet =>
-        {
-            ForEach<Monster>(monster =>
-            {
-                if (Conditions.InCollisionWith(bullet, monster))
-                {
-                    Bullet curBullet = (Bullet)bullet;
-                    Monster curMonster = (Monster)monster;
-
-                    Explode explode = new Explode(explodeTexture, curBullet.PositionX, curBullet.PositionY); AddSprite(explode);
-                    explode.active = true;
-                    explode.fadeOutTime = 2;
-                    explode.destroyAfter = true;
-                    Actions.Destroy(curBullet);
-                    curMonster.health = curMonster.health - 1;
-                    if (curMonster.health == 0)
-                    {
-                        Actions.Destroy(curMonster);
-                        score = score + 1;
-                    }
-                }
-            });
-        });
-
-        ForEach<Monster>(monster =>
-        {
-            if (Conditions.IsOutsideLayout(monster, layoutSizeX, layoutSizeY))
-            {
-                Actions.SetAngleForward(monster, player.PositionX, player.PositionY, true);
-            }
-            if (Conditions.InCollisionWith(monster, player))
-            {
-                Actions.Destroy(player);
-            }
-        });
 ^^

@@ -1,21 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using GameLangParser.Exceptions;
 
 namespace GameLangParser.Nodes
 {
-    public class UpdateNode : Node
+    public class IfNode
     {
-        public List<UpdateLogicNode> functionality;
+        public LogicalNode condition;
 
-        public UpdateNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) 
+        public List<UpdateLogicNode> statements;
+
+        public IfNode()
         {
-            functionality = new List<UpdateLogicNode>();
+            statements = new List<UpdateLogicNode>();
+        }
+
+        public void AddStatement(UpdateLogicNode statement)
+        {
+            statements.Add(statement);
         }
 
         public Dictionary<string, string> GetPathTextures(Dictionary<string, string> Textures)
         {
             var result = Textures;
-            foreach (var func in functionality)
+            foreach (var func in statements)
             {
                 if (func.assign != null)
                 {
@@ -41,15 +52,20 @@ namespace GameLangParser.Nodes
             return result;
         }
 
-        public override string ToString(string gameCode)
+        public override string ToString()
         {
-            string result = "";
-            foreach (var func in functionality)
+            string res = "if ([condition]) { [statements] }";
+
+            string statementsStr = "";
+            foreach (var statement in statements)
             {
-                result += func;
+                statementsStr += statement.ToString() + ';';
             }
 
-            return gameCode.Replace(KeyWord, result);
+            res = res.Replace("[condition]", condition.ToString());
+            res = res.Replace("[statements]", statementsStr);
+
+            return res;
         }
     }
 }

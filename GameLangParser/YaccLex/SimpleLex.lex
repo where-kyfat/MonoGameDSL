@@ -12,15 +12,14 @@
 %x SPRITESINIT
 %x INITIALIZE
 %x VARIBLES
+%x UPDATE
 
-BOOLVal	true|false
 Alpha 	[a-zA-Z_]
 Digit   [0-9] 
 AlphaDigit {Alpha}|{Digit}
 INTNUM  {Digit}+
 REALNUM {INTNUM}\.{INTNUM}
 ID {Alpha}{AlphaDigit}* 
-FIELD {ID}.{ID}
 STRING \".*\"
 
 BLOCKSPRITESINIT "[SPRITES LOGIC SECTION]"
@@ -33,7 +32,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 {BLOCKSPRITESINIT} { BEGIN(SPRITESINIT); yylval.sVal = yytext; return (int)Tokens.BLOCKSPRITESINIT; }
 {BLOCKVARIBLESINIT} { BEGIN(VARIBLES); yylval.sVal = yytext; return (int)Tokens.BLOCKVARIBLESINIT; }
 {BLOCKINITIALIZE} { BEGIN(INITIALIZE); yylval.sVal = yytext; return (int)Tokens.BLOCKINITIALIZE; }
-{BLOCKUPDATE} { yylval.sVal = yytext; return (int)Tokens.BLOCKUPDATE; }
+{BLOCKUPDATE} { BEGIN(UPDATE); yylval.sVal = yytext; return (int)Tokens.BLOCKUPDATE; }
 
 
 "%%" { BEGIN(CODEBLOCK); return (int)Tokens.BLOCKBEGIN; }
@@ -56,7 +55,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
     string dll = "MonogameLib";
     yylval.typeVal = Type.GetType(name_space + yytext + ", " + dll);
   }
-  else if (res == (int)Tokens.INTTYPE | res == (int)Tokens.STRINGTYPE)
+  else
     yylval.sVal = yytext;
   return res;
 }
@@ -91,11 +90,6 @@ BLOCKUPDATE "[UPDATE SECTION]"
 <INITIALIZE> {STRING} {
   yylval.sVal = yytext;
   return (int)Tokens.STRING;
-}
-
-<INITIALIZE> {FIELD} {
-  yylval.sVal = yytext;
-  return (int)Tokens.FIELD;
 }
 
 <INITIALIZE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
@@ -134,6 +128,40 @@ BLOCKUPDATE "[UPDATE SECTION]"
 
 <VARIBLES> "=" { return (int)Tokens.EQUAL; }
 <VARIBLES> ";" { return (int)Tokens.SEMICOLON; }
+
+//----------------------------------------------UPDATEINIT
+
+<UPDATE> "%%" { return (int)Tokens.BLOCKBEGIN; }
+<UPDATE> "^^" { BEGIN(INITIAL); return (int)Tokens.BLOCKEND; }
+
+<UPDATE> {ID}  { 
+  res = ScannerHelper.GetIDToken(yytext);
+  yylval.sVal = yytext;
+  return res;
+}
+
+<UPDATE> {STRING} {
+  yylval.sVal = yytext;
+  return (int)Tokens.STRING;
+}
+
+<UPDATE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
+
+<UPDATE> "=" { return (int)Tokens.EQUAL; }
+<UPDATE> "(" { return (int)Tokens.OPBRACKET; }
+<UPDATE> ")" { return (int)Tokens.CLBRACKET; }
+<UPDATE> ";" { return (int)Tokens.SEMICOLON; }
+<UPDATE> "." { return (int)Tokens.DOT; }
+<UPDATE> "," { return (int)Tokens.COMMA; }
+<UPDATE> "+" { yylval.sVal = yytext; return (int)Tokens.ADD; }
+<UPDATE> "-" { yylval.sVal = yytext; return (int)Tokens.SUBSTRACT; }
+<UPDATE> "*" { yylval.sVal = yytext; return (int)Tokens.DIVIDE; }
+<UPDATE> "/" { yylval.sVal = yytext; return (int)Tokens.MULTIPLY; }
+<UPDATE> "{" { return (int)Tokens.OPPARENTHESES; }
+<UPDATE> "}" { return (int)Tokens.CLPARENTHESES; }
+
+<UPDATE> ">" { yylval.sVal = yytext; return (int)Tokens.LESS; }
+<UPDATE> "<" { yylval.sVal = yytext; return (int)Tokens.MORE; }
 
 //----------------------------------------------
 
@@ -181,6 +209,16 @@ class ScannerHelper
     keywords.Add("int",(int)Tokens.INTTYPE);
     keywords.Add("string", (int)Tokens.STRINGTYPE);
     keywords.Add("TextBox", (int)Tokens.TEXTBOX);
+
+    //Update
+    keywords.Add("Conditions",(int)Tokens.CONDITION);
+    keywords.Add("Actions",(int)Tokens.ACTION);
+    keywords.Add("if", (int)Tokens.IF);
+
+    //Bool
+    keywords.Add("true",(int)Tokens.BOOLVAL);
+    keywords.Add("false",(int)Tokens.BOOLVAL);
+    keywords.Add("getRandom", (int)Tokens.RAND);
   }
   public static int GetIDToken(string s)
   {

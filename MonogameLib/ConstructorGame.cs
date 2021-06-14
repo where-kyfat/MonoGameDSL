@@ -48,6 +48,11 @@ namespace MonogameLib.Classes
             random = new Random();
         }
 
+        public int getRandom(int max)
+        {
+            return random.Next(max);
+        }
+
         protected override void Initialize()
         {
             ApplyWindowChanges();

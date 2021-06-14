@@ -55,9 +55,14 @@
     <Compile Include="Exceptions\ReInitTextureException.cs" />
     <Compile Include="Exceptions\WrongBehaviourExeception.cs" />
     <Compile Include="Exceptions\WrongTextureException.cs" />
+    <Compile Include="Nodes\ActionNode.cs" />
     <Compile Include="Nodes\AssignNode.cs" />
+    <Compile Include="Nodes\ConditionNode.cs" />
     <Compile Include="Nodes\GameNode.cs" />
+    <Compile Include="Nodes\IfNode.cs" />
     <Compile Include="Nodes\LoadContentNode.cs" />
+    <Compile Include="Nodes\LogicalNode.cs" />
+    <Compile Include="Nodes\UpdateLogicNode.cs" />
     <Compile Include="Nodes\VarNode.cs" />
     <Compile Include="ParseGameProgram.cs" />
     <Compile Include="Exceptions\ExecEvalException.cs" />

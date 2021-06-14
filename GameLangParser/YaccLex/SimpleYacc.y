@@ -25,15 +25,23 @@
 			public VariablesInitNode vInitVal;
 			public InitializeNode initVal;
 			public UpdateNode upVal;
+			public UpdateLogicNode ulVal;
+			public List<UpdateLogicNode> lstUlVal;
+
+			public IfNode ifVal;
+			public LogicalNode logicVal;
+			public ConditionNode condVal;
+			public ActionNode actVal;
+			public List<string> lstSVal;
        }
 
 %using GameLangParser.Nodes;
 %namespace GameLangParser
 
-%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW EQUAL
-%token SEMICOLON DOT
+%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW ACTION CONDITION
+%token SEMICOLON DOT IF
 %token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
-%token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE
+%token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE BOOLVAL EQUAL LESS MORE RAND
 %token <typeVal> BEHAVIOUR
 
 %type <spsIVal> blockSpritesInit
@@ -50,7 +58,15 @@
 %type <lstvarVal> variablesList variablesSprite
 
 %type <upVal> blockUpdate
-%type <sVal> funtionality id newParams expression T F
+%type <sVal> id newParams expression T F conditionParam actionParam rand
+
+%type <ifVal> if
+%type <logicVal> logic
+%type <condVal> condition
+%type <actVal> action
+%type <lstSVal> conditionParams actionParams 
+%type <ulVal> functionality
+%type <lstUlVal> funList
 
 %%
 
@@ -137,7 +153,12 @@ assignOrVar		: assignVariable { $$ = $1; }
 
 assignVariable	: INTTYPE ID EQUAL INTNUM { $$ = new VarNode($1, $2, $4); }
 				| STRINGTYPE ID EQUAL STRING { $$ = new VarNode($1, $2, $4); }
+				| INTTYPE ID EQUAL rand { $$ = new VarNode($1, $2, $4); }
 				;
+
+rand	: RAND OPBRACKET INTNUM CLBRACKET { $$ = string.Format("{0}({1})", $1, $3); }
+		| RAND OPBRACKET id CLBRACKET {  $$ = string.Format("{0}({1})", $1, $3); }
+		;
 
 variable		: INTTYPE ID { $$ = new VarNode($1, $2); }
 				| STRINGTYPE ID { $$ = new VarNode($1, $2); }
@@ -161,7 +182,7 @@ initList	: assign
 			}
 			;
 
-assign		: id EQUAL expression
+assign		: id EQUAL expression 
 			{
 				$$ = new AssignNode($1, $3);
 			}
@@ -179,7 +200,11 @@ assign		: id EQUAL expression
 			}
 			;
 
-newParams	: COMMA INTNUM COMMA INTNUM
+newParams	: COMMA id COMMA id
+			{
+				$$ = ',' + $2 + ',' + $4;
+			}
+			| COMMA INTNUM COMMA INTNUM
 			{
 				$$ = ',' + $2 + ',' + $4;
 			}
@@ -187,8 +212,19 @@ newParams	: COMMA INTNUM COMMA INTNUM
 			{
 				$$ = ',' + $1 + ',' + $3 + ',' + $5;
 			}
+			| id COMMA id COMMA STRING
+			{
+				$$ = ',' + $1 + ',' + $3 + ',' + $5;
+			}
+			| COMMA INTNUM COMMA id
+			{
+				$$ = ',' + $2 + ',' + $4;
+			}
+			| COMMA id COMMA INTNUM
+			{
+				$$ = ',' + $2 + ',' + $4;
+			}
 			;
-
 
 expression	: T {$$ = $1;}
 			| expression ADD T 		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
@@ -200,28 +236,114 @@ T    		: F {$$ = $1;}
 			| T DIVIDE F		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
 			;
 
-F			: ID { $$ = $1; }
-			| FIELD { $$ = $1; }
+F			: id { $$ = $1; }
 			| INTNUM { $$ = $1; }
 			| STRING { $$ = $1; }
+			| BOOLVAL { $$ = $1; }
 			;
+
 
 id			: ID
 			{
 				$$ = $1;
 			}
-			| FIELD
-			{
-				$$ = $1;
-			}
+			| ID DOT ID 
+			{ $$ = $1 + "." + $3; }
 			;
 
 
-blockUpdate		 : BLOCKUPDATE BLOCKBEGIN funtionality BLOCKEND 
-		{ $$ = new UpdateNode($3, $1);}
+blockUpdate		 : BLOCKUPDATE BLOCKBEGIN funList BLOCKEND 
+		{ 
+			$$ = new UpdateNode(null, $1);
+			$$.functionality = $3;
+		}
 		;
 
-funtionality	 : CODEBLOCK
-		{ $$ = $1; }
+
+if			: IF OPBRACKET logic CLBRACKET OPPARENTHESES funList CLPARENTHESES
+			{
+				$$ = new IfNode();
+				$$.condition = $3;
+				$$.statements = $6;
+			}
+			;
+
+logic		: BOOLVAL { $$ = new LogicalNode($1); }
+			| condition { $$ = new LogicalNode($1.ToString()); }
+			| expression EQUAL expression { $$ = new LogicalNode($1, $2, $3); }
+			| expression MORE expression { $$ = new LogicalNode($1, $2, $3); }
+			| expression LESS expression { $$ = new LogicalNode($1, $2, $3); }
+			;
+
+condition	: CONDITION DOT ID OPBRACKET conditionParams CLBRACKET
+			{
+				$$ = new ConditionNode($3);
+				$$.conditionParams = $5;
+			}
+			| CONDITION DOT ID OPBRACKET CLBRACKET
+			{
+				$$ = new ConditionNode($3);
+			}
+			;
+
+conditionParams	: conditionParam
+				{
+					$$ = new List<string>();
+					$$.Add($1);
+				}
+				| conditionParams COMMA conditionParam
+				{
+					$1.Add($3);
+					$$ = $1;
+				}
+				;
+
+conditionParam	: F { $$ = $1; }
+				;
+
+action	: ACTION DOT ID OPBRACKET actionParams CLBRACKET
+		{
+			$$ = new ActionNode($3);
+			$$.ActionParams = $5;
+		}
 		;
+
+actionParams	: actionParam
+				{
+					$$ = new List<string>();
+					$$.Add($1);
+				}
+				| actionParams COMMA actionParam
+				{
+					$1.Add($3);
+					$$ = $1;
+				}
+				;
+
+actionParam		: F { $$ = $1; }
+				;
+
+funList	: functionality
+		{
+			$$ = new List<UpdateLogicNode>();
+			$$.Add($1);
+		}
+		| funList functionality 
+		{
+			$1.Add($2);
+			$$ = $1;
+		}
+		;
+
+functionality	: assignOrVar SEMICOLON 
+				{ 
+					$$ = new UpdateLogicNode($1.ToString());
+				}
+				| assign SEMICOLON 
+				{ 
+					$$ = new UpdateLogicNode($1);
+				}
+				| if { $$ = new UpdateLogicNode($1); }
+				| action SEMICOLON { $$ = new UpdateLogicNode($1.ToString()); }
+				;
 %%
