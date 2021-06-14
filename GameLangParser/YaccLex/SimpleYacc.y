@@ -30,7 +30,7 @@
 %using GameLangParser.Nodes;
 %namespace GameLangParser
 
-%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW 
+%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW EQUAL
 %token SEMICOLON DOT
 %token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
 %token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE
@@ -47,7 +47,7 @@
 
 %type <vInitVal> blockVariablesInit
 %type <varVal> assignOrVar assignVariable variable
-%type <lstvarVal> variablesList
+%type <lstvarVal> variablesList variablesSprite
 
 %type <upVal> blockUpdate
 %type <sVal> funtionality id newParams expression T F
@@ -82,7 +82,25 @@ spriteInit	: ID ASSIGN OPPARENTHESES behaviours CLPARENTHESES
 				$$ = new SpriteInitNode($1);
 				$$.behaviours = $4;
 			}
+			| ID OPBRACKET variablesSprite SEMICOLON CLBRACKET ASSIGN OPPARENTHESES behaviours CLPARENTHESES
+			{
+				$$ = new SpriteInitNode($1);
+				$$.behaviours = $8;
+				$$.variables = $3;
+			}
 			;
+
+variablesSprite : assignVariable
+				{
+					$$ = new List<VarNode>();
+					$$.Add($1);
+				}
+				| variablesSprite SEMICOLON assignVariable
+				{
+					$1.Add($3);
+					$$ = $1;
+				}
+				;
 
 behaviours	: BEHAVIOUR 
 			{
@@ -117,8 +135,8 @@ assignOrVar		: assignVariable { $$ = $1; }
 				| variable { $$ = $1; }
 				;
 
-assignVariable	: INTTYPE ID ASSIGN INTNUM { $$ = new VarNode($1, $2, $4); }
-				| STRINGTYPE ID ASSIGN STRING { $$ = new VarNode($1, $2, $4); }
+assignVariable	: INTTYPE ID EQUAL INTNUM { $$ = new VarNode($1, $2, $4); }
+				| STRINGTYPE ID EQUAL STRING { $$ = new VarNode($1, $2, $4); }
 				;
 
 variable		: INTTYPE ID { $$ = new VarNode($1, $2); }
@@ -143,19 +161,19 @@ initList	: assign
 			}
 			;
 
-assign		: id ASSIGN expression
+assign		: id EQUAL expression
 			{
 				$$ = new AssignNode($1, $3);
 			}
-			| id ASSIGN NEW id OPBRACKET STRING newParams CLBRACKET
+			| id EQUAL NEW id OPBRACKET STRING newParams CLBRACKET
 			{
 				$$ = new AssignNode($1, $4, $6, $7);
 			}
-			| id ASSIGN NEW TEXTBOX OPBRACKET newParams CLBRACKET
+			| id EQUAL NEW TEXTBOX OPBRACKET newParams CLBRACKET
 			{
 				$$ = new AssignNode($1, $4, $6);
 			}
-			| id ASSIGN STRING
+			| id EQUAL STRING
 			{
 				$$ = new AssignNode($1, $3);
 			}

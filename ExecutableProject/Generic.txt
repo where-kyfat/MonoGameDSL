@@ -10,6 +10,7 @@ namespace TestProject
 
     public class Player : Sprite 
     {
+        
         public Int32 speed; public Camera camera; public Int32 windowSizeX; public Int32 windowSizeY; public Int32 layoutSizeX; public Int32 layoutSizeY; public Boolean IsEdge; 
         public Player (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
@@ -43,6 +44,7 @@ namespace TestProject
 
     public class Bullet : Sprite 
     {
+        
         public Int32 speed; public Int32 layoutSizeX; public Int32 layoutSizeY; 
         public Bullet (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
@@ -69,15 +71,43 @@ namespace TestProject
         }
     }
 
+    public class Monster : Sprite 
+    {
+        public 		int health = 5;
+
+        public Int32 speed; 
+        public Monster (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
+        {
+            
+            Behaviours.Add(new BulletMovement( speed));
+
+        }
+
+        public override void Update(GameTime gameTime) 
+        {
+            for (int i = 0; i < Behaviours.Count; i++) 
+            {
+                
+            if (Behaviours[i] is BulletMovement)
+                Behaviours[i] = new BulletMovement( speed);
+
+            }
+            base.Update(gameTime);
+        }
+    }
+
 	
     class GameTest : ConstructorGame
     {
 	
 		Texture2D playerTexture;
 		Texture2D bulletTexture;
+		Texture2D monsterTexture;
 		Player player;
-		TextBox textBox;
+		TextBox textBoxScore;
+		TextBox textBoxBullets;
 		int bullets = 10;
+		int score = 0;
 
 		
         protected override void Initialize()
@@ -90,6 +120,7 @@ namespace TestProject
 			layoutSizeY = windowSizeY * 2;
 			
 			
+			
 			player = new Player(playerTexture,10,10);  sprites.Add(player);
 			player.speed = 4;
 			player.camera = _camera;
@@ -98,8 +129,10 @@ namespace TestProject
 			player.layoutSizeX = layoutSizeX;
 			player.layoutSizeY = layoutSizeY;
 			player.IsEdge = true;
-			textBox = new TextBox(font ,25,25,"Count bullets: ");  sprites.Add(textBox);
-			textBox.text = textBox.text + bullets;
+			textBoxScore = new TextBox(font ,25,25,"Count bullets: ");  sprites.Add(textBoxScore);
+			textBoxScore.text = textBoxScore.text + bullets;
+			textBoxBullets = new TextBox(font ,25,50,"Count bullets: ");  sprites.Add(textBoxBullets);
+			textBoxBullets.text = textBoxBullets.text + score;
  
 
             ApplyWindowChanges();
@@ -109,6 +142,7 @@ namespace TestProject
         {
 			playerTexture = LoadTextrure("player");
 			bulletTexture = LoadTextrure("bullet");
+			monsterTexture = LoadTextrure("monster");
 			layoutTexture = LoadTextrure("TiledBackground");
 
 
@@ -122,7 +156,8 @@ namespace TestProject
         {
             Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
 
-            textBox.text = "Count bullets: " + bullets;
+            textBoxBullets.text = "Count bullets: " + bullets;
+            textBoxScore.text = "Score: " + score;
         }
 
         if (Conditions.OnMouseLeftClicked(gameTime) && bullets > 0)

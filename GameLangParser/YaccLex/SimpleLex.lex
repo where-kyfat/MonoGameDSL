@@ -56,11 +56,24 @@ BLOCKUPDATE "[UPDATE SECTION]"
     string dll = "MonogameLib";
     yylval.typeVal = Type.GetType(name_space + yytext + ", " + dll);
   }
+  else if (res == (int)Tokens.INTTYPE | res == (int)Tokens.STRINGTYPE)
+    yylval.sVal = yytext;
   return res;
 }
 
+<SPRITESINIT> {STRING} {
+  yylval.sVal = yytext;
+  return (int)Tokens.STRING;
+}
+
+<SPRITESINIT> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
+
 <SPRITESINIT> ":=" { return (int)Tokens.ASSIGN; }
+<SPRITESINIT> "=" { return (int)Tokens.EQUAL; }
+<SPRITESINIT> "(" { return (int)Tokens.OPBRACKET; }
+<SPRITESINIT> ")" { return (int)Tokens.CLBRACKET; }
 <SPRITESINIT> "," { return (int)Tokens.COMMA;	}
+<SPRITESINIT> ";" { return (int)Tokens.SEMICOLON;	}
 <SPRITESINIT> "{" { return (int)Tokens.OPPARENTHESES; }
 <SPRITESINIT> "}" { return (int)Tokens.CLPARENTHESES; }
 
@@ -87,7 +100,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 
 <INITIALIZE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
 
-<INITIALIZE> "=" { return (int)Tokens.ASSIGN; }
+<INITIALIZE> "=" { return (int)Tokens.EQUAL; }
 <INITIALIZE> "(" { return (int)Tokens.OPBRACKET; }
 <INITIALIZE> ")" { return (int)Tokens.CLBRACKET; }
 <INITIALIZE> ";" { return (int)Tokens.SEMICOLON; }
@@ -119,7 +132,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 
 <VARIBLES> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
 
-<VARIBLES> "=" { return (int)Tokens.ASSIGN; }
+<VARIBLES> "=" { return (int)Tokens.EQUAL; }
 <VARIBLES> ";" { return (int)Tokens.SEMICOLON; }
 
 //----------------------------------------------

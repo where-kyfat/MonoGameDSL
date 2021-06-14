@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MonogameLib.Behaviours;
 using GameLangParser.Exceptions;
+using GameLangParser.Nodes;
 
 namespace GameLangParser
 {
@@ -12,22 +13,29 @@ namespace GameLangParser
     public class SpriteInitNode
     {
         public List<Type> behaviours;
+        public List<VarNode> variables;
         public string className;
 
         public SpriteInitNode(string ClassName)
         {
             this.className = ClassName;
-            behaviours = new List<Type>();
-        }
-
-        public void AddBehaviour(Type type)
-        {
-            behaviours.Add(type);
+            this.behaviours = new List<Type>();
+            this.variables = new List<VarNode>();
         }
 
         public string GetParams(Type type, bool OnlyNames = false)
         {
             return GetParams(type, "", OnlyNames);
+        }
+
+        public string GetVariables()
+        {
+            string res = "";
+            foreach (var variable in variables)
+            {
+                res += "public " + variable.ToString();
+            }
+            return res;
         }
 
         public string GetParams(Type type, string existingParams, bool OnlyNames = false, char separator = ',', string availability = "")
@@ -101,11 +109,11 @@ namespace GameLangParser
 
             result = @"
             if (Behaviours[i] is [NameBehaviour])
-                Behaviours[i] = new [NameBehaviour]([Params]);
+                Behaviours[i] = new [NameBehaviour]([Params behaviour]);
 ";
             result = result.Replace("[NameBehaviour]", type.Name);
             string _params = GetParams(type, OnlyNames: true);
-            result = result.Replace("[Params]", _params);
+            result = result.Replace("[Params behaviour]", _params);
             return result;
         }
 
@@ -114,7 +122,8 @@ namespace GameLangParser
             string ClassPrefix = @"
     public class [ClassName] : Sprite 
     {
-        [Params]
+        [Variables]
+        [Params behaviour]
         public [ClassName] (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
             [Behaviours]
@@ -149,7 +158,8 @@ namespace GameLangParser
             }
 
             ClassPrefix = ClassPrefix.Replace("[ClassName]", className);
-            ClassPrefix = ClassPrefix.Replace("[Params]", Params);
+            ClassPrefix = ClassPrefix.Replace("[Params behaviour]", Params);
+            ClassPrefix = ClassPrefix.Replace("[Variables]", GetVariables());
             ClassPrefix = ClassPrefix.Replace("[Behaviours]", Behaviours);
             ClassPrefix = ClassPrefix.Replace("[BehavioursUpdate]", UpdateBehaviours);
 
