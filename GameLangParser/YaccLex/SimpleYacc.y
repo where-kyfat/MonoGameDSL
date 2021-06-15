@@ -41,7 +41,7 @@
 
 %token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW ACTION CONDITION FOREACH IN SPRITES
 %token SEMICOLON DOT IF
-%token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
+%token <sVal> CODEBLOCK SPRITESINIT VARIBLESINIT INITIALIZE UPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
 %token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE BOOLVAL EQUAL LESS MORE RAND
 %token <typeVal> BEHAVIOUR
 
@@ -76,12 +76,27 @@ progr   :  blockSpritesInit blockVariablesInit blockInitialize blockUpdate
 		{ root.AddNode($1); root.AddNode($2); root.AddNode($3); root.AddNode($4);}
 		;
 		
-blockSpritesInit	: BLOCKSPRITESINIT BLOCKBEGIN spritesInit BLOCKEND
+blockSpritesInit	: SPRITESINIT ASSIGN OPPARENTHESES spritesInit CLPARENTHESES
 					{ 
 						$$ = new SpritesInitNode(null, $1);
-						$$.inits = $3;
+						$$.inits = $4;
 					}
 					;
+
+blockVariablesInit	: VARIBLESINIT ASSIGN OPPARENTHESES variablesList SEMICOLON CLPARENTHESES 
+					{ $$ = new VariablesInitNode(null, $1);  $$.varNodes = $4;}
+					;
+
+blockInitialize	: INITIALIZE ASSIGN OPPARENTHESES initList SEMICOLON CLPARENTHESES 
+				{ $$ = new InitializeNode(null, $1); $$.assings = $4;}
+				;
+
+blockUpdate		: UPDATE ASSIGN OPPARENTHESES funList CLPARENTHESES 
+				{ 
+					$$ = new UpdateNode(null, $1);
+					$$.functionality = $4;
+				}
+				;
 
 spritesInit : spriteInit 
 			{
@@ -132,11 +147,6 @@ behaviours	: BEHAVIOUR
 			}
 			;
 
-
-blockVariablesInit	: BLOCKVARIBLESINIT BLOCKBEGIN variablesList SEMICOLON BLOCKEND 
-					{ $$ = new VariablesInitNode(null, $1);  $$.varNodes = $3;}
-					;
-
 variablesList	: assignOrVar
 				{
 					$$ = new List<VarNode>();
@@ -165,11 +175,6 @@ rand	: RAND OPBRACKET INTNUM CLBRACKET { $$ = string.Format("{0}({1})", $1, $3);
 variable		: INTTYPE ID { $$ = new VarNode($1, $2); }
 				| STRINGTYPE ID { $$ = new VarNode($1, $2); }
 				| ID ID { $$ = new VarNode($1, $2); }
-				;
-
-
-blockInitialize	: BLOCKINITIALIZE BLOCKBEGIN initList SEMICOLON BLOCKEND 
-				{ $$ = new InitializeNode(null, $1); $$.assings = $3;}
 				;
 
 initList	: assign 
@@ -252,14 +257,6 @@ id			: ID
 			| ID DOT ID 
 			{ $$ = $1 + "." + $3; }
 			;
-
-
-blockUpdate		 : BLOCKUPDATE BLOCKBEGIN funList BLOCKEND 
-		{ 
-			$$ = new UpdateNode(null, $1);
-			$$.functionality = $3;
-		}
-		;
 
 
 if			: IF OPBRACKET logic CLBRACKET OPPARENTHESES funList CLPARENTHESES

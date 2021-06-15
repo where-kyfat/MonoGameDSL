@@ -1,5 +1,5 @@
-[SPRITES LOGIC SECTION]
-%%
+
+Sprites := {
     Player :=
     { 
         _8Directions,
@@ -21,103 +21,100 @@
     {
         Fade
     }
-^^
+}
 
-[VARIBLES SECTION]
-%%
-        Player player;
-        TextBox textBoxScore;
-        TextBox textBoxBullets;
-        Bullet bullet;
-        Monster monster;
-        Explode explode;
-        int bullets = 100;
-        int score = 0;
-^^
+Varibles := {
+    Player player;
+    TextBox textBoxScore;
+    TextBox textBoxBullets;
+    Bullet bullet;
+    Monster monster;
+    Explode explode;
+    int bullets = 100;
+    int score = 0;
+}
 
-[INITIALIZE SECTION]
-%%
-        windowSizeX = 1920;
-        windowSizeY = 1080;
-        layoutSizeX = windowSizeX * 2;
-        layoutSizeY = windowSizeY * 2;
-        layoutTexture = "TiledBackground";
+Initialize := {
+    windowSizeX = 1920;
+    windowSizeY = 1080;
+    layoutSizeX = windowSizeX * 2;
+    layoutSizeY = windowSizeY * 2;
+    layoutTexture = "TiledBackground";
 
-        player = new Player("player", 10, 10);
-        player.speed = 4;
-        player.camera = _camera;
-        player.windowSizeX = windowSizeX;
-        player.windowSizeY = windowSizeY;
-        player.layoutSizeX = layoutSizeX;
-        player.layoutSizeY = layoutSizeY;
-        player.IsEdge = true;
+    player = new Player("player", 10, 10);
+    player.speed = 4;
+    player.camera = _camera;
+    player.windowSizeX = windowSizeX;
+    player.windowSizeY = windowSizeY;
+    player.layoutSizeX = layoutSizeX;
+    player.layoutSizeY = layoutSizeY;
+    player.IsEdge = true;
 
-        textBoxScore = new TextBox(25, 25, "Score: ");
-        textBoxScore.text = textBoxScore.text + bullets;
+    textBoxScore = new TextBox(25, 25, "Score: ");
+    textBoxScore.text = textBoxScore.text + bullets;
 
-        textBoxBullets = new TextBox(25, 50, "Count bullets: ");
-        textBoxBullets.text = textBoxBullets.text + score;
-^^
+    textBoxBullets = new TextBox(25, 50, "Count bullets: ");
+    textBoxBullets.text = textBoxBullets.text + score;
+}
 
-[UPDATE SECTION]
-%%
-        if (Conditions.EveryTick())
-        {
-            Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
+Update := {
+    if (Conditions.EveryTick())
+    {
+        Actions.SetAngleForward(player, Mouse.X, Mouse.Y, false);
 
-            textBoxBullets.text = "Count bullets: " + bullets;
-            textBoxScore.text = "Score: " + score;
-        }
+        textBoxBullets.text = "Count bullets: " + bullets;
+        textBoxScore.text = "Score: " + score;
+    }
 
-        if (Conditions.OnMouseLeftClicked(gameTime))
-        {
-            bullet = new Bullet("bullet", player.PositionX, player.PositionY);
-            bullet.speed = 10;
-            bullet.layoutSizeX = layoutSizeX;
-            bullet.layoutSizeY = layoutSizeY;
-            bullet.Rotation = player.Rotation;
-            bullets = bullets - 1;
-        }
+    if (Conditions.OnMouseLeftClicked(gameTime))
+    {
+        bullet = new Bullet("bullet", player.PositionX, player.PositionY);
+        bullet.speed = 10;
+        bullet.layoutSizeX = layoutSizeX;
+        bullet.layoutSizeY = layoutSizeY;
+        bullet.Rotation = player.Rotation;
+        bullets = bullets - 1;
+    }
 
         
-        if (Conditions.EveryXSeconds(gameTime, 3))
-        {
-            int rand = getRandom(1024);
-            monster = new Monster("monster", 1400, rand);
-            monster.StartAngle = 180;
-            monster.speed = 4;
-        }
+    if (Conditions.EveryXSeconds(gameTime, 3))
+    {
+        int rand = getRandom(1024);
+        monster = new Monster("monster", 1400, rand);
+        monster.StartAngle = 180;
+        monster.speed = 4;
+    }
 
-        ForEach(Bullet bullet in sprites) 
+    ForEach(Bullet bullet in sprites) 
+    {
+        ForEach(Monster monster in sprites) 
         {
-            ForEach(Monster monster in sprites) 
+            if (Conditions.InCollisionWith(bullet, monster))
             {
-                if (Conditions.InCollisionWith(bullet, monster))
+                explode = new Explode("explode", bullet.PositionX, bullet.PositionY);
+                explode.IsFade = true;
+                explode.active = true;
+                explode.destroyAfter = true;
+                Actions.Destroy(bullet);
+                monster.health = monster.health - 1;
+                if (monster.health == 0)
                 {
-                    explode = new Explode("explode", bullet.PositionX, bullet.PositionY);
-                    explode.IsFade = true;
-                    explode.active = true;
-                    explode.destroyAfter = true;
-                    Actions.Destroy(bullet);
-                    monster.health = monster.health - 1;
-                    if (monster.health == 0)
-                    {
-                        Actions.Destroy(monster);
-                        score = score + 1;
-                    }
+                    Actions.Destroy(monster);
+                    score = score + 1;
                 }
             }
         }
+    }
 
-        ForEach(Monster monster in sprites) 
+    ForEach(Monster monster in sprites) 
+    {
+        if (Conditions.IsOutsideLayout(monster, layoutSizeX, layoutSizeY))
         {
-            if (Conditions.IsOutsideLayout(monster, layoutSizeX, layoutSizeY))
-            {
-                Actions.SetAngleForward(monster, player.PositionX, player.PositionY, true);
-            }
-            if (Conditions.InCollisionWith(monster, player))
-            {
-                Actions.Destroy(player);
-            }
+            Actions.SetAngleForward(monster, player.PositionX, player.PositionY, true);
         }
-^^
+        if (Conditions.InCollisionWith(monster, player))
+        {
+            Actions.Destroy(player);
+        }
+    }
+}
