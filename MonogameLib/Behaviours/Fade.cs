@@ -11,25 +11,49 @@ namespace MonogameLib.Behaviours
     public class Fade : Behaviour
     {
         public bool active;
-        private int fadeOutTime;
         private bool destroyAfter;
 
-        int mAlphaValue = 1;
-        int mFadeIncrement = 5;
+        int mAlphaValue;
+        int mFadeIncrement;
         double mFadeDelay = .035;
 
-        public Fade(bool active, int fadeOutTime, bool destroyAfter)
+        public Fade(bool active, bool destroyAfter, Sprite target)
         {
             this.active = active;
-            this.fadeOutTime = fadeOutTime;
             this.destroyAfter = destroyAfter;
+            if (target.mFadeIncrement == default)
+            {
+                this.mFadeIncrement = 5;
+            }
+            else
+            {
+                this.mFadeIncrement = target.mFadeIncrement;
+            }
+
+            if (target.mAlphaValue == default)
+            {
+                this.mAlphaValue = 1;
+            }
+            else
+            {
+                this.mAlphaValue = target.mAlphaValue;
+            }
+
+            if (target.mFadeDelay == default)
+            {
+                this.mFadeDelay = .035;
+            }
+            else
+            {
+                this.mFadeDelay = target.mFadeDelay;
+            }
         }
 
         public override void Execute(GameTime gameTime, Sprite target)
         {
             if (active)
             {
-                target.Color = new Color(255,255,255, 0);
+
                 //Decrement the delay by the number of seconds that have elapsed since
                 //the last time that the Update method was called
                 mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
@@ -51,12 +75,21 @@ namespace MonogameLib.Behaviours
 
                     target.Color = new Color(curValue, curValue, curValue, (byte)0);
 
-                    if (target.Color == Color.Transparent)
+                    if (target.Color == Color.Transparent && destroyAfter)
                     {
                         target.IsRemove = true;
                     }
                 }
             }
+
+            targetUpdate(target);
+        }
+
+        void targetUpdate(Sprite target)
+        {
+            target.mAlphaValue = mAlphaValue;
+            target.mFadeIncrement = mFadeIncrement;
+            target.mFadeDelay = mFadeDelay;
         }
     }
 }

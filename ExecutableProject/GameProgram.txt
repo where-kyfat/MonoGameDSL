@@ -95,8 +95,8 @@
                 if (Conditions.InCollisionWith(bullet, monster))
                 {
                     explode = new Explode("explode", bullet.PositionX, bullet.PositionY);
+                    explode.IsFade = true;
                     explode.active = true;
-                    explode.fadeOutTime = 2;
                     explode.destroyAfter = true;
                     Actions.Destroy(bullet);
                     monster.health = monster.health - 1;

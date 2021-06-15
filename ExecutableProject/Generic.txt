@@ -98,11 +98,11 @@ namespace TestProject
     public class Explode : Sprite 
     {
         
-        public Boolean active; public Int32 fadeOutTime; public Boolean destroyAfter; 
+        public Boolean active; public Boolean destroyAfter; public Sprite target; 
         public Explode (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
             
-            Behaviours.Add(new Fade( active, fadeOutTime, destroyAfter));
+            Behaviours.Add(new Fade( active, destroyAfter, this));
 
         }
 
@@ -112,7 +112,7 @@ namespace TestProject
             {
                 
             if (Behaviours[i] is Fade)
-                Behaviours[i] = new Fade( active, fadeOutTime, destroyAfter);
+                Behaviours[i] = new Fade( active, destroyAfter, this);
 
             }
             base.Update(gameTime);
@@ -200,8 +200,8 @@ namespace TestProject
 					ForEach<Monster>(monster => { 
 					if (Conditions.InCollisionWith(bullet,monster)) { 
 				explode = new Explode(explodeTexture,bullet.PositionX,bullet.PositionY);  sprites.Add(explode);
+				explode.IsFade = true;
 				explode.active = true;
-				explode.fadeOutTime = 2;
 				explode.destroyAfter = true;
 				Actions.Destroy(bullet);
 				monster.health = monster.health - 1;

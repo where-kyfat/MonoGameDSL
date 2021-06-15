@@ -93,6 +93,10 @@ namespace GameLangParser
 ";
             result = result.Replace("[NameBehaviour]", type.Name);
             string _params = GetParams(type, OnlyNames : true);
+            if (type.Name == "Fade")
+            {
+                _params = _params.Replace("target", "this");
+            }
             result = result.Replace("[Params]", _params);
             return result;
         }
@@ -113,6 +117,10 @@ namespace GameLangParser
 ";
             result = result.Replace("[NameBehaviour]", type.Name);
             string _params = GetParams(type, OnlyNames: true);
+            if (type.Name == "Fade")
+            {
+                _params = _params.Replace("target", "this");
+            }
             result = result.Replace("[Params behaviour]", _params);
             return result;
         }

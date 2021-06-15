@@ -24,9 +24,9 @@ namespace MonogameLib.Classes
         public float _forwardAngle = 0f;
         public bool IsRemove = false;
 
-
         public List<Behaviour> Behaviours;
 
+        public int mFadeIncrement; public int mAlphaValue; public double mFadeDelay;
 
         public Sprite(Texture2D Texture, int PositionX, int PositionY)
         {
@@ -45,6 +45,17 @@ namespace MonogameLib.Classes
             set
             {
                 Rotation = (float)(value / 180 * Math.PI);
+            }
+        }
+
+        public bool IsFade
+        {
+            set
+            {
+                if (value)
+                {
+                    Color = new Color(255, 255, 255, 0);
+                }
             }
         }
 
