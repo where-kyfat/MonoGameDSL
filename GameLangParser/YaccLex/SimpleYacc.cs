@@ -4,7 +4,7 @@
 
 // GPPG version 1.3.6
 // Machine:  AVILOV-PC
-// DateTime: 15.06.2021 11:09:58
+// DateTime: 15.06.2021 12:49:57
 // UserName: a.avilov
 // Input file <../../YaccLex/SimpleYacc.y>
 
@@ -22,11 +22,12 @@ namespace GameLangParser
 public enum Tokens {
     error=1,EOF=2,BLOCKBEGIN=3,BLOCKEND=4,SEMICOLON=5,OPBRACKET=6,
     CLBRACKET=7,VAR=8,COMMA=9,OPPARENTHESES=10,CLPARENTHESES=11,ASSIGN=12,
-    NEW=13,ACTION=14,CONDITION=15,DOT=16,IF=17,CODEBLOCK=18,
-    BLOCKSPRITESINIT=19,BLOCKVARIBLESINIT=20,BLOCKLOADCONTENT=21,BLOCKINITIALIZE=22,BLOCKUPDATE=23,ID=24,
-    STRING=25,FIELD=26,INTNUM=27,INTTYPE=28,STRINGTYPE=29,TEXTBOX=30,
-    ADD=31,SUBSTRACT=32,MULTIPLY=33,DIVIDE=34,BOOLVAL=35,EQUAL=36,
-    LESS=37,MORE=38,RAND=39,BEHAVIOUR=40};
+    NEW=13,ACTION=14,CONDITION=15,FOREACH=16,IN=17,SPRITES=18,
+    DOT=19,IF=20,CODEBLOCK=21,BLOCKSPRITESINIT=22,BLOCKVARIBLESINIT=23,BLOCKLOADCONTENT=24,
+    BLOCKINITIALIZE=25,BLOCKUPDATE=26,ID=27,STRING=28,FIELD=29,INTNUM=30,
+    INTTYPE=31,STRINGTYPE=32,TEXTBOX=33,ADD=34,SUBSTRACT=35,MULTIPLY=36,
+    DIVIDE=37,BOOLVAL=38,EQUAL=39,LESS=40,MORE=41,RAND=42,
+    BEHAVIOUR=43};
 
 public struct ValueType
 { 
@@ -53,6 +54,7 @@ public struct ValueType
 			public ConditionNode condVal;
 			public ActionNode actVal;
 			public List<string> lstSVal;
+			public ForEachNode feVal;
        }
 // Abstract base class for GPLEX scanners
 public abstract class ScanBase : AbstractScanner<ValueType,LexLocation> {
@@ -75,258 +77,272 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;
 #pragma warning restore 649
-  private static Rule[] rules = new Rule[72];
-  private static State[] states = new State[169];
+  private static Rule[] rules = new Rule[74];
+  private static State[] states = new State[181];
   private static string[] nonTerms = new string[] {
       "blockSpritesInit", "spriteInit", "spritesInit", "behaviours", "blockInitialize", 
       "initList", "assign", "blockVariablesInit", "assignOrVar", "assignVariable", 
       "variable", "variablesList", "variablesSprite", "blockUpdate", "id", "newParams", 
       "expression", "T", "F", "conditionParam", "actionParam", "rand", "if", 
       "logic", "condition", "action", "conditionParams", "actionParams", "functionality", 
-      "funList", "progr", "$accept", };
+      "funList", "forEach", "progr", "$accept", };
 
   static Parser() {
-    states[0] = new State(new int[]{19,141},new int[]{-31,1,-1,3});
+    states[0] = new State(new int[]{22,153},new int[]{-32,1,-1,3});
     states[1] = new State(new int[]{2,2});
     states[2] = new State(-1);
-    states[3] = new State(new int[]{20,133},new int[]{-8,4});
-    states[4] = new State(new int[]{22,126},new int[]{-5,5});
-    states[5] = new State(new int[]{23,7},new int[]{-14,6});
+    states[3] = new State(new int[]{23,145},new int[]{-8,4});
+    states[4] = new State(new int[]{25,138},new int[]{-5,5});
+    states[5] = new State(new int[]{26,7},new int[]{-14,6});
     states[6] = new State(-2);
     states[7] = new State(new int[]{3,8});
-    states[8] = new State(new int[]{28,15,29,29,24,34,17,86,14,95},new int[]{-30,9,-29,105,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93});
-    states[9] = new State(new int[]{4,10,28,15,29,29,24,34,17,86,14,95},new int[]{-29,11,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93});
+    states[8] = new State(new int[]{31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-30,9,-29,116,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
+    states[9] = new State(new int[]{4,10,31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-29,11,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
     states[10] = new State(-50);
-    states[11] = new State(-67);
+    states[11] = new State(-68);
     states[12] = new State(new int[]{5,13});
-    states[13] = new State(-68);
+    states[13] = new State(-69);
     states[14] = new State(-15);
-    states[15] = new State(new int[]{24,16});
-    states[16] = new State(new int[]{36,17,5,-22});
-    states[17] = new State(new int[]{27,18,39,20},new int[]{-22,19});
+    states[15] = new State(new int[]{27,16});
+    states[16] = new State(new int[]{39,17,5,-22});
+    states[17] = new State(new int[]{30,18,42,20},new int[]{-22,19});
     states[18] = new State(-17);
     states[19] = new State(-19);
     states[20] = new State(new int[]{6,21});
-    states[21] = new State(new int[]{27,22,24,26},new int[]{-15,24});
+    states[21] = new State(new int[]{30,22,27,26},new int[]{-15,24});
     states[22] = new State(new int[]{7,23});
     states[23] = new State(-20);
     states[24] = new State(new int[]{7,25});
     states[25] = new State(-21);
-    states[26] = new State(new int[]{16,27,7,-48,33,-48,34,-48,31,-48,32,-48,5,-48,36,-48,38,-48,37,-48,6,-48,9,-48});
-    states[27] = new State(new int[]{24,28});
+    states[26] = new State(new int[]{19,27,7,-48,36,-48,37,-48,34,-48,35,-48,5,-48,39,-48,41,-48,40,-48,6,-48,9,-48});
+    states[27] = new State(new int[]{27,28});
     states[28] = new State(-49);
-    states[29] = new State(new int[]{24,30});
-    states[30] = new State(new int[]{36,31,5,-23});
-    states[31] = new State(new int[]{25,32});
+    states[29] = new State(new int[]{27,30});
+    states[30] = new State(new int[]{39,31,5,-23});
+    states[31] = new State(new int[]{28,32});
     states[32] = new State(-18);
     states[33] = new State(-16);
-    states[34] = new State(new int[]{24,35,16,27,36,-48});
+    states[34] = new State(new int[]{27,35,19,27,39,-48});
     states[35] = new State(-24);
     states[36] = new State(new int[]{5,37});
-    states[37] = new State(-69);
-    states[38] = new State(new int[]{36,39});
-    states[39] = new State(new int[]{13,54,25,83,24,26,27,46,35,48},new int[]{-17,40,-18,84,-19,51,-15,45});
-    states[40] = new State(new int[]{31,41,32,52,5,-28});
-    states[41] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-18,42,-19,51,-15,45});
-    states[42] = new State(new int[]{33,43,34,49,31,-39,32,-39,5,-39,36,-39,38,-39,37,-39,7,-39});
-    states[43] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-19,44,-15,45});
+    states[37] = new State(-70);
+    states[38] = new State(new int[]{39,39});
+    states[39] = new State(new int[]{13,54,28,83,27,26,30,46,38,48},new int[]{-17,40,-18,84,-19,51,-15,45});
+    states[40] = new State(new int[]{34,41,35,52,5,-28});
+    states[41] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-18,42,-19,51,-15,45});
+    states[42] = new State(new int[]{36,43,37,49,34,-39,35,-39,5,-39,39,-39,41,-39,40,-39,7,-39});
+    states[43] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-19,44,-15,45});
     states[44] = new State(-42);
     states[45] = new State(-44);
     states[46] = new State(-45);
     states[47] = new State(-46);
     states[48] = new State(-47);
-    states[49] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-19,50,-15,45});
+    states[49] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-19,50,-15,45});
     states[50] = new State(-43);
     states[51] = new State(-41);
-    states[52] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-18,53,-19,51,-15,45});
-    states[53] = new State(new int[]{33,43,34,49,31,-40,32,-40,5,-40,36,-40,38,-40,37,-40,7,-40});
-    states[54] = new State(new int[]{30,79,24,26},new int[]{-15,55});
+    states[52] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-18,53,-19,51,-15,45});
+    states[53] = new State(new int[]{36,43,37,49,34,-40,35,-40,5,-40,39,-40,41,-40,40,-40,7,-40});
+    states[54] = new State(new int[]{33,79,27,26},new int[]{-15,55});
     states[55] = new State(new int[]{6,56});
-    states[56] = new State(new int[]{25,57});
-    states[57] = new State(new int[]{9,60,27,69,24,26},new int[]{-16,58,-15,74});
+    states[56] = new State(new int[]{28,57});
+    states[57] = new State(new int[]{9,60,30,69,27,26},new int[]{-16,58,-15,74});
     states[58] = new State(new int[]{7,59});
     states[59] = new State(-29);
-    states[60] = new State(new int[]{27,65,24,26},new int[]{-15,61});
+    states[60] = new State(new int[]{30,65,27,26},new int[]{-15,61});
     states[61] = new State(new int[]{9,62});
-    states[62] = new State(new int[]{27,64,24,26},new int[]{-15,63});
+    states[62] = new State(new int[]{30,64,27,26},new int[]{-15,63});
     states[63] = new State(-32);
     states[64] = new State(-37);
     states[65] = new State(new int[]{9,66});
-    states[66] = new State(new int[]{27,67,24,26},new int[]{-15,68});
+    states[66] = new State(new int[]{30,67,27,26},new int[]{-15,68});
     states[67] = new State(-33);
     states[68] = new State(-36);
     states[69] = new State(new int[]{9,70});
-    states[70] = new State(new int[]{27,71});
+    states[70] = new State(new int[]{30,71});
     states[71] = new State(new int[]{9,72});
-    states[72] = new State(new int[]{25,73});
+    states[72] = new State(new int[]{28,73});
     states[73] = new State(-34);
     states[74] = new State(new int[]{9,75});
-    states[75] = new State(new int[]{24,26},new int[]{-15,76});
+    states[75] = new State(new int[]{27,26},new int[]{-15,76});
     states[76] = new State(new int[]{9,77});
-    states[77] = new State(new int[]{25,78});
+    states[77] = new State(new int[]{28,78});
     states[78] = new State(-35);
     states[79] = new State(new int[]{6,80});
-    states[80] = new State(new int[]{9,60,27,69,24,26},new int[]{-16,81,-15,74});
+    states[80] = new State(new int[]{9,60,30,69,27,26},new int[]{-16,81,-15,74});
     states[81] = new State(new int[]{7,82});
     states[82] = new State(-30);
-    states[83] = new State(new int[]{5,-31,33,-46,34,-46,31,-46,32,-46});
-    states[84] = new State(new int[]{33,43,34,49,31,-38,32,-38,5,-38,36,-38,38,-38,37,-38,7,-38});
-    states[85] = new State(-70);
+    states[83] = new State(new int[]{5,-31,36,-46,37,-46,34,-46,35,-46});
+    states[84] = new State(new int[]{36,43,37,49,34,-38,35,-38,5,-38,39,-38,41,-38,40,-38,7,-38});
+    states[85] = new State(-71);
     states[86] = new State(new int[]{6,87});
-    states[87] = new State(new int[]{35,106,15,108,24,26,27,46,25,47},new int[]{-24,88,-25,107,-17,119,-18,84,-19,51,-15,45});
+    states[87] = new State(new int[]{38,117,15,119,27,26,30,46,28,47},new int[]{-24,88,-25,118,-17,130,-18,84,-19,51,-15,45});
     states[88] = new State(new int[]{7,89});
     states[89] = new State(new int[]{10,90});
-    states[90] = new State(new int[]{28,15,29,29,24,34,17,86,14,95},new int[]{-30,91,-29,105,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93});
-    states[91] = new State(new int[]{11,92,28,15,29,29,24,34,17,86,14,95},new int[]{-29,11,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93});
+    states[90] = new State(new int[]{31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-30,91,-29,116,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
+    states[91] = new State(new int[]{11,92,31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-29,11,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
     states[92] = new State(-51);
     states[93] = new State(new int[]{5,94});
-    states[94] = new State(-71);
-    states[95] = new State(new int[]{16,96});
-    states[96] = new State(new int[]{24,97});
+    states[94] = new State(-72);
+    states[95] = new State(new int[]{19,96});
+    states[96] = new State(new int[]{27,97});
     states[97] = new State(new int[]{6,98});
-    states[98] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-28,99,-21,104,-19,103,-15,45});
+    states[98] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-28,99,-21,104,-19,103,-15,45});
     states[99] = new State(new int[]{7,100,9,101});
     states[100] = new State(-62);
-    states[101] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-21,102,-19,103,-15,45});
+    states[101] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-21,102,-19,103,-15,45});
     states[102] = new State(-64);
     states[103] = new State(-65);
     states[104] = new State(-63);
-    states[105] = new State(-66);
-    states[106] = new State(new int[]{7,-52,33,-47,34,-47,36,-47,31,-47,32,-47,38,-47,37,-47});
-    states[107] = new State(-53);
-    states[108] = new State(new int[]{16,109});
-    states[109] = new State(new int[]{24,110});
-    states[110] = new State(new int[]{6,111});
-    states[111] = new State(new int[]{7,117,24,26,27,46,25,47,35,48},new int[]{-27,112,-20,118,-19,116,-15,45});
-    states[112] = new State(new int[]{7,113,9,114});
-    states[113] = new State(-57);
-    states[114] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-20,115,-19,116,-15,45});
-    states[115] = new State(-60);
-    states[116] = new State(-61);
-    states[117] = new State(-58);
-    states[118] = new State(-59);
-    states[119] = new State(new int[]{36,120,31,41,32,52,38,122,37,124});
-    states[120] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-17,121,-18,84,-19,51,-15,45});
-    states[121] = new State(new int[]{31,41,32,52,7,-54});
-    states[122] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-17,123,-18,84,-19,51,-15,45});
-    states[123] = new State(new int[]{31,41,32,52,7,-55});
-    states[124] = new State(new int[]{24,26,27,46,25,47,35,48},new int[]{-17,125,-18,84,-19,51,-15,45});
-    states[125] = new State(new int[]{31,41,32,52,7,-56});
-    states[126] = new State(new int[]{3,127});
-    states[127] = new State(new int[]{24,26},new int[]{-6,128,-7,132,-15,38});
-    states[128] = new State(new int[]{5,129});
-    states[129] = new State(new int[]{4,130,24,26},new int[]{-7,131,-15,38});
-    states[130] = new State(-25);
-    states[131] = new State(-27);
-    states[132] = new State(-26);
-    states[133] = new State(new int[]{3,134});
-    states[134] = new State(new int[]{28,15,29,29,24,139},new int[]{-12,135,-9,140,-10,14,-11,33});
-    states[135] = new State(new int[]{5,136});
-    states[136] = new State(new int[]{4,137,28,15,29,29,24,139},new int[]{-9,138,-10,14,-11,33});
-    states[137] = new State(-12);
-    states[138] = new State(-14);
-    states[139] = new State(new int[]{24,35});
-    states[140] = new State(-13);
-    states[141] = new State(new int[]{3,142});
-    states[142] = new State(new int[]{24,146},new int[]{-3,143,-2,168});
-    states[143] = new State(new int[]{4,144,24,146},new int[]{-2,145});
-    states[144] = new State(-3);
-    states[145] = new State(-5);
-    states[146] = new State(new int[]{6,147,12,164});
-    states[147] = new State(new int[]{28,159,29,161},new int[]{-13,148,-10,163});
-    states[148] = new State(new int[]{7,149,9,157});
-    states[149] = new State(new int[]{12,150});
-    states[150] = new State(new int[]{10,151});
-    states[151] = new State(new int[]{40,156},new int[]{-4,152});
-    states[152] = new State(new int[]{11,153,9,154});
-    states[153] = new State(-6);
-    states[154] = new State(new int[]{40,155});
-    states[155] = new State(-11);
-    states[156] = new State(-10);
-    states[157] = new State(new int[]{28,159,29,161},new int[]{-10,158});
-    states[158] = new State(-9);
-    states[159] = new State(new int[]{24,160});
-    states[160] = new State(new int[]{36,17});
-    states[161] = new State(new int[]{24,162});
-    states[162] = new State(new int[]{36,31});
-    states[163] = new State(-8);
-    states[164] = new State(new int[]{10,165});
-    states[165] = new State(new int[]{40,156},new int[]{-4,166});
-    states[166] = new State(new int[]{11,167,9,154});
-    states[167] = new State(-7);
-    states[168] = new State(-4);
+    states[105] = new State(-73);
+    states[106] = new State(new int[]{6,107});
+    states[107] = new State(new int[]{27,108});
+    states[108] = new State(new int[]{27,109});
+    states[109] = new State(new int[]{17,110});
+    states[110] = new State(new int[]{18,111});
+    states[111] = new State(new int[]{7,112});
+    states[112] = new State(new int[]{10,113});
+    states[113] = new State(new int[]{31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-30,114,-29,116,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
+    states[114] = new State(new int[]{11,115,31,15,32,29,27,34,20,86,14,95,16,106},new int[]{-29,11,-9,12,-10,14,-11,33,-7,36,-15,38,-23,85,-26,93,-31,105});
+    states[115] = new State(-66);
+    states[116] = new State(-67);
+    states[117] = new State(new int[]{7,-52,36,-47,37,-47,39,-47,34,-47,35,-47,41,-47,40,-47});
+    states[118] = new State(-53);
+    states[119] = new State(new int[]{19,120});
+    states[120] = new State(new int[]{27,121});
+    states[121] = new State(new int[]{6,122});
+    states[122] = new State(new int[]{7,128,27,26,30,46,28,47,38,48},new int[]{-27,123,-20,129,-19,127,-15,45});
+    states[123] = new State(new int[]{7,124,9,125});
+    states[124] = new State(-57);
+    states[125] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-20,126,-19,127,-15,45});
+    states[126] = new State(-60);
+    states[127] = new State(-61);
+    states[128] = new State(-58);
+    states[129] = new State(-59);
+    states[130] = new State(new int[]{39,131,34,41,35,52,41,134,40,136});
+    states[131] = new State(new int[]{39,132});
+    states[132] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-17,133,-18,84,-19,51,-15,45});
+    states[133] = new State(new int[]{34,41,35,52,7,-54});
+    states[134] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-17,135,-18,84,-19,51,-15,45});
+    states[135] = new State(new int[]{34,41,35,52,7,-55});
+    states[136] = new State(new int[]{27,26,30,46,28,47,38,48},new int[]{-17,137,-18,84,-19,51,-15,45});
+    states[137] = new State(new int[]{34,41,35,52,7,-56});
+    states[138] = new State(new int[]{3,139});
+    states[139] = new State(new int[]{27,26},new int[]{-6,140,-7,144,-15,38});
+    states[140] = new State(new int[]{5,141});
+    states[141] = new State(new int[]{4,142,27,26},new int[]{-7,143,-15,38});
+    states[142] = new State(-25);
+    states[143] = new State(-27);
+    states[144] = new State(-26);
+    states[145] = new State(new int[]{3,146});
+    states[146] = new State(new int[]{31,15,32,29,27,151},new int[]{-12,147,-9,152,-10,14,-11,33});
+    states[147] = new State(new int[]{5,148});
+    states[148] = new State(new int[]{4,149,31,15,32,29,27,151},new int[]{-9,150,-10,14,-11,33});
+    states[149] = new State(-12);
+    states[150] = new State(-14);
+    states[151] = new State(new int[]{27,35});
+    states[152] = new State(-13);
+    states[153] = new State(new int[]{3,154});
+    states[154] = new State(new int[]{27,158},new int[]{-3,155,-2,180});
+    states[155] = new State(new int[]{4,156,27,158},new int[]{-2,157});
+    states[156] = new State(-3);
+    states[157] = new State(-5);
+    states[158] = new State(new int[]{6,159,12,176});
+    states[159] = new State(new int[]{31,171,32,173},new int[]{-13,160,-10,175});
+    states[160] = new State(new int[]{7,161,9,169});
+    states[161] = new State(new int[]{12,162});
+    states[162] = new State(new int[]{10,163});
+    states[163] = new State(new int[]{43,168},new int[]{-4,164});
+    states[164] = new State(new int[]{11,165,9,166});
+    states[165] = new State(-6);
+    states[166] = new State(new int[]{43,167});
+    states[167] = new State(-11);
+    states[168] = new State(-10);
+    states[169] = new State(new int[]{31,171,32,173},new int[]{-10,170});
+    states[170] = new State(-9);
+    states[171] = new State(new int[]{27,172});
+    states[172] = new State(new int[]{39,17});
+    states[173] = new State(new int[]{27,174});
+    states[174] = new State(new int[]{39,31});
+    states[175] = new State(-8);
+    states[176] = new State(new int[]{10,177});
+    states[177] = new State(new int[]{43,168},new int[]{-4,178});
+    states[178] = new State(new int[]{11,179,9,166});
+    states[179] = new State(-7);
+    states[180] = new State(-4);
 
-    rules[1] = new Rule(-32, new int[]{-31,2});
-    rules[2] = new Rule(-31, new int[]{-1,-8,-5,-14});
-    rules[3] = new Rule(-1, new int[]{19,3,-3,4});
+    rules[1] = new Rule(-33, new int[]{-32,2});
+    rules[2] = new Rule(-32, new int[]{-1,-8,-5,-14});
+    rules[3] = new Rule(-1, new int[]{22,3,-3,4});
     rules[4] = new Rule(-3, new int[]{-2});
     rules[5] = new Rule(-3, new int[]{-3,-2});
-    rules[6] = new Rule(-2, new int[]{24,6,-13,7,12,10,-4,11});
-    rules[7] = new Rule(-2, new int[]{24,12,10,-4,11});
+    rules[6] = new Rule(-2, new int[]{27,6,-13,7,12,10,-4,11});
+    rules[7] = new Rule(-2, new int[]{27,12,10,-4,11});
     rules[8] = new Rule(-13, new int[]{-10});
     rules[9] = new Rule(-13, new int[]{-13,9,-10});
-    rules[10] = new Rule(-4, new int[]{40});
-    rules[11] = new Rule(-4, new int[]{-4,9,40});
-    rules[12] = new Rule(-8, new int[]{20,3,-12,5,4});
+    rules[10] = new Rule(-4, new int[]{43});
+    rules[11] = new Rule(-4, new int[]{-4,9,43});
+    rules[12] = new Rule(-8, new int[]{23,3,-12,5,4});
     rules[13] = new Rule(-12, new int[]{-9});
     rules[14] = new Rule(-12, new int[]{-12,5,-9});
     rules[15] = new Rule(-9, new int[]{-10});
     rules[16] = new Rule(-9, new int[]{-11});
-    rules[17] = new Rule(-10, new int[]{28,24,36,27});
-    rules[18] = new Rule(-10, new int[]{29,24,36,25});
-    rules[19] = new Rule(-10, new int[]{28,24,36,-22});
-    rules[20] = new Rule(-22, new int[]{39,6,27,7});
-    rules[21] = new Rule(-22, new int[]{39,6,-15,7});
-    rules[22] = new Rule(-11, new int[]{28,24});
-    rules[23] = new Rule(-11, new int[]{29,24});
-    rules[24] = new Rule(-11, new int[]{24,24});
-    rules[25] = new Rule(-5, new int[]{22,3,-6,5,4});
+    rules[17] = new Rule(-10, new int[]{31,27,39,30});
+    rules[18] = new Rule(-10, new int[]{32,27,39,28});
+    rules[19] = new Rule(-10, new int[]{31,27,39,-22});
+    rules[20] = new Rule(-22, new int[]{42,6,30,7});
+    rules[21] = new Rule(-22, new int[]{42,6,-15,7});
+    rules[22] = new Rule(-11, new int[]{31,27});
+    rules[23] = new Rule(-11, new int[]{32,27});
+    rules[24] = new Rule(-11, new int[]{27,27});
+    rules[25] = new Rule(-5, new int[]{25,3,-6,5,4});
     rules[26] = new Rule(-6, new int[]{-7});
     rules[27] = new Rule(-6, new int[]{-6,5,-7});
-    rules[28] = new Rule(-7, new int[]{-15,36,-17});
-    rules[29] = new Rule(-7, new int[]{-15,36,13,-15,6,25,-16,7});
-    rules[30] = new Rule(-7, new int[]{-15,36,13,30,6,-16,7});
-    rules[31] = new Rule(-7, new int[]{-15,36,25});
+    rules[28] = new Rule(-7, new int[]{-15,39,-17});
+    rules[29] = new Rule(-7, new int[]{-15,39,13,-15,6,28,-16,7});
+    rules[30] = new Rule(-7, new int[]{-15,39,13,33,6,-16,7});
+    rules[31] = new Rule(-7, new int[]{-15,39,28});
     rules[32] = new Rule(-16, new int[]{9,-15,9,-15});
-    rules[33] = new Rule(-16, new int[]{9,27,9,27});
-    rules[34] = new Rule(-16, new int[]{27,9,27,9,25});
-    rules[35] = new Rule(-16, new int[]{-15,9,-15,9,25});
-    rules[36] = new Rule(-16, new int[]{9,27,9,-15});
-    rules[37] = new Rule(-16, new int[]{9,-15,9,27});
+    rules[33] = new Rule(-16, new int[]{9,30,9,30});
+    rules[34] = new Rule(-16, new int[]{30,9,30,9,28});
+    rules[35] = new Rule(-16, new int[]{-15,9,-15,9,28});
+    rules[36] = new Rule(-16, new int[]{9,30,9,-15});
+    rules[37] = new Rule(-16, new int[]{9,-15,9,30});
     rules[38] = new Rule(-17, new int[]{-18});
-    rules[39] = new Rule(-17, new int[]{-17,31,-18});
-    rules[40] = new Rule(-17, new int[]{-17,32,-18});
+    rules[39] = new Rule(-17, new int[]{-17,34,-18});
+    rules[40] = new Rule(-17, new int[]{-17,35,-18});
     rules[41] = new Rule(-18, new int[]{-19});
-    rules[42] = new Rule(-18, new int[]{-18,33,-19});
-    rules[43] = new Rule(-18, new int[]{-18,34,-19});
+    rules[42] = new Rule(-18, new int[]{-18,36,-19});
+    rules[43] = new Rule(-18, new int[]{-18,37,-19});
     rules[44] = new Rule(-19, new int[]{-15});
-    rules[45] = new Rule(-19, new int[]{27});
-    rules[46] = new Rule(-19, new int[]{25});
-    rules[47] = new Rule(-19, new int[]{35});
-    rules[48] = new Rule(-15, new int[]{24});
-    rules[49] = new Rule(-15, new int[]{24,16,24});
-    rules[50] = new Rule(-14, new int[]{23,3,-30,4});
-    rules[51] = new Rule(-23, new int[]{17,6,-24,7,10,-30,11});
-    rules[52] = new Rule(-24, new int[]{35});
+    rules[45] = new Rule(-19, new int[]{30});
+    rules[46] = new Rule(-19, new int[]{28});
+    rules[47] = new Rule(-19, new int[]{38});
+    rules[48] = new Rule(-15, new int[]{27});
+    rules[49] = new Rule(-15, new int[]{27,19,27});
+    rules[50] = new Rule(-14, new int[]{26,3,-30,4});
+    rules[51] = new Rule(-23, new int[]{20,6,-24,7,10,-30,11});
+    rules[52] = new Rule(-24, new int[]{38});
     rules[53] = new Rule(-24, new int[]{-25});
-    rules[54] = new Rule(-24, new int[]{-17,36,-17});
-    rules[55] = new Rule(-24, new int[]{-17,38,-17});
-    rules[56] = new Rule(-24, new int[]{-17,37,-17});
-    rules[57] = new Rule(-25, new int[]{15,16,24,6,-27,7});
-    rules[58] = new Rule(-25, new int[]{15,16,24,6,7});
+    rules[54] = new Rule(-24, new int[]{-17,39,39,-17});
+    rules[55] = new Rule(-24, new int[]{-17,41,-17});
+    rules[56] = new Rule(-24, new int[]{-17,40,-17});
+    rules[57] = new Rule(-25, new int[]{15,19,27,6,-27,7});
+    rules[58] = new Rule(-25, new int[]{15,19,27,6,7});
     rules[59] = new Rule(-27, new int[]{-20});
     rules[60] = new Rule(-27, new int[]{-27,9,-20});
     rules[61] = new Rule(-20, new int[]{-19});
-    rules[62] = new Rule(-26, new int[]{14,16,24,6,-28,7});
+    rules[62] = new Rule(-26, new int[]{14,19,27,6,-28,7});
     rules[63] = new Rule(-28, new int[]{-21});
     rules[64] = new Rule(-28, new int[]{-28,9,-21});
     rules[65] = new Rule(-21, new int[]{-19});
-    rules[66] = new Rule(-30, new int[]{-29});
-    rules[67] = new Rule(-30, new int[]{-30,-29});
-    rules[68] = new Rule(-29, new int[]{-9,5});
-    rules[69] = new Rule(-29, new int[]{-7,5});
-    rules[70] = new Rule(-29, new int[]{-23});
-    rules[71] = new Rule(-29, new int[]{-26,5});
+    rules[66] = new Rule(-31, new int[]{16,6,27,27,17,18,7,10,-30,11});
+    rules[67] = new Rule(-30, new int[]{-29});
+    rules[68] = new Rule(-30, new int[]{-30,-29});
+    rules[69] = new Rule(-29, new int[]{-9,5});
+    rules[70] = new Rule(-29, new int[]{-7,5});
+    rules[71] = new Rule(-29, new int[]{-23});
+    rules[72] = new Rule(-29, new int[]{-26,5});
+    rules[73] = new Rule(-29, new int[]{-31});
   }
 
   protected override void Initialize() {
@@ -567,8 +583,8 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
       case 53: // logic -> condition
 { CurrentSemanticValue.logicVal = new LogicalNode(ValueStack[ValueStack.Depth-1].condVal.ToString()); }
         break;
-      case 54: // logic -> expression, EQUAL, expression
-{ CurrentSemanticValue.logicVal = new LogicalNode(ValueStack[ValueStack.Depth-3].sVal, ValueStack[ValueStack.Depth-2].sVal, ValueStack[ValueStack.Depth-1].sVal); }
+      case 54: // logic -> expression, EQUAL, EQUAL, expression
+{ CurrentSemanticValue.logicVal = new LogicalNode(ValueStack[ValueStack.Depth-4].sVal, ValueStack[ValueStack.Depth-3].sVal + ValueStack[ValueStack.Depth-2].sVal, ValueStack[ValueStack.Depth-1].sVal); }
         break;
       case 55: // logic -> expression, MORE, expression
 { CurrentSemanticValue.logicVal = new LogicalNode(ValueStack[ValueStack.Depth-3].sVal, ValueStack[ValueStack.Depth-2].sVal, ValueStack[ValueStack.Depth-1].sVal); }
@@ -623,33 +639,45 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
       case 65: // actionParam -> F
 { CurrentSemanticValue.sVal = ValueStack[ValueStack.Depth-1].sVal; }
         break;
-      case 66: // funList -> functionality
+      case 66: // forEach -> FOREACH, OPBRACKET, ID, ID, IN, SPRITES, CLBRACKET, OPPARENTHESES, 
+               //            funList, CLPARENTHESES
+{
+			CurrentSemanticValue.feVal = new ForEachNode(ValueStack[ValueStack.Depth-8].sVal, ValueStack[ValueStack.Depth-7].sVal);
+			CurrentSemanticValue.feVal.statements = ValueStack[ValueStack.Depth-2].lstUlVal;
+		}
+        break;
+      case 67: // funList -> functionality
 {
 			CurrentSemanticValue.lstUlVal = new List<UpdateLogicNode>();
 			CurrentSemanticValue.lstUlVal.Add(ValueStack[ValueStack.Depth-1].ulVal);
 		}
         break;
-      case 67: // funList -> funList, functionality
+      case 68: // funList -> funList, functionality
 {
 			ValueStack[ValueStack.Depth-2].lstUlVal.Add(ValueStack[ValueStack.Depth-1].ulVal);
 			CurrentSemanticValue.lstUlVal = ValueStack[ValueStack.Depth-2].lstUlVal;
 		}
         break;
-      case 68: // functionality -> assignOrVar, SEMICOLON
+      case 69: // functionality -> assignOrVar, SEMICOLON
 { 
 					CurrentSemanticValue.ulVal = new UpdateLogicNode(ValueStack[ValueStack.Depth-2].varVal.ToString());
 				}
         break;
-      case 69: // functionality -> assign, SEMICOLON
+      case 70: // functionality -> assign, SEMICOLON
 { 
 					CurrentSemanticValue.ulVal = new UpdateLogicNode(ValueStack[ValueStack.Depth-2].singVal);
 				}
         break;
-      case 70: // functionality -> if
+      case 71: // functionality -> if
 { CurrentSemanticValue.ulVal = new UpdateLogicNode(ValueStack[ValueStack.Depth-1].ifVal); }
         break;
-      case 71: // functionality -> action, SEMICOLON
+      case 72: // functionality -> action, SEMICOLON
 { CurrentSemanticValue.ulVal = new UpdateLogicNode(ValueStack[ValueStack.Depth-2].actVal.ToString()); }
+        break;
+      case 73: // functionality -> forEach
+{
+					CurrentSemanticValue.ulVal = new UpdateLogicNode(ValueStack[ValueStack.Depth-1].feVal);
+				}
         break;
     }
   }

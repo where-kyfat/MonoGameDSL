@@ -58,6 +58,7 @@
     <Compile Include="Nodes\ActionNode.cs" />
     <Compile Include="Nodes\AssignNode.cs" />
     <Compile Include="Nodes\ConditionNode.cs" />
+    <Compile Include="Nodes\ForEachNode.cs" />
     <Compile Include="Nodes\GameNode.cs" />
     <Compile Include="Nodes\IfNode.cs" />
     <Compile Include="Nodes\LoadContentNode.cs" />

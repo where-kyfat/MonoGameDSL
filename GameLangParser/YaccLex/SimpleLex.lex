@@ -147,7 +147,7 @@ BLOCKUPDATE "[UPDATE SECTION]"
 
 <UPDATE> {INTNUM} { yylval.sVal = yytext; return (int)Tokens.INTNUM; }
 
-<UPDATE> "=" { return (int)Tokens.EQUAL; }
+<UPDATE> "=" { yylval.sVal = yytext; return (int)Tokens.EQUAL; }
 <UPDATE> "(" { return (int)Tokens.OPBRACKET; }
 <UPDATE> ")" { return (int)Tokens.CLBRACKET; }
 <UPDATE> ";" { return (int)Tokens.SEMICOLON; }
@@ -219,6 +219,10 @@ class ScannerHelper
     keywords.Add("true",(int)Tokens.BOOLVAL);
     keywords.Add("false",(int)Tokens.BOOLVAL);
     keywords.Add("getRandom", (int)Tokens.RAND);
+
+    keywords.Add("in", (int)Tokens.IN);
+    keywords.Add("ForEach", (int)Tokens.FOREACH);
+    keywords.Add("sprites", (int)Tokens.SPRITES);
   }
   public static int GetIDToken(string s)
   {

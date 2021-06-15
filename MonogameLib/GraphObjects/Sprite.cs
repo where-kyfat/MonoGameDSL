@@ -40,6 +40,14 @@ namespace MonogameLib.Classes
             Behaviours = new List<Behaviour>();
         }
 
+        public int StartAngle
+        {
+            set
+            {
+                Rotation = (float)(value / 180 * Math.PI);
+            }
+        }
+
         public Vector2 transformPosition
         {
             get

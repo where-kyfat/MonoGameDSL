@@ -132,6 +132,7 @@ namespace TestProject
 		TextBox textBoxBullets;
 		Bullet bullet;
 		Monster monster;
+		Explode explode;
 		int bullets = 100;
 		int score = 0;
 
@@ -144,7 +145,6 @@ namespace TestProject
 			windowSizeY = 1080;
 			layoutSizeX = windowSizeX * 2;
 			layoutSizeY = windowSizeY * 2;
-			;
 			;
 			player = new Player(playerTexture,10,10);  sprites.Add(player);
 			player.speed = 4;
@@ -193,9 +193,33 @@ namespace TestProject
 			if (Conditions.EveryXSeconds(gameTime,3)) { 
 				int rand = getRandom(1024);
 				monster = new Monster(monsterTexture,1400,rand);  sprites.Add(monster);
-				monster.Rotation = 180;
+				monster.StartAngle = 180;
 				monster.speed = 4;
  			}
+			ForEach<Bullet>(bullet => { 
+					ForEach<Monster>(monster => { 
+					if (Conditions.InCollisionWith(bullet,monster)) { 
+				explode = new Explode(explodeTexture,bullet.PositionX,bullet.PositionY);  sprites.Add(explode);
+				explode.active = true;
+				explode.fadeOutTime = 2;
+				explode.destroyAfter = true;
+				Actions.Destroy(bullet);
+				monster.health = monster.health - 1;
+				if (monster.health==0) { 
+				Actions.Destroy(monster);
+				score = score + 1;
+ 			};
+ 			}
+ 			});
+ 			});
+			ForEach<Monster>(monster => { 
+					if (Conditions.IsOutsideLayout(monster,layoutSizeX,layoutSizeY)) { 
+				Actions.SetAngleForward(monster,player.PositionX,player.PositionY,true);
+ 			}
+					if (Conditions.InCollisionWith(monster,player)) { 
+				Actions.Destroy(player);
+ 			}
+ 			});
 
 
             base.Update(gameTime);

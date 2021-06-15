@@ -33,12 +33,13 @@
 			public ConditionNode condVal;
 			public ActionNode actVal;
 			public List<string> lstSVal;
+			public ForEachNode feVal;
        }
 
 %using GameLangParser.Nodes;
 %namespace GameLangParser
 
-%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW ACTION CONDITION
+%token BLOCKBEGIN BLOCKEND SEMICOLON OPBRACKET CLBRACKET VAR COMMA OPPARENTHESES CLPARENTHESES ASSIGN NEW ACTION CONDITION FOREACH IN SPRITES
 %token SEMICOLON DOT IF
 %token <sVal> CODEBLOCK BLOCKSPRITESINIT BLOCKVARIBLESINIT BLOCKLOADCONTENT BLOCKINITIALIZE BLOCKUPDATE ID STRING FIELD INTNUM INTTYPE STRINGTYPE TEXTBOX
 %token <sVal> ADD SUBSTRACT MULTIPLY DIVIDE BOOLVAL EQUAL LESS MORE RAND
@@ -67,6 +68,7 @@
 %type <lstSVal> conditionParams actionParams 
 %type <ulVal> functionality
 %type <lstUlVal> funList
+%type <feVal> forEach
 
 %%
 
@@ -270,7 +272,7 @@ if			: IF OPBRACKET logic CLBRACKET OPPARENTHESES funList CLPARENTHESES
 
 logic		: BOOLVAL { $$ = new LogicalNode($1); }
 			| condition { $$ = new LogicalNode($1.ToString()); }
-			| expression EQUAL expression { $$ = new LogicalNode($1, $2, $3); }
+			| expression EQUAL EQUAL expression { $$ = new LogicalNode($1, $2 + $3, $4); }
 			| expression MORE expression { $$ = new LogicalNode($1, $2, $3); }
 			| expression LESS expression { $$ = new LogicalNode($1, $2, $3); }
 			;
@@ -323,6 +325,13 @@ actionParams	: actionParam
 actionParam		: F { $$ = $1; }
 				;
 
+forEach	: FOREACH OPBRACKET ID ID IN SPRITES CLBRACKET OPPARENTHESES funList CLPARENTHESES
+		{
+			$$ = new ForEachNode($3, $4);
+			$$.statements = $9;
+		}
+		;
+
 funList	: functionality
 		{
 			$$ = new List<UpdateLogicNode>();
@@ -345,5 +354,9 @@ functionality	: assignOrVar SEMICOLON
 				}
 				| if { $$ = new UpdateLogicNode($1); }
 				| action SEMICOLON { $$ = new UpdateLogicNode($1.ToString()); }
+				| forEach 
+				{
+					$$ = new UpdateLogicNode($1);
+				}
 				;
 %%

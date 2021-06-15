@@ -10,10 +10,9 @@ namespace GameLangParser.Nodes
     public class UpdateLogicNode
     {
         public string func;
-
         public AssignNode assign;
-
         public IfNode ifNode;
+        public ForEachNode forEach;
 
         public UpdateLogicNode(string func)
         {
@@ -28,6 +27,11 @@ namespace GameLangParser.Nodes
         public UpdateLogicNode(IfNode ifNode)
         {
             this.ifNode = ifNode;
+        }
+
+        public UpdateLogicNode(ForEachNode forEach)
+        {
+            this.forEach = forEach;
         }
 
         public Tuple<string, string> GetPathTexture()
@@ -53,6 +57,10 @@ namespace GameLangParser.Nodes
             else if (ifNode != null)
             {
                 result = ifNode.ToString();
+            }
+            else if (forEach != null)
+            {
+                result = forEach.ToString();
             }
             else
             {

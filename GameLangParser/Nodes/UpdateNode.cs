@@ -37,6 +37,10 @@ namespace GameLangParser.Nodes
                 {
                     result = func.ifNode.GetPathTextures(Textures);
                 }
+                else if (func.forEach != null)
+                {
+                    result = func.forEach.GetPathTextures(Textures);
+                }
             }
             return result;
         }

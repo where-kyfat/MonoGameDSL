@@ -7,14 +7,17 @@ using GameLangParser.Exceptions;
 
 namespace GameLangParser.Nodes
 {
-    public class IfNode
+    public class ForEachNode
     {
-        public LogicalNode condition;
+        string TypeSprite;
+        string IdSprite;
 
         public List<UpdateLogicNode> statements;
 
-        public IfNode()
+        public ForEachNode(string TypeSprite, string IdSprite)
         {
+            this.TypeSprite = TypeSprite;
+            this.IdSprite = IdSprite;
             statements = new List<UpdateLogicNode>();
         }
 
@@ -58,19 +61,58 @@ namespace GameLangParser.Nodes
 
         public override string ToString()
         {
-            string res = "if ([condition]) { \n[statements] \t\t\t}";
+            string res = "ForEach<[TypeSprite]>([IdSprite] => { \n[statements] \t\t\t});";
 
             string statementsStr = "";
-            string prefix = "\t\t\t\t";
+            string prefix = "\t\t\t\t\t";
+
             foreach (var statement in statements)
             {
-                statementsStr += prefix + statement.ToString() + ";\n";
+                string postfix = ";\n";
+                if (statement.ifNode != null || statement.forEach != null)
+                {
+                    postfix = "\n";
+                }
+
+                statementsStr += prefix + statement.ToString() + postfix;
             }
 
-            res = res.Replace("[condition]", condition.ToString());
+            res = res.Replace("[TypeSprite]", TypeSprite);
+            res = res.Replace("[IdSprite]", IdSprite);
             res = res.Replace("[statements]", statementsStr);
 
             return res;
         }
+
+        //public override string ToString()
+        //{
+        //    string res = "ForEach<[TypeSprite]>([IdSpriteTMP] => { \n[statements] \t\t\t});";
+
+        //    string statementsStr = "";
+        //    string prefix = "\t\t\t\t\t";
+
+        //    string castingType = prefix + "[TypeSprite] [IdSprite] = ([TypeSprite])[IdSpriteTMP];\n";
+        //    castingType = castingType.Replace("[TypeSprite]", TypeSprite);
+        //    castingType = castingType.Replace("[IdSprite]", IdSprite);
+        //    castingType = castingType.Replace("[IdSpriteTMP]", IdSprite + "TMP");
+        //    statementsStr += castingType;
+
+        //    foreach (var statement in statements)
+        //    {
+        //        string postfix = ";\n";
+        //        if (statement.ifNode != null || statement.forEach != null)
+        //        {
+        //            postfix = "\n";
+        //        }
+
+        //        statementsStr += prefix + statement.ToString() + postfix;
+        //    }
+
+        //    res = res.Replace("[TypeSprite]", TypeSprite);
+        //    res = res.Replace("[IdSpriteTMP]", IdSprite + "TMP");
+        //    res = res.Replace("[statements]", statementsStr);
+
+        //    return res;
+        //}
     }
 }

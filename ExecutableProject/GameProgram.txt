@@ -30,6 +30,7 @@
         TextBox textBoxBullets;
         Bullet bullet;
         Monster monster;
+        Explode explode;
         int bullets = 100;
         int score = 0;
 ^^
@@ -41,8 +42,6 @@
         layoutSizeX = windowSizeX * 2;
         layoutSizeY = windowSizeY * 2;
         layoutTexture = "TiledBackground";
-        explodeTexture = "explode";
-
 
         player = new Player("player", 10, 10);
         player.speed = 4;
@@ -85,7 +84,40 @@
         {
             int rand = getRandom(1024);
             monster = new Monster("monster", 1400, rand);
-            monster.Rotation = 180;
+            monster.StartAngle = 180;
             monster.speed = 4;
+        }
+
+        ForEach(Bullet bullet in sprites) 
+        {
+            ForEach(Monster monster in sprites) 
+            {
+                if (Conditions.InCollisionWith(bullet, monster))
+                {
+                    explode = new Explode("explode", bullet.PositionX, bullet.PositionY);
+                    explode.active = true;
+                    explode.fadeOutTime = 2;
+                    explode.destroyAfter = true;
+                    Actions.Destroy(bullet);
+                    monster.health = monster.health - 1;
+                    if (monster.health == 0)
+                    {
+                        Actions.Destroy(monster);
+                        score = score + 1;
+                    }
+                }
+            }
+        }
+
+        ForEach(Monster monster in sprites) 
+        {
+            if (Conditions.IsOutsideLayout(monster, layoutSizeX, layoutSizeY))
+            {
+                Actions.SetAngleForward(monster, player.PositionX, player.PositionY, true);
+            }
+            if (Conditions.InCollisionWith(monster, player))
+            {
+                Actions.Destroy(player);
+            }
         }
 ^^

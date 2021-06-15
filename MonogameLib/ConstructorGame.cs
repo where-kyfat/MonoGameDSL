@@ -93,15 +93,19 @@ namespace MonogameLib.Classes
             return Content.Load<SpriteFont>("Sprites/" + name);
         }
 
-        protected delegate void SomeAction(Sprite target);
+        protected delegate void SomeAction<T>(T target);
 
-        protected void ForEach<T>(SomeAction someAction)
+
+
+        protected void ForEach<T>(SomeAction<T> someAction)
         {
             for (int i = 0; i < sprites.Count; i++)
             {
                 if (sprites[i] is T)
                 {
-                    someAction((Sprite)sprites[i]);
+                    T curSprite = (T)((object)sprites[i]);
+                    someAction(curSprite);
+                    sprites[i] = (GraphObject)(object)curSprite;
                 }
             }
         }
