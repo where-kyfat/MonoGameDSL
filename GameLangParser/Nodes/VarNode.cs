@@ -25,11 +25,11 @@ namespace GameLangParser.Nodes
 
             if (value == null)
             {
-                result = string.Format("\t\t{0} {1};\n", type, id);
+                result = string.Format("{0} {1}", type, id);
             }
             else
             {
-                result = string.Format("\t\t{0} {1} = {2};\n", type, id, value);
+                result = string.Format("{0} {1} = {2}", type, id, value);
             }
 
             return result;

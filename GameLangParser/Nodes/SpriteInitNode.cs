@@ -33,7 +33,7 @@ namespace GameLangParser
             string res = "";
             foreach (var variable in variables)
             {
-                res += "public " + variable.ToString();
+                res += "public " + variable.ToString() + ";";
             }
             return res;
         }

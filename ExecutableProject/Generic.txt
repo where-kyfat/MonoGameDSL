@@ -73,8 +73,7 @@ namespace TestProject
 
     public class Monster : Sprite 
     {
-        public 		int health = 5;
-
+        public int health = 5;
         public Int32 speed; 
         public Monster (Texture2D texture, int positionX, int positionY ) : base(texture, positionX, positionY)
         {
@@ -145,8 +144,8 @@ namespace TestProject
 			windowSizeY = 1080;
 			layoutSizeX = windowSizeX * 2;
 			layoutSizeY = windowSizeY * 2;
-			
-			
+			;
+			;
 			player = new Player(playerTexture,10,10);  sprites.Add(player);
 			player.speed = 4;
 			player.camera = _camera;
@@ -178,8 +177,26 @@ namespace TestProject
 
         protected override void Update(GameTime gameTime)
         {
-if (Conditions.EveryTick()) { Actions.SetAngleForward(player,Mouse.X,Mouse.Y,false);textBoxBullets.text = "Count bullets: " + bullets;;textBoxScore.text = "Score: " + score;; }if (Conditions.OnMouseLeftClicked(gameTime)) { bullet = new Bullet(bulletTexture,player.PositionX,player.PositionY);  sprites.Add(bullet);;bullet.speed = 10;;bullet.layoutSizeX = layoutSizeX;;bullet.layoutSizeY = layoutSizeY;;bullet.Rotation = player.Rotation;;bullets = bullets - 1;; }if (Conditions.EveryXSeconds(gameTime,3)) { 		int rand = getRandom(1024);
-;monster = new Monster(monsterTexture,1400,rand);  sprites.Add(monster);;monster.Rotation = 180;;monster.speed = 4;; }
+			if (Conditions.EveryTick()) { 
+				Actions.SetAngleForward(player,Mouse.X,Mouse.Y,false);
+				textBoxBullets.text = "Count bullets: " + bullets;
+				textBoxScore.text = "Score: " + score;
+ 			}
+			if (Conditions.OnMouseLeftClicked(gameTime)) { 
+				bullet = new Bullet(bulletTexture,player.PositionX,player.PositionY);  sprites.Add(bullet);
+				bullet.speed = 10;
+				bullet.layoutSizeX = layoutSizeX;
+				bullet.layoutSizeY = layoutSizeY;
+				bullet.Rotation = player.Rotation;
+				bullets = bullets - 1;
+ 			}
+			if (Conditions.EveryXSeconds(gameTime,3)) { 
+				int rand = getRandom(1024);
+				monster = new Monster(monsterTexture,1400,rand);  sprites.Add(monster);
+				monster.Rotation = 180;
+				monster.speed = 4;
+ 			}
+
 
             base.Update(gameTime);
         }

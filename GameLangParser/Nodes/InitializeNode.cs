@@ -51,7 +51,7 @@ namespace GameLangParser.Nodes
             string prefix = "			";
             foreach (var assign in assings)
             {
-                result += prefix + assign.ToString() + "\n";
+                result += prefix + assign.ToString() + ";\n";
             }
 
             return gameCode.Replace(KeyWord, result);

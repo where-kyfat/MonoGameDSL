@@ -36,9 +36,10 @@ namespace GameLangParser.Nodes
             BlockCode = SpritesTextures + BlockCode;
             //---------------------------------------
 
+            prefix = "\t\t";
             foreach (var init in varNodes)
             {
-                BlockCode += init.ToString();
+                BlockCode += prefix + init.ToString() + ";\n";
             }
 
             return base.ToString(gameCode);

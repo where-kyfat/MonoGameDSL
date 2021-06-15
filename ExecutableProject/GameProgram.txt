@@ -44,7 +44,7 @@
         explodeTexture = "explode";
 
 
-        player = new  Player("player", 10, 10);
+        player = new Player("player", 10, 10);
         player.speed = 4;
         player.camera = _camera;
         player.windowSizeX = windowSizeX;
@@ -53,10 +53,10 @@
         player.layoutSizeY = layoutSizeY;
         player.IsEdge = true;
 
-        textBoxScore = new  TextBox(25, 25, "Score: ");
+        textBoxScore = new TextBox(25, 25, "Score: ");
         textBoxScore.text = textBoxScore.text + bullets;
 
-        textBoxBullets = new  TextBox(25, 50, "Count bullets: ");
+        textBoxBullets = new TextBox(25, 50, "Count bullets: ");
         textBoxBullets.text = textBoxBullets.text + score;
 ^^
 

@@ -54,12 +54,13 @@ namespace GameLangParser.Nodes
 
         public override string ToString()
         {
-            string res = "if ([condition]) { [statements] }";
+            string res = "if ([condition]) { \n[statements] \t\t\t}";
 
             string statementsStr = "";
+            string prefix = "\t\t\t\t";
             foreach (var statement in statements)
             {
-                statementsStr += statement.ToString() + ';';
+                statementsStr += prefix + statement.ToString() + ";\n";
             }
 
             res = res.Replace("[condition]", condition.ToString());

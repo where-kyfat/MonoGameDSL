@@ -59,7 +59,7 @@ namespace GameLangParser.Nodes
 
         public override string ToString()
         {
-            var result = "[idName] = [assign];";
+            var result = "[idName] = [assign]";
 
             if (typeName == "")
             {
@@ -72,13 +72,13 @@ namespace GameLangParser.Nodes
             }
             else if (typeName == "TextBox")
             {
-                var strNew = "new [TypeName](font [value])";
+                var strNew = "new [TypeName](font [value]);";
                 result = result.Replace("[assign]", strNew);
                 result = result.Replace("[idName]", idName);
                 result = result.Replace("[TypeName]", typeName);
                 result = result.Replace("[value]", value);
 
-                var strAdd = "sprites.Add([idName]);";
+                var strAdd = "sprites.Add([idName])";
                 strAdd = strAdd.Replace("[idName]", idName);
 
                 result = result + "  " + strAdd;
@@ -89,14 +89,14 @@ namespace GameLangParser.Nodes
                 {
                     throw new WrongTextureException(String.Format("Wrong texture name for {0}", idName));
                 }
-                var strNew = "new [TypeName]([texture][value])";
+                var strNew = "new [TypeName]([texture][value]);";
                 result = result.Replace("[assign]", strNew);
                 result = result.Replace("[idName]", idName);
                 result = result.Replace("[TypeName]", typeName);
                 result = result.Replace("[value]", value);
                 result = result.Replace("[texture]", texture);
 
-                var strAdd = "sprites.Add([idName]);";
+                var strAdd = "sprites.Add([idName])";
                 strAdd = strAdd.Replace("[idName]", idName);
 
                 result = result + "  " + strAdd;

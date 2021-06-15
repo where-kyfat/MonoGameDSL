@@ -44,9 +44,10 @@ namespace GameLangParser.Nodes
         public override string ToString(string gameCode)
         {
             string result = "";
+            string prefix = "\t\t\t";
             foreach (var func in functionality)
             {
-                result += func;
+                result += prefix + func + "\n";
             }
 
             return gameCode.Replace(KeyWord, result);
