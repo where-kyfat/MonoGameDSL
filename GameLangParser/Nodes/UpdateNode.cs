@@ -7,7 +7,7 @@ namespace GameLangParser.Nodes
     {
         public List<UpdateLogicNode> functionality;
 
-        public UpdateNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) 
+        public UpdateNode() : base("[UPDATE SECTION]") 
         {
             functionality = new List<UpdateLogicNode>();
         }
@@ -45,7 +45,7 @@ namespace GameLangParser.Nodes
             return result;
         }
 
-        public override string ToString(string gameCode)
+        protected override void Parse()
         {
             string result = "";
             string prefix = "\t\t\t";
@@ -54,7 +54,7 @@ namespace GameLangParser.Nodes
                 result += prefix + func + "\n";
             }
 
-            return gameCode.Replace(KeyWord, result);
+            BlockCode = result;
         }
     }
 }

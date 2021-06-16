@@ -22,7 +22,7 @@ namespace GameLangParser.Nodes
             var spritesTextures = ((SpritesInitNode)nodes[0]).GetNameTextures();
             spritesTextures.Add("layoutTexture");
 
-            var LoadNode = new LoadContentNode(null, "[LOAD CONTENT SECTION]");
+            var LoadNode = new LoadContentNode();
             var TexturePath = LoadNode.spitesTexturePathInit(spritesTextures);
 
             foreach (var node in nodes)

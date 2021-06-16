@@ -8,7 +8,7 @@ namespace GameLangParser.Nodes
         public List<AssignNode> assings;
         Dictionary<string, string> Textures;
 
-        public InitializeNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) 
+        public InitializeNode() : base("[INITIALIZE SECTION]") 
         {
             this.assings = new List<AssignNode>();
         }
@@ -45,7 +45,7 @@ namespace GameLangParser.Nodes
             this.Textures = Textures;
         }
 
-        public override string ToString(string gameCode)
+        protected override void Parse()
         {
             string result = "";
             string prefix = "			";
@@ -54,7 +54,7 @@ namespace GameLangParser.Nodes
                 result += prefix + assign.ToString() + ";\n";
             }
 
-            return gameCode.Replace(KeyWord, result);
+            BlockCode = result;
         }
     }
 }

@@ -78,22 +78,22 @@ progr   :  blockSpritesInit blockVariablesInit blockInitialize blockUpdate
 		
 blockSpritesInit	: SPRITESINIT ASSIGN OPPARENTHESES spritesInit CLPARENTHESES
 					{ 
-						$$ = new SpritesInitNode(null, $1);
+						$$ = new SpritesInitNode();
 						$$.inits = $4;
 					}
 					;
 
 blockVariablesInit	: VARIBLESINIT ASSIGN OPPARENTHESES variablesList SEMICOLON CLPARENTHESES 
-					{ $$ = new VariablesInitNode(null, $1);  $$.varNodes = $4;}
+					{ $$ = new VariablesInitNode();  $$.varNodes = $4;}
 					;
 
 blockInitialize	: INITIALIZE ASSIGN OPPARENTHESES initList SEMICOLON CLPARENTHESES 
-				{ $$ = new InitializeNode(null, $1); $$.assings = $4;}
+				{ $$ = new InitializeNode(); $$.assings = $4;}
 				;
 
 blockUpdate		: UPDATE ASSIGN OPPARENTHESES funList CLPARENTHESES 
 				{ 
-					$$ = new UpdateNode(null, $1);
+					$$ = new UpdateNode();
 					$$.functionality = $4;
 				}
 				;
@@ -175,6 +175,7 @@ rand	: RAND OPBRACKET INTNUM CLBRACKET { $$ = string.Format("{0}({1})", $1, $3);
 variable		: INTTYPE ID { $$ = new VarNode($1, $2); }
 				| STRINGTYPE ID { $$ = new VarNode($1, $2); }
 				| ID ID { $$ = new VarNode($1, $2); }
+				| TEXTBOX ID { $$ = new VarNode($1, $2); }
 				;
 
 initList	: assign 

@@ -9,7 +9,7 @@ namespace GameLangParser.Nodes
     public class SpritesInitNode : Node
     {
         public List<SpriteInitNode> inits;
-        public SpritesInitNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) 
+        public SpritesInitNode() : base("[SPRITES LOGIC SECTION]")
         {
             inits = new List<SpriteInitNode>();
         }
@@ -37,7 +37,7 @@ namespace GameLangParser.Nodes
             return result;
         }
 
-        public override string ToString(string gameCode)
+        protected override void Parse()
         {
             string result = "";
             foreach (var init in inits)
@@ -45,7 +45,7 @@ namespace GameLangParser.Nodes
                 result += init.ToString();
             }
 
-            return gameCode.Replace(KeyWord, result);
+            BlockCode = result;
         }
     }
 }

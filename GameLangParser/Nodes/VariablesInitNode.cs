@@ -11,14 +11,14 @@ namespace GameLangParser.Nodes
         List<string> spritesTexturs;
 
         public List<VarNode> varNodes;
-        public VariablesInitNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) { }
+        public VariablesInitNode() : base("[VARIBLES SECTION]") { }
 
         public void SpritesTextureInit(List<string> spritesTexturs)
         {
             this.spritesTexturs = spritesTexturs;
         }
 
-        public override string ToString(string gameCode)
+        protected override void Parse()
         {
             string SpritesTextures = "";
 
@@ -31,7 +31,7 @@ namespace GameLangParser.Nodes
                 {
                     SpritesTextures += prefix.Replace("[name]", sprite);
                 }
-                
+
             }
             BlockCode = SpritesTextures + BlockCode;
             //---------------------------------------
@@ -42,7 +42,6 @@ namespace GameLangParser.Nodes
                 BlockCode += prefix + init.ToString() + ";\n";
             }
 
-            return base.ToString(gameCode);
         }
     }
 }

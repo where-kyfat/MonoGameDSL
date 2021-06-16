@@ -10,7 +10,7 @@ namespace GameLangParser.Nodes
     public class LoadContentNode : Node
     {
         public Dictionary<string, string> spitesTexturePath;
-        public LoadContentNode(string BlockCode, string KeyWord) : base(BlockCode, KeyWord) { }
+        public LoadContentNode() : base( "[LOAD CONTENT SECTION]") { }
 
         public Dictionary<string, string> spitesTexturePathInit(List<string> spritesTextures)
         {
@@ -24,7 +24,7 @@ namespace GameLangParser.Nodes
             return spitesTexturePath;
         }
 
-        public override string ToString()
+        protected override void Parse()
         {
             var result = "";
             var loadTexture = "\t\t\t[name] = LoadTextrure([pathTexture]);\n";
@@ -44,12 +44,7 @@ namespace GameLangParser.Nodes
                 }
             }
 
-            return result;
-        }
-
-        public override string ToString(string gameCode)
-        {
-            return gameCode.Replace(KeyWord, this.ToString());
+            BlockCode = result;
         }
     }
 }
