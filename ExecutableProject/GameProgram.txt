@@ -71,7 +71,7 @@ Update := {
         bullet = new Bullet("bullet", player.PositionX, player.PositionY);
         bullet.speed = 10;
         bullet.layoutSizeX = layoutSizeX;
-        bullet.layoutSizeY = layoutSizeY;
+        bullet.layoutSizeY = layoutSizeY
         bullet.Rotation = player.Rotation;
         bullets = bullets - 1;
     }

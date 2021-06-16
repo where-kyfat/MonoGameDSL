@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ExecutableProject": {
+      "commandName": "Project",
+      "commandLineArgs": "GameProgram.txt"
+    }
+  }
+}

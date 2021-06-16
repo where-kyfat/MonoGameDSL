@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Collections.Generic;
 
 namespace ExecutableProject
 {
@@ -15,9 +16,11 @@ namespace ExecutableProject
         {
             //Parse code from pathGameCode
             string codeToCompile = GameLangParser.GameLangParser.ParseGameProgram(pathGameCode);
+
+            string fileName = "Generic.txt";
             try
             {
-                var pathToGenericFile = "../../../Generic.txt";
+                var pathToGenericFile = "../../../" + fileName;
                 using (StreamWriter sw = new StreamWriter(pathToGenericFile, false, System.Text.Encoding.Default))
                 {
                     sw.WriteLine(codeToCompile);
@@ -52,12 +55,22 @@ namespace ExecutableProject
                 EmitResult emitResult = compilation.Emit(ms);
                 if (!emitResult.Success)
                 {
+                    List<string> errors = new List<string>();
                     // some errors
                     foreach (var error in emitResult.Diagnostics)
                     {
-                        throw new DSL_Error(error.ToString());
+                        var errorstr = error.ToString();
+                        var position = errorstr.Substring(0, errorstr.IndexOf(':'));
+                        var message = string.Format("In {0}: {1}: {2}", fileName, position, error.GetMessage());
+                        errors.Add(message);
                     }
-                    
+
+                    string fullStr = "";
+                    foreach (var error in errors)
+                    {
+                        fullStr += error + '\n';
+                    }
+                    throw new DSL_Error(fullStr);
                 }
                 else
                 {
@@ -69,13 +82,11 @@ namespace ExecutableProject
                     return (MonogameLib.Classes.ConstructorGame)instance;
                 }
             }
-            return null;
         }
     }
 
     class DSL_Error: Exception
     {
-        public DSL_Error(string message) : base(message)
-        { }
+        public DSL_Error(string message) : base(message) { }
     }
 }
