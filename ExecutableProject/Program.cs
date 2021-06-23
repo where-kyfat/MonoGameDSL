@@ -38,7 +38,7 @@ namespace ExecutableProject
                 }
                 catch (GameLangParser.Exceptions.SyntaxException exp)
                 {
-                    Console.WriteLine(args[0]+ ":" + exp.Message.Replace(" ���", ","));
+                    Console.WriteLine(args[0]+ ":" + exp.Message);
                 }
                 catch (DSL_Error exp)
                 {

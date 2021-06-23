@@ -59,7 +59,7 @@
 %type <lstvarVal> variablesList variablesSprite
 
 %type <upVal> blockUpdate
-%type <sVal> id newParams expression T F conditionParam actionParam rand
+%type <sVal> id newParams newParamsTextBox expression T F conditionParam actionParam rand
 
 %type <ifVal> if
 %type <logicVal> logic
@@ -198,7 +198,7 @@ assign		: id EQUAL expression
 			{
 				$$ = new AssignNode($1, $4, $6, $7);
 			}
-			| id EQUAL NEW TEXTBOX OPBRACKET newParams CLBRACKET
+			| id EQUAL NEW TEXTBOX OPBRACKET newParamsTextBox CLBRACKET
 			{
 				$$ = new AssignNode($1, $4, $6);
 			}
@@ -216,14 +216,6 @@ newParams	: COMMA id COMMA id
 			{
 				$$ = ',' + $2 + ',' + $4;
 			}
-			| INTNUM COMMA INTNUM COMMA STRING
-			{
-				$$ = ',' + $1 + ',' + $3 + ',' + $5;
-			}
-			| id COMMA id COMMA STRING
-			{
-				$$ = ',' + $1 + ',' + $3 + ',' + $5;
-			}
 			| COMMA INTNUM COMMA id
 			{
 				$$ = ',' + $2 + ',' + $4;
@@ -233,6 +225,24 @@ newParams	: COMMA id COMMA id
 				$$ = ',' + $2 + ',' + $4;
 			}
 			;
+
+newParamsTextBox	: INTNUM COMMA INTNUM COMMA STRING
+					{
+						$$ = ',' + $1 + ',' + $3 + ',' + $5;
+					}
+					| id COMMA id COMMA STRING
+					{
+						$$ = ',' + $1 + ',' + $3 + ',' + $5;
+					}
+					| id COMMA INTNUM COMMA STRING
+					{
+						$$ = ',' + $1 + ',' + $3 + ',' + $5;
+					}
+					| INTNUM COMMA id COMMA STRING
+					{
+						$$ = ',' + $1 + ',' + $3 + ',' + $5;
+					}
+					;
 
 expression	: T {$$ = $1;}
 			| expression ADD T 		{$$ = string.Format("{0} {1} {2}", $1, $2, $3);}
@@ -342,7 +352,7 @@ funList	: functionality
 		}
 		;
 
-functionality	: assignOrVar SEMICOLON 
+functionality	: assignVariable SEMICOLON 
 				{ 
 					$$ = new UpdateLogicNode($1.ToString());
 				}

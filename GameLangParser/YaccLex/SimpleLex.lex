@@ -12,7 +12,6 @@ Alpha 	[a-zA-Z_]
 Digit   [0-9] 
 AlphaDigit {Alpha}|{Digit}
 INTNUM  {Digit}+
-REALNUM {INTNUM}\.{INTNUM}
 ID {Alpha}{AlphaDigit}* 
 STRING \".*\"
 
@@ -70,7 +69,7 @@ STRING \".*\"
 public override void yyerror(string format, params object[] args)
 {
   var ww = args.Skip(1).Cast<string>().ToArray();
-  string errorMsg = string.Format("({0},{1}): Meeted {2}, but waited for {3}", yyline, yycol, args[0], string.Join(" ��� ",  ww));
+  string errorMsg = string.Format("({0},{1}): Meeted {2}, but waited for {3}", yyline, yycol, args[0], string.Join(" or ",  ww));
   throw new SyntaxException(errorMsg);
 }
 

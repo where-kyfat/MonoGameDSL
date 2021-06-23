@@ -1,45 +1,134 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="GameLangParser.Nodes.InitializeNode">
-    <Position X="7.25" Y="3.25" Width="1.5" />
+  <Class Name="GameLangParser.Nodes.ActionNode">
+    <Position X="8.25" Y="15.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAEgAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Nodes\ActionNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.AssignNode">
+    <Position X="9.75" Y="5.75" Width="3.25" />
+    <Members>
+      <Method Name="GetPathTexture" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEEAICAAAAAAAAAiAAAAAQAAAAAAA=</HashCode>
+      <FileName>Nodes\AssignNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.ConditionNode">
+    <Position X="6.5" Y="13.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAEgAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Nodes\ConditionNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.ForEachNode">
+    <Position X="12.25" Y="11" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAEEAAAAAAEAAAAAAAAAAAAABAAAIA=</HashCode>
+      <FileName>Nodes\ForEachNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.GameNode">
+    <Position X="9.25" Y="0.5" Width="2.5" />
+    <Members>
+      <Method Name="ChangeFromPathToTextures" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAIAAAAAAIAAAAAAAAAAAAAAIIAA=</HashCode>
+      <FileName>Nodes\GameNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.IfNode">
+    <Position X="3.75" Y="11" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAEEAAAAAAEAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Nodes\IfNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.InitializeNode">
+    <Position X="9.75" Y="3.25" Width="3.25" />
+    <Members>
+      <Method Name="GetPathTextures" Hidden="true" />
+      <Method Name="SetTextures" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAABAEAQAAEAAAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>Nodes\InitializeNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameLangParser.Nodes.LoadContentNode">
-    <Position X="9.5" Y="2" Width="1.75" />
+    <Position X="16.25" Y="3.25" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAABAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\LoadContentNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameLangParser.Nodes.Node">
-    <Position X="5" Y="0.5" Width="1.75" />
+  <Class Name="GameLangParser.Nodes.LogicalNode">
+    <Position X="9.25" Y="13.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAgEAAAAAIAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Nodes\LogicalNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.Node">
+    <Position X="12.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAgAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\Node.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameLangParser.Nodes.SpriteInitNode">
-    <Position X="0.5" Y="2" Width="1.75" />
+  <Class Name="GameLangParser.Nodes.SpritesInitNode">
+    <Position X="13.25" Y="3.25" Width="2.75" />
+    <Members>
+      <Method Name="GetNameTextures" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Nodes\SpriteInitNode.cs</FileName>
+      <HashCode>AAChAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Nodes\SpritesInitNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.UpdateLogicNode">
+    <Position X="7.75" Y="10.5" Width="3.25" />
+    <Members>
+      <Method Name="GetPathTexture" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAEAAAEEAAACAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Nodes\UpdateLogicNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameLangParser.Nodes.UpdateNode">
-    <Position X="2.75" Y="3.25" Width="1.5" />
+    <Position X="3.75" Y="3.25" Width="3.25" />
+    <Members>
+      <Method Name="GetPathTextures" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAAgAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\UpdateNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameLangParser.Nodes.VariablesInitNode">
-    <Position X="5" Y="3.25" Width="1.75" />
+    <Position X="7.25" Y="3.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAEAgAA=</HashCode>
       <FileName>Nodes\VariablesInitNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.Nodes.VarNode">
+    <Position X="7.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAABACAAAAAAAAAAAgA=</HashCode>
+      <FileName>Nodes\VarNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameLangParser.SpriteInitNode">
+    <Position X="13.25" Y="5.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAQAIAEAAAAAAAAAAAAgAAAAAAAAAAEQAI=</HashCode>
+      <FileName>Nodes\SpriteInitNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

@@ -17,6 +17,11 @@ namespace MonogameLib.Behaviours
         int mFadeIncrement;
         double mFadeDelay = .035;
 
+        /// <summary>
+        /// Эффект затухания объекта
+        /// </summary>
+        /// <param name="active">Запустить ли при создании</param>
+        /// <param name="destroyAfter">Уничтожить ли объект после затухания</param>
         public Fade(bool active, bool destroyAfter, Sprite target)
         {
             this.active = active;

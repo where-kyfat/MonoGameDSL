@@ -17,6 +17,14 @@ namespace MonogameLib.Behaviours
         int layoutSizeX;
         int layoutSizeY;
 
+        /// <summary>
+        /// Центрирует камеру на объекте
+        /// </summary>
+        /// <param name="camera">переменная камеры</param>
+        /// <param name="windowSizeX">ширина окна</param>
+        /// <param name="windowSizeY">высота окна</param>
+        /// <param name="layoutSizeX">ширина макета</param>
+        /// <param name="layoutSizeY">высота макета</param>
         public ScrollTo(Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY)
         {
             this.camera = camera;

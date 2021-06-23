@@ -12,6 +12,10 @@ namespace MonogameLib.Behaviours
     {
         int speed;
 
+        /// <summary>
+        /// Поведение пули просто перемещает объект вперед
+        /// </summary>
+        /// <param name="speed">Скорость перемещения объекта</param>
         public BulletMovement(int speed)
         {
             this.speed = speed;

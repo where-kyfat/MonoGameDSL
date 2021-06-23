@@ -9,6 +9,15 @@ namespace MonogameLib.Classes
 {
     public static class Actions
     {
+        /// <summary>
+        /// Перемещает камеру к объекту
+        /// </summary>
+        /// <param name="target">целевой объект</param>
+        /// <param name="camera">текущая камера</param>
+        /// <param name="windowSizeX">ширина окна</param>
+        /// <param name="windowSizeY">высота окна</param>
+        /// <param name="layoutSizeX">ширина макета</param>
+        /// <param name="layoutSizeY">высота макета</param>
         public static void ScrollToObject(Sprite target, Camera camera, int windowSizeX, int windowSizeY, int layoutSizeX, int layoutSizeY)
         {
             var middlePointX = windowSizeX / 2;
@@ -16,6 +25,13 @@ namespace MonogameLib.Classes
             camera.Follow((int)target.transformPosition.X, (int)target.transformPosition.Y, middlePointX, middlePointY, layoutSizeX, layoutSizeY);
         }
 
+        /// <summary>
+        /// Поворачивает спрайт по направлению к точке
+        /// </summary>
+        /// <param name="target">целевой объект</param>
+        /// <param name="pointX">x координата точки</param>
+        /// <param name="pointY">y координата точки</param>
+        /// <param name="IsGlobal">флаг, определяющий: вычислять в глобальных координатах или относительно окна</param>
         public static void SetAngleForward(Sprite target, float pointX, float pointY, bool IsGlobal)
         {
             Vector2 position;
@@ -37,6 +53,10 @@ namespace MonogameLib.Classes
             target.text = text;
         }
 
+        /// <summary>
+        /// Уничтожает объект
+        /// </summary>
+        /// <param name="target">Целевой объект</param>
         public static void Destroy(Sprite target)
         {
             target.IsRemove = true;

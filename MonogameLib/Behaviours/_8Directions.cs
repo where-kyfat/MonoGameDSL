@@ -8,14 +8,20 @@ using MonogameLib.Classes;
 
 namespace MonogameLib.Behaviours
 {
+
     public class _8Directions : Behaviour
     {
         int _speed;
 
+        /// <summary>
+        /// Движение в 8-и направлениях. Перемещает объект при нажатии на клавиши стрелок и wasd
+        /// </summary>
+        /// <param name="speed">Скорость перемещения объекта</param>
         public _8Directions(int speed = 4)
         {
             _speed = speed;
         }
+
         public override void Execute(GameTime gameTime, Sprite target)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.Up))

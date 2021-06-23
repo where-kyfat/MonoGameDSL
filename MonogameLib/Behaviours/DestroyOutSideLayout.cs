@@ -12,6 +12,11 @@ namespace MonogameLib.Behaviours
     {
         Vector2 layoutSize;
 
+        /// <summary>
+        ///  Автоматически уничтожает объект, если он покидает область макета
+        /// </summary>
+        /// <param name="layoutSizeX">Ширина макета</param>
+        /// <param name="layoutSizeY">Высота макета</param>
         public DestroyOutSideLayout(int layoutSizeX, int layoutSizeY) 
         {
             this.layoutSize = new Vector2(layoutSizeX, layoutSizeY);

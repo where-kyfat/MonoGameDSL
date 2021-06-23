@@ -12,11 +12,18 @@ namespace MonogameLib.Classes
         static float timerSec = 0;
         static float timerMil = 0;
 
+        /// <summary>
+        /// Возвращает true каждый тик игры
+        /// </summary>
         public static bool EveryTick()
         {
             return true;
         }
 
+        /// <summary>
+        /// Возвращает true, когда проходит определенное время в игре
+        /// </summary>
+        /// <param name="x">Время в секундах через которое срабатывает</param>
         public static bool EveryXSeconds(GameTime gameTime, float x)
         {
             timerSec += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -30,6 +37,12 @@ namespace MonogameLib.Classes
 
         //public static bool ForEach(List<Sprite> sprites, )
 
+        /// <summary>
+        /// Возвращает true, когда объект выходит за пределы макета
+        /// </summary>
+        /// <param name="target">экземпляр объекта</param>
+        /// <param name="layoutSizeX">ширина макета</param>
+        /// <param name="layoutSizeY">высота макета</param>
         public static bool IsOutsideLayout(Sprite target, int layoutSizeX, int layoutSizeY)
         {
             var Left = target.Rectangle.Left;
@@ -47,6 +60,11 @@ namespace MonogameLib.Classes
             }
         }
 
+        /// <summary>
+        /// Возвращает true, если объекты сталкиваются
+        /// </summary>
+        /// <param name="target1">первый объект</param>
+        /// <param name="target2">второй объект</param>
         public static bool InCollisionWith(Sprite target1, Sprite target2)
         {
             return IsTouchingLeft(target1, target2) || IsTouchingRight(target1, target2) 
@@ -129,16 +147,25 @@ namespace MonogameLib.Classes
             return false;
         }
 
+        /// <summary>
+        /// Возвращает true, когда нажата левая клавиша мыши
+        /// </summary>
         public static bool OnMouseLeftClicked(GameTime gameTime)
         {
             return OnMouseXButtonClicked(MouseButton.Left, gameTime);
         }
 
+        /// <summary>
+        /// Возвращает true, когда нажата прававя клавиша мыши
+        /// </summary>
         public static bool OnMouseRightClicked(GameTime gameTime)
         {
             return OnMouseXButtonClicked(MouseButton.Right, gameTime);
         }
 
+        /// <summary>
+        /// Возвращает true, когда нажато колесо клавиша мыши
+        /// </summary>
         public static bool OnMouseMiddleClicked(GameTime gameTime)
         {
             return OnMouseXButtonClicked(MouseButton.Middle, gameTime);

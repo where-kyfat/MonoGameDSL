@@ -14,6 +14,12 @@ namespace MonogameLib.Behaviours
         int layoutSizeY;
         bool IsEdge;
 
+        /// <summary>
+        /// Предотвращает выход объекта за пределы макета
+        /// </summary>
+        /// <param name="layoutSizeX">Ширина макета</param>
+        /// <param name="layoutSizeY">Высота макета</param>
+        /// <param name="IsEdge"></param>
         public BoundToLayout(int layoutSizeX, int layoutSizeY, bool IsEdge = true)
         {
             this.layoutSizeX = layoutSizeX;
